@@ -5,7 +5,20 @@ const config: CapacitorConfig = {
   appName: 'MizoPrep',
   webDir: 'out',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    allowNavigation: [
+      'razorpay.com',
+      '*.razorpay.com',
+      'api.razorpay.com',
+      'mizoprep.vercel.app',
+      '*.vercel.app'
+    ]
+  },
+  plugins: {
+    AdMob: {
+      appId: 'ca-app-pub-3940256099942544~3347511713',
+      initializeForTesting: true
+    }
   }
 };
 

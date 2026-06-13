@@ -5,138 +5,393 @@ const economicsChapters = [
   {
     id: 'eco-1',
     title: {
-      mizo: 'Chapter 1: Economics Bulpui - Demand & Supply',
-      english: 'Chapter 1: Basics of Economics - Demand & Supply'
+      mizo: 'Economic Development & Growth',
+      english: 'Economic Development & Growth'
     },
     notes: {
       mizo: [
-        'Economics awmzia: Mihring duhna tihpuitlin nan resource tlemte hman dan zirna a ni. "Scarcity" hi Economics bulpui ber.',
-        'Demand Law: Thil man a to chuan mihring lei duh a tlem, a tlâwm chuan a tam. Price ↑ = Demand ↓',
-        'Supply Law: Thil man a to chuan siamchhuah an uar, a tlâwm chuan an siam tlem. Price ↑ = Supply ↑',
-        'Equilibrium Price: Demand leh Supply intlukna lai. He lai hi market price dik tak a ni.',
-        'Elasticity: Thil man tlem te a danglam pawha demand nasa takin a danglam chuan "Elastic" a ni. Ei tur basic ang chi chu "Inelastic".',
-        'GDP awmzia: Ram chhunga kum 1 chhunga thil leh service siamchhuah zawng zawng hlutna. India GDP 2024 ah $3.9 Trillion vel.'
+        '**1. Economic Growth vs Development**',
+        'Growth = GDP/NNP pung. Quantity chauh.',
+        'Development = GDP + Life Quality + Health + Education. Quality tel.',
+        'HDI = Life Expectancy + Education + Per Capita Income. UNDP siam.',
+        '**MPSC Point:** India HDI 2025: 0.685, Rank 132/193. Category: Medium Human Development.',
+        '',
+        '**2. GDP Measurement**',
+        '**GDP** = Ram chhunga thil siam zawng zawng value. Formula: C + I + G + (X-M)',
+        '**GNP** = GDP + Foreign Income - Foreign te Income',
+        '**NNP** = GNP - Depreciation',
+        '**Base Year** = Tuna 2011-12. 2026 ah 2022-23 ah thlak dawn.',
+        '',
+        '**3. Economic Planning**',
+        '**Five Year Plans** = 1951-2017. Tuna NITI Aayog.',
+        '**NITI Aayog** = 2015 ah din. Think Tank. CEO: BVR Subrahmanyam.',
+        '**Vision 2047** = Viksit Bharat. $30 trillion economy target.'
       ],
       english: [
-        'Economics meaning: Study of how to use scarce resources to satisfy human wants. "Scarcity" is the foundation of Economics.',
-        'Law of Demand: When price increases, demand decreases. When price falls, demand increases. Price ↑ = Demand ↓',
-        'Law of Supply: When price increases, producers supply more. When price falls, they supply less. Price ↑ = Supply ↑',
-        'Equilibrium Price: Point where Demand equals Supply. This is the actual market price.',
-        'Elasticity: If small price change causes big demand change, it\'s "Elastic". Basic necessities are "Inelastic".',
-        'GDP meaning: Total monetary value of all goods and services produced within a country in 1 year. India GDP 2024 around $3.9 Trillion.'
+        '**1. Economic Growth vs Development**',
+        'Growth = Increase in GDP/NNP. Only quantity.',
+        'Development = GDP + Quality of Life + Health + Education. Includes quality.',
+        'HDI = Life Expectancy + Education + Per Capita Income. Created by UNDP.',
+        '**MPSC Point:** India HDI 2025: 0.685, Rank 132/193. Category: Medium Human Development.',
+        '',
+        '**2. GDP Measurement**',
+        '**GDP** = Total value of goods/services produced within country. Formula: C + I + G + (X-M)',
+        '**GNP** = GDP + Income from Abroad - Income to Abroad',
+        '**NNP** = GNP - Depreciation',
+        '**Base Year** = Currently 2011-12. Changing to 2022-23 in 2026.',
+        '',
+        '**3. Economic Planning**',
+        '**Five Year Plans** = 1951-2017. Now NITI Aayog.',
+        '**NITI Aayog** = Established 2015. Think Tank. CEO: BVR Subrahmanyam.',
+        '**Vision 2047** = Viksit Bharat. $30 trillion economy target.'
       ]
     }
   },
   {
     id: 'eco-2',
     title: {
-      mizo: 'Chapter 2: India Economy - 5 Year Plans & NITI Aayog',
-      english: 'Chapter 2: Indian Economy - 5 Year Plans & NITI Aayog'
+      mizo: 'Sustainable Development & Environment',
+      english: 'Sustainable Development & Environment'
     },
     notes: {
       mizo: [
-        '1st Five Year Plan 1951-56: Agriculture ngaih pawimawh ber. Dr. K.N. Raj ruahman. Dam 2 lian - Bhakra Nangal, Hirakud.',
-        '2nd Five Year Plan 1956-61: P.C. Mahalanobis model. Industries lam, Steel plant lian Bhilai, Rourkela, Durgapur din.',
-        'Green Revolution 1960s: Dr. M.S. Swaminathan kaihhruai. HYV seeds, Fertilizer, Irrigation hmangin buh leh wheat thar a pung nasa.',
-        '1991 Economic Reforms: Dr. Manmohan Singh Finance Minister laiin LPG Policy - Liberalisation, Privatisation, Globalisation.',
-        'NITI Aayog: Jan 1, 2015 ah Planning Commission thlak. "Think Tank" anga hna thawk. Chairman = Prime Minister.',
-        'Atmanirbhar Bharat 2020: COVID hnuah PM Modi puan. Package ₹20 lakh crore. Local thil siam uar tur.'
+        '**1. Sustainable Development**',
+        'Brundtland Report 1987: "Tuna mamawh phuhruk, nakin generation tichhe lo".',
+        '**3 Pillars:** Economic + Social + Environmental.',
+        '**SDG 2030** = Goal 17. India rank 109/166 SDG Index 2024.',
+        '',
+        '**2. Climate Change & India**',
+        '**Net Zero Target** = 2070. PM Modi COP26 ah puang.',
+        '**Panchamrit** = 1) 500 GW non-fossil 2030, 2) 50% energy renewable, 3) 1 billion ton carbon reduce, 4) 45% carbon intensity cut, 5) Net Zero 2070.',
+        '**LiFE Mission** = Lifestyle for Environment. Global movement.',
+        '',
+        '**3. Environmental Economics**',
+        '**Carbon Credit** = Company in carbon ti tlem chuan credit hralh thei.',
+        '**Green GDP** = GDP - Environmental Damage Cost.',
+        '**E85 Fuel** = Jan 2026 India in launch. 85% Ethanol. Import ti tlem.',
+        '',
+        '**4. Key Initiatives**',
+        '**National Green Hydrogen Mission** = Rs 19,744 cr. 2030 ah 5 MMT production.',
+        '**PM-KUSUM** = Farmer tan solar pump.',
+        '**FAME India** = Electric vehicle promote. Phase II: Rs 10,000 cr.'
       ],
       english: [
-        '1st Five Year Plan 1951-56: Focus on Agriculture. Planned by Dr. K.N. Raj. Major dams - Bhakra Nangal, Hirakud.',
-        '2nd Five Year Plan 1956-61: P.C. Mahalanobis model. Focus on Industries, Major Steel plants Bhilai, Rourkela, Durgapur established.',
-        'Green Revolution 1960s: Led by Dr. M.S. Swaminathan. HYV seeds, Fertilizer, Irrigation massively increased rice and wheat production.',
-        '1991 Economic Reforms: Under Finance Minister Dr. Manmohan Singh - LPG Policy - Liberalisation, Privatisation, Globalisation.',
-        'NITI Aayog: Replaced Planning Commission on Jan 1, 2015. Works as "Think Tank". Chairman = Prime Minister.',
-        'Atmanirbhar Bharat 2020: Announced by PM Modi post-COVID. ₹20 lakh crore package. Promote local manufacturing.'
+        '**1. Sustainable Development**',
+        'Brundtland Report 1987: "Meet present needs without compromising future generations".',
+        '**3 Pillars:** Economic + Social + Environmental.',
+        '**SDG 2030** = 17 Goals. India rank 109/166 SDG Index 2024.',
+        '',
+        '**2. Climate Change & India**',
+        '**Net Zero Target** = 2070. Announced by PM Modi at COP26.',
+        '**Panchamrit** = 1) 500 GW non-fossil by 2030, 2) 50% energy from renewable, 3) Reduce 1 billion ton carbon, 4) 45% carbon intensity cut, 5) Net Zero 2070.',
+        '**LiFE Mission** = Lifestyle for Environment. Global movement.',
+        '',
+        '**3. Environmental Economics**',
+        '**Carbon Credit** = Companies reducing carbon can sell credits.',
+        '**Green GDP** = GDP - Environmental Damage Cost.',
+        '**E85 Fuel** = Launched Jan 2026 in India. 85% Ethanol. Reduces imports.',
+        '',
+        '**4. Key Initiatives**',
+        '**National Green Hydrogen Mission** = Rs 19,744 cr. 5 MMT production by 2030.',
+        '**PM-KUSUM** = Solar pumps for farmers.',
+        '**FAME India** = Promote electric vehicles. Phase II: Rs 10,000 cr.'
       ]
     }
   },
   {
     id: 'eco-3',
     title: {
-      mizo: 'Chapter 3: Pawisa, Bank leh Inflation',
-      english: 'Chapter 3: Money, Banking and Inflation'
+      mizo: 'Poverty & Unemployment',
+      english: 'Poverty & Unemployment'
     },
     notes: {
       mizo: [
-        'RBI: Reserve Bank of India, 1935 ah din. India Central Bank. Governor tunlai = Shaktikanta Das. Pawisa chhu, interest rate control.',
-        'Repo Rate: RBI in commercial bank te pawisa a puktirna rate. Tunah 6.50%. Repo ↑ chuan loan a to, inflation a hniam.',
-        'CRR & SLR: CRR = Cash Reserve Ratio 4.5%, SLR = Statutory Liquidity Ratio 18%. Bank in RBI ah dah ngei ngei tur.',
-        'Inflation awmzia: Thil man pung zel, pawisa hlutna tlahniam. CPI leh WPI in teh thin. India target = 4% ± 2%.',
-        'Deflation: Thil man tlahniam zel, a tha lo. Miin lei an nghak, economy a chawl.',
-        'Demonetisation Nov 8, 2016: ₹500 leh ₹1000 note hman theih loh. Black money tihtawp nan. Note thar ₹2000, ₹500 tihchhuah.'
+        '**1. Poverty Measurement**',
+        '**Tendulkar Committee** = 2009. Per day: Rural Rs 27, Urban Rs 33.',
+        '**Rangarajan Committee** = 2014. Rural Rs 32, Urban Rs 47.',
+        '**Multidimensional Poverty Index** = Health + Education + Living Standard. NITI Aayog report.',
+        '**MPSC Point:** India MPI 2023: 11.28%. Kum 5 chhungin 13.5 crore poverty atang chhuak.',
+        '',
+        '**2. Unemployment Types**',
+        '**Structural** = Skill mismatch. Education leh job in mil lo.',
+        '**Cyclical** = Economy tla vang. Recession hun.',
+        '**Frictional** = Job inthlak lai.',
+        '**Disguised** = Thawk si, contribution zero. Agriculture ah tam.',
+        '',
+        '**3. Poverty Alleviation Schemes**',
+        '**MGNREGA** = Ni 100 hna guarantee. Wage: State tin dang. Mizoram: Rs 249/day.',
+        '**PMGKY** = 5kg ration free. 80 crore mi dawng.',
+        '**DAY-NRLM** = Self Help Group. Women empowerment.',
+        '**PM SVANidhi** = Street vendor loan Rs 10,000. No collateral.',
+        '',
+        '**4. Current Data 2026**',
+        '**Unemployment Rate** = 7.8% Jan 2026 CMIE.',
+        '**UP Police Exam** = 28 lakh candidate, 32,679 post chauh. Unemployment lang.'
       ],
       english: [
-        'RBI: Reserve Bank of India, established 1935. India\'s Central Bank. Current Governor = Shaktikanta Das. Prints currency, controls interest rate.',
-        'Repo Rate: Rate at which RBI lends to commercial banks. Currently 6.50%. If Repo ↑, loans become costly, inflation reduces.',
-        'CRR & SLR: CRR = Cash Reserve Ratio 4.5%, SLR = Statutory Liquidity Ratio 18%. Mandatory deposits banks keep with RBI.',
-        'Inflation meaning: Continuous rise in prices, money value decreases. Measured by CPI and WPI. India target = 4% ± 2%.',
-        'Deflation: Continuous fall in prices, harmful. People postpone buying, economy stagnates.',
-        'Demonetisation Nov 8, 2016: ₹500 and ₹1000 notes invalid. To curb black money. New ₹2000, ₹500 notes issued.'
+        '**1. Poverty Measurement**',
+        '**Tendulkar Committee** = 2009. Per day: Rural Rs 27, Urban Rs 33.',
+        '**Rangarajan Committee** = 2014. Rural Rs 32, Urban Rs 47.',
+        '**Multidimensional Poverty Index** = Health + Education + Living Standard. NITI Aayog report.',
+        '**MPSC Point:** India MPI 2023: 11.28%. 13.5 crore people escaped poverty in 5 years.',
+        '',
+        '**2. Unemployment Types**',
+        '**Structural** = Skill mismatch. Education and jobs don\'t match.',
+        '**Cyclical** = Due to economic downturn. During recession.',
+        '**Frictional** = Between jobs.',
+        '**Disguised** = Working but zero contribution. Common in agriculture.',
+        '',
+        '**3. Poverty Alleviation Schemes**',
+        '**MGNREGA** = 100 days job guarantee. Wage: Varies by state. Mizoram: Rs 249/day.',
+        '**PMGKY** = 5kg free ration. 80 crore beneficiaries.',
+        '**DAY-NRLM** = Self Help Groups. Women empowerment.',
+        '**PM SVANidhi** = Street vendor loan Rs 10,000. No collateral.',
+        '',
+        '**4. Current Data 2026**',
+        '**Unemployment Rate** = 7.8% Jan 2026 CMIE.',
+        '**UP Police Exam** = 28 lakh candidates for 32,679 posts. Shows unemployment.'
       ]
     }
   },
   {
     id: 'eco-4',
     title: {
-      mizo: 'Chapter 4: Budget, Tax leh GST',
-      english: 'Chapter 4: Budget, Tax and GST'
+      mizo: 'Inclusive Economy & Financial Inclusion',
+      english: 'Inclusive Economy & Financial Inclusion'
     },
     notes: {
       mizo: [
-        'Union Budget: Finance Minister in Feb 1 ah Parliament ah pharh thin. Kum 1 chhunga sawrkar sum lakluh leh hman dan.',
-        'Fiscal Deficit: Sawrkar sum hmanna a lakluh aia tam. GDP atanga 3-4% a nih a him. 2024-25 ah 5.1% target.',
-        'Tax chi 2: Direct Tax - Income Tax, Corporate Tax. Indirect Tax - GST, Customs Duty.',
-        'GST July 1, 2017: "One Nation One Tax". Tax hrang CGST, SGST, IGST in a thlak. Slab 4: 5%, 12%, 18%, 28%.',
-        'GST Council: Finance Minister Chairman, State FM zawng zawng member. GST rate an rel.',
-        'FRBM Act 2003: Fiscal Responsibility and Budget Management. Sawrkar leiba tihtlem nan dan siam.'
+        '**1. Inclusive Growth**',
+        'Growth hlawkna mi zawng zawng in an dawn. Poor, SC, ST, Women tel.',
+        '**Financial Inclusion** = Bank account, credit, insurance mi zawng zawng hnenah.',
+        '',
+        '**2. Key Schemes**',
+        '**PM Jan Dhan Yojana** = Zero balance account. 52 crore accounts 2026. Overdraft Rs 10,000.',
+        '**PM Mudra Yojana** = Shishu <50k, Kishore 50k-5L, Tarun 5L-10L loan. No collateral.',
+        '**Stand-Up India** = SC/ST/Women entrepreneur. Rs 10L-1Cr loan.',
+        '**PM Jeevan Jyoti Bima** = Rs 436/year. Rs 2 lakh insurance.',
+        '**PM Suraksha Bima** = Rs 20/year. Accident insurance Rs 2 lakh.',
+        '',
+        '**3. Digital Economy**',
+        '**UPI** = Jan 2026: 16.99 billion transactions. World\'s highest.',
+        '**Digital Rupee** = CBDC. RBI pilot project.',
+        '**Account Aggregator** = Financial data share awlsam.',
+        '',
+        '**4. MSME Sector**',
+        '**Definition Thar:** Micro <1Cr investment, Small <10Cr, Medium <50Cr.',
+        '**Udyam Registration** = Online free.',
+        '**ECLGS** = Covid lai loan guarantee. Rs 3 lakh crore.'
       ],
       english: [
-        'Union Budget: Presented by Finance Minister on Feb 1 in Parliament. Annual statement of govt income and expenditure.',
-        'Fiscal Deficit: When govt expenditure exceeds revenue. 3-4% of GDP is safe. 2024-25 target is 5.1%.',
-        'Types of Tax: Direct Tax - Income Tax, Corporate Tax. Indirect Tax - GST, Customs Duty.',
-        'GST July 1, 2017: "One Nation One Tax". Replaced multiple taxes with CGST, SGST, IGST. 4 slabs: 5%, 12%, 18%, 28%.',
-        'GST Council: Chaired by Finance Minister, all State FMs are members. Decides GST rates.',
-        'FRBM Act 2003: Fiscal Responsibility and Budget Management. Law to reduce government debt.'
+        '**1. Inclusive Growth**',
+        'Benefits of growth reach everyone. Poor, SC, ST, Women included.',
+        '**Financial Inclusion** = Bank account, credit, insurance for all.',
+        '',
+        '**2. Key Schemes**',
+        '**PM Jan Dhan Yojana** = Zero balance account. 52 crore accounts 2026. Overdraft Rs 10,000.',
+        '**PM Mudra Yojana** = Shishu <50k, Kishore 50k-5L, Tarun 5L-10L loan. No collateral.',
+        '**Stand-Up India** = SC/ST/Women entrepreneurs. Rs 10L-1Cr loan.',
+        '**PM Jeevan Jyoti Bima** = Rs 436/year. Rs 2 lakh insurance.',
+        '**PM Suraksha Bima** = Rs 20/year. Accident insurance Rs 2 lakh.',
+        '',
+        '**3. Digital Economy**',
+        '**UPI** = Jan 2026: 16.99 billion transactions. World\'s highest.',
+        '**Digital Rupee** = CBDC. RBI pilot project.',
+        '**Account Aggregator** = Easy financial data sharing.',
+        '',
+        '**4. MSME Sector**',
+        '**New Definition:** Micro <1Cr investment, Small <10Cr, Medium <50Cr.',
+        '**Udyam Registration** = Online free.',
+        '**ECLGS** = Covid loan guarantee. Rs 3 lakh crore.'
       ]
-    },
-    isPro: true
+    }
   },
   {
     id: 'eco-5',
     title: {
-      mizo: 'Chapter 5: Poverty, Unemployment & Development',
-      english: 'Chapter 5: Poverty, Unemployment & Development'
+      mizo: 'Demographics & Population',
+      english: 'Demographics & Population'
     },
     notes: {
       mizo: [
-        'Poverty Line: Tendulkar Committee 2011-12: Khawpui ah ₹1000/thla, Thingtlâng ah ₹816/thla aia tlem chu "Below Poverty Line".',
-        'MGNREGA 2005: Mahatma Gandhi National Rural Employment Guarantee Act. Kum 1 ah ni 100 hna thawh guarantee. Hlawh ₹200+ /ni.',
-        'Unemployment chi hrang: Disguised - hna thawktu tam lutuk, Seasonal - Fur lai chauh hna awm, Structural - skill inmil lo.',
-        'HDI: Human Development Index. UNDP in siam. Life Expectancy, Education, Per Capita Income atanga teh. India rank 134/193 in 2023.',
-        'SDG: Sustainable Development Goals 17, UN in 2015 ah siam. 2030 ah zawh tur. Goal 1: No Poverty, Goal 4: Quality Education.',
-        'Gini Coefficient: Inneih tawk lohna tehna. 0 = inang vek, 1 = mi 1 in a nei vek. India ah 0.35 vel.'
+        '**1. Census 2011 Key Data**',
+        '**Population** = 121 crore. World 17.5%.',
+        '**Decadal Growth** = 17.7%. A tla hniam zel.',
+        '**Sex Ratio** = 943 female per 1000 male. Kerala sang ber 1084.',
+        '**Literacy** = 73%. Male 80.9%, Female 64.6%. Mizoram 91.3% 3rd highest.',
+        '**Density** = 382 per sq km. Bihar sang ber 1106.',
+        '',
+        '**2. Demographic Dividend**',
+        '**Definition** = Working age 15-64 tam hun. 62.5% India population.',
+        '**Window** = 2005-2055. Tuna peak. 2041 ah senior citizen 16% tling ang.',
+        '**Challenge** = Skill lo chuan "Demographic Disaster" ni thei.',
+        '',
+        '**3. Population Policy**',
+        '**NPP 2000** = TFR 2.1 by 2010 target. Tling lo.',
+        '**Current TFR** = 2.0 NFHS-5. Replacement level tling.',
+        '**Population 2026** = 143 crore estimate. World hmasa ber China lehpelh tawh.',
+        '',
+        '**4. Migration**',
+        '**Urbanization** = 35% 2026. 2036 ah 40% tling ang.',
+        '**Push Factors** = Unemployment, agriculture tla.',
+        '**Pull Factors** = Job, education, health city ah.',
+        '**Mizoram** = Myanmar refugee 38,059. Biometric 93% zo.'
       ],
       english: [
-        'Poverty Line: Tendulkar Committee 2011-12: Urban ₹1000/month, Rural ₹816/month below is "Below Poverty Line".',
-        'MGNREGA 2005: Mahatma Gandhi National Rural Employment Guarantee Act. Guarantees 100 days work per year. Wage ₹200+/day.',
-        'Types of Unemployment: Disguised - too many workers, Seasonal - work only in monsoon, Structural - skill mismatch.',
-        'HDI: Human Development Index. By UNDP. Based on Life Expectancy, Education, Per Capita Income. India rank 134/193 in 2023.',
-        'SDG: Sustainable Development Goals 17, by UN in 2015. Target 2030. Goal 1: No Poverty, Goal 4: Quality Education.',
-        'Gini Coefficient: Measures inequality. 0 = perfect equality, 1 = perfect inequality. India around 0.35.'
+        '**1. Census 2011 Key Data**',
+        '**Population** = 121 crore. 17.5% of world.',
+        '**Decadal Growth** = 17.7%. Declining trend.',
+        '**Sex Ratio** = 943 female per 1000 male. Kerala highest 1084.',
+        '**Literacy** = 73%. Male 80.9%, Female 64.6%. Mizoram 91.3% 3rd highest.',
+        '**Density** = 382 per sq km. Bihar highest 1106.',
+        '',
+        '**2. Demographic Dividend**',
+        '**Definition** = Working age 15-64 majority. 62.5% of India population.',
+        '**Window** = 2005-2055. Currently peak. By 2041, senior citizens 16%.',
+        '**Challenge** = Without skills becomes "Demographic Disaster".',
+        '',
+        '**3. Population Policy**',
+        '**NPP 2000** = TFR 2.1 by 2010 target. Not achieved.',
+        '**Current TFR** = 2.0 NFHS-5. Replacement level achieved.',
+        '**Population 2026** = 143 crore estimate. World largest, overtook China.',
+        '',
+        '**4. Migration**',
+        '**Urbanization** = 35% 2026. Will reach 40% by 2036.',
+        '**Push Factors** = Unemployment, agriculture decline.',
+        '**Pull Factors** = Jobs, education, health in cities.',
+        '**Mizoram** = Myanmar refugees 38,059. Biometric 93% complete.'
       ]
+    }
+  },
+  {
+    id: 'eco-6',
+    title: {
+      mizo: 'Social Sector: Health, Education, Women',
+      english: 'Social Sector: Health, Education, Women'
     },
-    isPro: true
+    notes: {
+      mizo: [
+        '**1. Health Sector**',
+        '**Ayushman Bharat** = Rs 5 lakh insurance. 12 crore family cover. 2026: 55 crore beneficiary.',
+        '**PM-JAY** = Hospital 30,000+ empanelled.',
+        '**Health Spending** = 2.1% GDP 2026. Target 2.5% by 2025 tling lo.',
+        '**IMR** = 28 per 1000. MMR = 97 per lakh.',
+        '',
+        '**2. Education Sector**',
+        '**NEP 2020** = 5+3+3+4 structure. Vocational class 6 atang.',
+        '**GER** = Higher Education 28.4%. Target 50% by 2035.',
+        '**Samagra Shiksha** = Pre-school to Class 12. Budget Rs 37,500 cr.',
+        '**PM SHRI** = 14,500 schools upgrade. Model school.',
+        '',
+        '**3. Women Empowerment**',
+        '**Reservation** = Panchayat 50%, Parliament 33% pass 2023. Implement 2029.',
+        '**Beti Bachao Beti Padhao** = Sex ratio 918 to 934 improve.',
+        '**Ujjwala** = 10 crore LPG connection free.',
+        '**Maternity Benefit** = 26 weeks leave. Rs 6000 PMMVY.',
+        '**Nari Shakti** = STEM JRF 53% hmeichhia. NDA women cadet graduate 2026.',
+        '',
+        '**4. Social Security**',
+        '**Atal Pension Yojana** = Rs 1000-5000 pension. 6 crore subscriber.',
+        '**PM Shram Yogi Mandhan** = Unorganized worker Rs 3000 pension.',
+        '**e-SHRAM Portal** = 30 crore register. Database.'
+      ],
+      english: [
+        '**1. Health Sector**',
+        '**Ayushman Bharat** = Rs 5 lakh insurance. 12 crore families covered. 2026: 55 crore beneficiaries.',
+        '**PM-JAY** = 30,000+ hospitals empanelled.',
+        '**Health Spending** = 2.1% GDP 2026. Target 2.5% by 2025 not met.',
+        '**IMR** = 28 per 1000. MMR = 97 per lakh.',
+        '',
+        '**2. Education Sector**',
+        '**NEP 2020** = 5+3+3+4 structure. Vocational from class 6.',
+        '**GER** = Higher Education 28.4%. Target 50% by 2035.',
+        '**Samagra Shiksha** = Pre-school to Class 12. Budget Rs 37,500 cr.',
+        '**PM SHRI** = 14,500 schools upgrade. Model schools.',
+        '',
+        '**3. Women Empowerment**',
+        '**Reservation** = Panchayat 50%, Parliament 33% passed 2023. Implementation 2029.',
+        '**Beti Bachao Beti Padhao** = Sex ratio improved 918 to 934.',
+        '**Ujjwala** = 10 crore free LPG connections.',
+        '**Maternity Benefit** = 26 weeks leave. Rs 6000 PMMVY.',
+        '**Nari Shakti** = STEM JRF 53% women. NDA women cadets graduated 2026.',
+        '',
+        '**4. Social Security**',
+        '**Atal Pension Yojana** = Rs 1000-5000 pension. 6 crore subscribers.',
+        '**PM Shram Yogi Mandhan** = Unorganized workers Rs 3000 pension.',
+        '**e-SHRAM Portal** = 30 crore registered. Database.'
+      ]
+    }
+  },
+  {
+    id: 'eco-7',
+    title: {
+      mizo: 'Agriculture & Rural Development',
+      english: 'Agriculture & Rural Development'
+    },
+    notes: {
+      mizo: [
+        '**1. Agriculture Contribution**',
+        '**GDP Share** = 15% 2026. Employment 42% mahse productivity hniam.',
+        '**Land Holding** = 86% marginal <2 hectare. Average 1.08 hectare.',
+        '**MSP** = Crops 23. CACP recommend. 2026: Wheat Rs 2425, Paddy Rs 2300.',
+        '',
+        '**2. Key Schemes**',
+        '**PM-KISAN** = Rs 6000/year. 11 crore farmer. Rs 3.68 lakh crore disburse tawh.',
+        '**PMFBY** = Crop insurance. Premium: Kharif 2%, Rabi 1.5%.',
+        '**e-NAM** = 1361 mandi online. Farmer in rate tha zawk hmu.',
+        '**KCC** = 7 crore card. 4% interest loan.',
+        '**Namo Drone Didi** = SHG hmeichhia 15,000 drone pilot training.',
+        '',
+        '**3. Rural Development**',
+        '**PMAY-G** = 3 crore in sak tawh. Target 2.95 crore. Rs 1.2L-1.3L assistance.',
+        '**JJM** = Tap water connection. 15 crore household 2026. 78% coverage.',
+        '**SBM-G** = ODF Plus. 5.8 lakh village ODF Plus.',
+        '**PMGSY** = Village road 7.8 lakh km siam tawh.',
+        '',
+        '**4. Current Issues 2026**',
+        '**Farm Income** = Double target 2022 tling lo. Rs 10,218/month average.',
+        '**Climate Impact** = Monsoon 2026 ni 3 hma. Crop damage risk.',
+        '**Mizoram** = Rubber Mission 4.5 lakh saplings phun. Solar 10 MW Thenzawl.'
+      ],
+      english: [
+        '**1. Agriculture Contribution**',
+        '**GDP Share** = 15% 2026. Employment 42% but low productivity.',
+        '**Land Holding** = 86% marginal <2 hectare. Average 1.08 hectare.',
+        '**MSP** = 23 crops. CACP recommends. 2026: Wheat Rs 2425, Paddy Rs 2300.',
+        '',
+        '**2. Key Schemes**',
+        '**PM-KISAN** = Rs 6000/year. 11 crore farmers. Rs 3.68 lakh crore disbursed.',
+        '**PMFBY** = Crop insurance. Premium: Kharif 2%, Rabi 1.5%.',
+        '**e-NAM** = 1361 mandis online. Farmers get better rates.',
+        '**KCC** = 7 crore cards. 4% interest loan.',
+        '**Namo Drone Didi** = 15,000 SHG women drone pilot training.',
+        '',
+        '**3. Rural Development**',
+        '**PMAY-G** = 3 crore houses built. Target 2.95 crore. Rs 1.2L-1.3L assistance.',
+        '**JJM** = Tap water connection. 15 crore households 2026. 78% coverage.',
+        '**SBM-G** = ODF Plus. 5.8 lakh villages ODF Plus.',
+        '**PMGSY** = 7.8 lakh km village roads built.',
+        '',
+        '**4. Current Issues 2026**',
+        '**Farm Income** = Double target 2022 not met. Rs 10,218/month average.',
+        '**Climate Impact** = Monsoon 2026 3 days early. Crop damage risk.',
+        '**Mizoram** = Rubber Mission 4.5 lakh saplings planted. Solar 10 MW Thenzawl.'
+      ]
+    }
   }
 ]
 
-export default function EconomicsPage() {
+export default function EconomicsPage() {  
   return (
     <SubjectPage
       subjectName={{ mizo: 'Economics', english: 'Economics' }}
       chapters={economicsChapters}
       backLink="/"
+      testLink="/economics/test"
+      testTitle="Economics Mock Test"
+      testDesc="Economic & Social Development • Sustainable Development • Poverty • Inclusive Economy • Demographics • Social Sector"
+      slug="economics"
+      testId="economics-mock-1"
     />
   )
 }

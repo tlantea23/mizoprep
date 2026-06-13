@@ -1,645 +1,673 @@
 'use client'
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import SubjectPage from '../components/SubjectPage'
 
-type Language = 'mizo' | 'english'
-
-type Chapter = {
-  id: string
-  title: { mizo: string, english: string }
-  notes: { mizo: string[], english: string[] }
-}
-
-const HISTORY_CHAPTERS: Chapter[] = [
+const historyChapters = [
   {
-    id: 'prehistoric',
-    title: { mizo: '1. Hun Hmasa Ber', english: '1. Prehistoric Period' },
-    notes: {
-      mizo: [
-        "Paleolithic: Kum nuai 5 atanga 10000 BC. Chunar, Kurnool ah hmanrua hmuh.",
-        "Mesolithic: 10000-6000 BC. Bagor, Adamgarh. Hliap leh nauban hman.",
-        "Neolithic: 6000-1000 BC. Mehrgarh, Burzahom. Buh leh belvaw.",
-        "Chalcolithic: 3000-500 BC. Jorwe, Kayatha. Dar leh lung hmanrua.",
-        "Mizoram: Vangchhia, Champhai ah lung hmanrua Neolithic hun ami hmuh."
-      ],
-      english: [
-        "Paleolithic: 5 lakh to 10000 BC. Tools found at Chunar, Kurnool.",
-        "Mesolithic: 10000-6000 BC. Bagor, Adamgarh. Microliths used.",
-        "Neolithic: 6000-1000 BC. Mehrgarh, Burzahom. Agriculture & pottery.",
-        "Chalcolithic: 3000-500 BC. Jorwe, Kayatha. Copper & stone tools.",
-        "Mizoram: Neolithic tools found at Vangchhia, Champhai."
-      ]
-    }
-  },
-  {
-    id: 'indus-valley',
-    title: { mizo: '2. Indus Valley Civilization', english: '2. Indus Valley Civilization' },
-    notes: {
-      mizo: [
-        "Hun: 3300-1300 BC. Mature phase 2600-1900 BC.",
-        "Hmunpui: Harappa, Mohenjo-daro, Dholavira, Lothal, Rakhigarhi, Kalibangan.",
-        "Thil pawimawh: Grid system, Great Bath, Granary, Drainage system.",
-        "Zawrh sumdawn: Mesopotamia nen. Lothal dockyard.",
-        "Ziah dan: Pictographic script. La chhiar chhuah theih loh.",
-        "Sakhua: Pashupati seal, Mother Goddess, Swastika symbol.",
-        "Tlahniam chhan: Tuilian, Lei che, Ramngaw tlahniam, Aryan lo lut."
-      ],
-      english: [
-        "Period: 3300-1300 BC. Mature phase 2600-1900 BC.",
-        "Major Sites: Harappa, Mohenjo-daro, Dholavira, Lothal, Rakhigarhi, Kalibangan.",
-        "Features: Grid system, Great Bath, Granary, Advanced drainage.",
-        "Trade: With Mesopotamia. Lothal was a dockyard.",
-        "Script: Pictographic. Not deciphered yet.",
-        "Religion: Pashupati seal, Mother Goddess, Swastika symbol.",
-        "Decline: Floods, Tectonic activity, Deforestation, Aryan invasion theory."
-      ]
-    }
-  },
-  {
-    id: 'vedic-period',
-    title: { mizo: '3. Vedic Hun', english: '3. Vedic Period' },
-    notes: {
-      mizo: [
-        "Early Vedic: 1500-1000 BC. Rig Veda. Sapta Sindhu region. Janapada.",
-        "Later Vedic: 1000-600 BC. Sama, Yajur, Atharva Veda. Ganga valley.",
-        "Sakhaw: Indra, Agni, Varuna. Yajna, Sacrifice pawimawh.",
-        "Khaikhawmna: Sabha, Samiti, Vidatha. Raja tribal chief.",
-        "Varna System: Brahmin, Kshatriya, Vaishya, Shudra. Rig Veda Purusha Sukta.",
-        "Upanishads: Atman, Brahman philosophy. Karma, Moksha concept."
-      ],
-      english: [
-        "Early Vedic: 1500-1000 BC. Rig Veda. Sapta Sindhu region. Tribal Janapadas.",
-        "Later Vedic: 1000-600 BC. Sama, Yajur, Atharva Vedas. Ganga valley expansion.",
-        "Religion: Indra, Agni, Varuna worship. Yajna, Sacrifices important.",
-        "Polity: Sabha, Samiti, Vidatha assemblies. Raja was tribal chief.",
-        "Varna System: Brahmin, Kshatriya, Vaishya, Shudra. From Rig Veda Purusha Sukta.",
-        "Upanishads: Philosophy of Atman, Brahman. Concepts of Karma, Moksha."
-      ]
-    }
-  },
-  {
-    id: 'mahajanapadas',
-    title: { mizo: '4. Mahajanapadas', english: '4. Mahajanapadas' },
-    notes: {
-      mizo: [
-        "Hun: 600 BC. Ram 16 lian. Anguttara Nikaya & Bhagavati Sutra ah.",
-        "Pawimawh: Magadha, Kosala, Vatsa, Avanti, Vajji Gana-sangha.",
-        "Magadha Lalna: Haryanka - Bimbisara, Ajatashatru. Nanda - Mahapadma Nanda.",
-        "Thil thar: Iron, Thlawhna, Pawisa siam - Punch-marked coins.",
-        "Second Urbanization: Pura, Nagara piang. Vaiphei sumdawnna."
-      ],
-      english: [
-        "Period: 600 BC. 16 Great States mentioned in Anguttara Nikaya & Bhagavati Sutra.",
-        "Important: Magadha, Kosala, Vatsa, Avanti, Vajji Gana-sangha.",
-        "Magadha Dynasties: Haryanka - Bimbisara, Ajatashatru. Nanda - Mahapadma Nanda.",
-        "New Developments: Iron tools, Agriculture, Punch-marked coins.",
-        "Second Urbanization: Rise of Puras, Nagaras. Trade routes developed."
-      ]
-    }
-  },
-  {
-    id: 'jainism-buddhism',
-    title: { mizo: '5. Jainism & Buddhism', english: '5. Jainism & Buddhism' },
-    notes: {
-      mizo: [
-        "Jainism: Vardhamana Mahavira - Tirthankara 24-na. 540-468 BC.",
-        "Thurin: Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha. Triratna.",
-        "Sect: Digambara, Svetambara. First Council - Pataliputra 300 BC.",
-        "Buddhism: Gautama Buddha - Siddhartha. 563-483 BC. Lumbini.",
-        "Thurin: Four Noble Truths, Eightfold Path, Middle Path. Tripitaka.",
-        "Councils: 1st Rajgir, 2nd Vaishali, 3rd Pataliputra, 4th Kashmir.",
-        "Sect: Hinayana, Mahayana, Vajrayana. Ashoka in darh zau."
-      ],
-      english: [
-        "Jainism: Vardhamana Mahavira - 24th Tirthankara. 540-468 BC.",
-        "Teachings: Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha. Triratna.",
-        "Sects: Digambara, Svetambara. First Council - Pataliputra 300 BC.",
-        "Buddhism: Gautama Buddha - Siddhartha. 563-483 BC. Born Lumbini.",
-        "Teachings: Four Noble Truths, Eightfold Path, Middle Path. Tripitaka.",
-        "Councils: 1st Rajgir, 2nd Vaishali, 3rd Pataliputra, 4th Kashmir.",
-        "Sects: Hinayana, Mahayana, Vajrayana. Spread by Ashoka."
-      ]
-    }
-  },
-    {
-    id: 'mauryan',
-    title: { mizo: '6. Mauryan Empire 🔒 Pro', english: '6. Mauryan Empire 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Chandragupta Maurya: 321-297 BC. Chanakya pui. Nanda hnawt chhuak.",
-        "Bindusara: 297-273 BC. Amitrochates. Deimachus Greek ambassador.",
-        "Ashoka: 269-232 BC. Kalinga War 261 BC. Buddhism la. Dhamma.",
-        "Edicts: Rock Edicts 14, Pillar Edicts 7, Minor Rock Edicts. Brahmi script.",
-        "Administration: Centralised. Saptanga theory. Mantriparishad. Spy system.",
-        "Economy: Agriculture, Trade, Punch-marked coins. Sannidhata - Treasury.",
-        "Tlahniam: Lal chak lo, Province hrang, Brahmin duh lo, Ralthuam chhe tawh."
-      ],
-      english: [
-        "Chandragupta Maurya: 321-297 BC. Guided by Chanakya. Overthrew Nandas.",
-        "Bindusara: 297-273 BC. Called Amitrochates. Deimachus Greek ambassador.",
-        "Ashoka: 269-232 BC. Kalinga War 261 BC. Converted to Buddhism. Propagated Dhamma.",
-        "Edicts: 14 Rock Edicts, 7 Pillar Edicts, Minor Rock Edicts. Brahmi script.",
-        "Administration: Centralised. Saptanga theory. Mantriparishad. Efficient spy system.",
-        "Economy: Agriculture, Trade, Punch-marked coins. Sannidhata - Treasurer.",
-        "Decline: Weak successors, Provincial revolts, Brahmin resentment, Military weakness."
-      ]
-    }
-  },
-  {
-    id: 'post-mauryan',
-    title: { mizo: '7. Post-Mauryan 🔒 Pro', english: '7. Post-Mauryan 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Shunga: Pushyamitra 185-149 BC. Bharhut Stupa. Patanjali.",
-        "Kanva: Vasudeva 73-28 BC. Last ruler Susarman.",
-        "Satavahanas: Simuka 60 BC. Gautamiputra Satakarni. Amaravati Stupa.",
-        "Indo-Greeks: Menander/Milinda 165-145 BC. Milinda Panha. Gandhara Art.",
-        "Sakas: Maues 80 BC. Rudradaman I - Junagadh inscription.",
-        "Kushanas: Kujula Kadphises. Kanishka 78 AD - Saka Era. 4th Buddhist Council.",
-        "Gandhara Art: Greco-Roman influence. Buddha statue hmasa ber."
-      ],
-      english: [
-        "Shunga: Pushyamitra 185-149 BC. Bharhut Stupa. Patanjali's Mahabhashya.",
-        "Kanva: Vasudeva 73-28 BC. Last ruler Susarman killed by Satavahanas.",
-        "Satavahanas: Simuka 60 BC. Gautamiputra Satakarni greatest. Amaravati Stupa.",
-        "Indo-Greeks: Menander/Milinda 165-145 BC. Milinda Panha dialogue. Gandhara Art.",
-        "Sakas: Maues 80 BC. Rudradaman I - Junagadh inscription 150 AD.",
-        "Kushanas: Kujula Kadphises. Kanishka 78 AD - Saka Era. 4th Buddhist Council.",
-        "Gandhara Art: Greco-Roman influence. First Buddha statues created."
-      ]
-    }
-  },
-  {
-    id: 'gupta',
-    title: { mizo: '8. Gupta Empire 🔒 Pro', english: '8. Gupta Empire 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Chandragupta I: 319-335 AD. Gupta Era tan. Maharajadhiraja title.",
-        "Samudragupta: 335-380 AD. Napoleon of India. Allahabad Pillar - Harisena.",
-        "Chandragupta II: 380-415 AD. Vikramaditya. Fa-Hien lo kal. Ujjain la.",
-        "Golden Age: Science - Aryabhata, Varahamihira. Literature - Kalidasa.",
-        "Administration: Decentralised. Kumaramatya, Sandhivigrahika officers.",
-        "Economy: Gold coins dinar. Trade Rome nen. Guilds - Shrenis.",
-        "Tlahniam: Huna invasion - Toramana, Mihirakula. Feudalism."
-      ],
-      english: [
-        "Chandragupta I: 319-335 AD. Started Gupta Era. Title Maharajadhiraja.",
-        "Samudragupta: 335-380 AD. Napoleon of India. Allahabad Pillar inscription by Harisena.",
-        "Chandragupta II: 380-415 AD. Vikramaditya. Fa-Hien visited. Conquered Ujjain.",
-        "Golden Age: Science - Aryabhata, Varahamihira. Literature - Kalidasa, Vishakhadatta.",
-        "Administration: Decentralised. Kumaramatya, Sandhivigrahika officers.",
-        "Economy: Gold coins called dinars. Trade with Rome. Guilds - Shrenis.",
-        "Decline: Huna invasion - Toramana, Mihirakula. Rise of feudalism."
-      ]
-    }
-  },
-  {
-    id: 'post-gupta',
-    title: { mizo: '9. Post-Gupta 🔒 Pro', english: '9. Post-Gupta 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Harshavardhana: 606-647 AD. Pushyabhuti dynasty. Kannauj capital.",
-        "Hiuen Tsang: Chinese pilgrim 630-643 AD. Si-Yu-Ki ziak. Nalanda University.",
-        "Chalukyas: Pulakesin II 609-642 AD. Aihole inscription. Ravikirti.",
-        "Pallavas: Mahendravarman I, Narasimhavarman I. Mamallapuram temples.",
-        "Rashtrakutas: Dantidurga. Krishna I - Kailasa temple Ellora. Amoghavarsha.",
-        "Tripartite Struggle: Palas, Pratiharas, Rashtrakutas. Kannauj tan."
-      ],
-      english: [
-        "Harshavardhana: 606-647 AD. Pushyabhuti dynasty. Capital Kannauj.",
-        "Hiuen Tsang: Chinese pilgrim 630-643 AD. Wrote Si-Yu-Ki. Visited Nalanda.",
-        "Chalukyas: Pulakesin II 609-642 AD. Aihole inscription by Ravikirti.",
-        "Pallavas: Mahendravarman I, Narasimhavarman I. Mamallapuram Shore temples.",
-        "Rashtrakutas: Dantidurga founder. Krishna I - Kailasa temple Ellora. Amoghavarsha.",
-        "Tripartite Struggle: Palas, Pratiharas, Rashtrakutas fought for Kannauj."
-      ]
-    }
-  },
-  {
-    id: 'early-medieval',
-    title: { mizo: '10. Early Medieval India 🔒 Pro', english: '10. Early Medieval India 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Rajputs: Pratiharas, Chauhans, Paramaras, Solankis. Feudal system.",
-        "Prithviraj Chauhan: 1178-1192 AD. First Battle of Tarain 1191 win. Second 1192 lost.",
-        "Cholas: Vijayalaya 850 AD. Rajaraja I 985-1014. Rajendra I 1014-1044.",
-        "Chola Admin: Ur, Sabha, Nagaram local bodies. Naval power. Brihadeshwara temple.",
-        "Arab Invasion: Muhammad bin Qasim 712 AD. Sind conquer.",
-        "Turkish Invasion: Mahmud Ghazni 1000-1027 AD. 17 raids. Somnath 1025.",
-        "Muhammad Ghori: 1175-1206 AD. Second Tarain 1192. Delhi Sultanate bul."
-      ],
-      english: [
-        "Rajputs: Pratiharas, Chauhans, Paramaras, Solankis. Feudal system emerged.",
-        "Prithviraj Chauhan: 1178-1192 AD. Won First Battle of Tarain 1191. Lost Second 1192.",
-        "Cholas: Vijayalaya 850 AD. Rajaraja I 985-1014. Rajendra I 1014-1044.",
-        "Chola Admin: Ur, Sabha, Nagaram local self-govt. Strong navy. Brihadeshwara temple.",
-        "Arab Invasion: Muhammad bin Qasim 712 AD. Conquered Sind.",
-        "Turkish Invasion: Mahmud Ghazni 1000-1027 AD. 17 raids. Somnath temple 1025.",
-        "Muhammad Ghori: 1175-1206 AD. Second Tarain 1192. Laid foundation of Delhi Sultanate."
-      ]
-    }
-  },
-  {
-    id: 'delhi-sultanate',
-    title: { mizo: '11. Delhi Sultanate 🔒 Pro', english: '11. Delhi Sultanate 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Slave Dynasty: Qutub-ud-din Aibak 1206-1210. Qutub Minar bul tan.",
-        "Iltutmish: 1211-1236 AD. Iqta system. Silver Tanka, Copper Jital.",
-        "Razia Sultan: 1236-1240 AD. Hmeichhe Sultan hmasa ber.",
-        "Balban: 1266-1287 AD. Theory of Kingship. Divine right. Nauroz.",
-        "Khilji: Alauddin 1296-1316 AD. Market reforms. Malik Kafur - South India.",
-        "Tughlaq: Muhammad bin Tughlaq 1325-1351. Token currency, Capital transfer Daulatabad.",
-        "Firoz Shah: 1351-1388 AD. Canal siam. Taxes 4 chauh. Slavery.",
-        "Sayyid & Lodi: 1414-1526 AD. Ibrahim Lodi - First Battle of Panipat 1526."
-      ],
-      english: [
-        "Slave Dynasty: Qutub-ud-din Aibak 1206-1210. Started Qutub Minar.",
-        "Iltutmish: 1211-1236 AD. Iqta system. Silver Tanka, Copper Jital coins.",
-        "Razia Sultan: 1236-1240 AD. First woman Sultan of Delhi.",
-        "Balban: 1266-1287 AD. Theory of Kingship. Divine right concept. Nauroz festival.",
-        "Khilji: Alauddin 1296-1316 AD. Market reforms. Malik Kafur conquered South.",
-        "Tughlaq: Muhammad bin Tughlaq 1325-1351. Token currency, Capital shift to Daulatabad.",
-        "Firoz Shah: 1351-1388 AD. Built canals. Only 4 taxes. Encouraged slavery.",
-        "Sayyid & Lodi: 1414-1526 AD. Ibrahim Lodi defeated in First Battle of Panipat 1526."
-      ]
-    }
-  },
-  {
-    id: 'vijayanagara',
-    title: { mizo: '12. Vijayanagara & Bahmani 🔒 Pro', english: '12. Vijayanagara & Bahmani 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Vijayanagara: Harihara & Bukka 1336 AD. Hampi capital. Sangama dynasty.",
-        "Krishnadeva Raya: 1509-1529 AD. Tuluva dynasty. Ashtadiggajas. Amuktamalyada.",
-        "Battle of Talikota: 1565 AD. Deccan Sultanates in Vijayanagara hneh.",
-        "Administration: Nayankara system. Ayagar system. Hampi ruins UNESCO.",
-        "Bahmani: Alauddin Hasan Bahman Shah 1347 AD. Gulbarga capital.",
-        "Breakup: 5 Deccan Sultanates - Bijapur, Golconda, Ahmednagar, Berar, Bidar.",
-        "Culture: Hazara Rama temple, Vitthala temple. Hindustani music."
-      ],
-      english: [
-        "Vijayanagara: Harihara & Bukka 1336 AD. Capital Hampi. Sangama dynasty.",
-        "Krishnadeva Raya: 1509-1529 AD. Tuluva dynasty. Ashtadiggajas poets. Amuktamalyada.",
-        "Battle of Talikota: 1565 AD. Deccan Sultanates defeated Vijayanagara.",
-        "Administration: Nayankara system. Ayagar village system. Hampi UNESCO site.",
-        "Bahmani: Alauddin Hasan Bahman Shah 1347 AD. Capital Gulbarga.",
-        "Breakup: Into 5 Deccan Sultanates - Bijapur, Golconda, Ahmednagar, Berar, Bidar.",
-        "Culture: Hazara Rama temple, Vitthala temple. Development of Hindustani music."
-      ]
-    }
-  },
-    {
-    id: 'mughal',
-    title: { mizo: '13. Mughal Empire 🔒 Pro', english: '13. Mughal Empire 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Babur: 1526-1530 AD. First Panipat 1526. Tuzuk-i-Baburi. Mughal dynasty bul.",
-        "Humayun: 1530-1556 AD. Sher Shah in hnawt chhuak 1540. 1555 ah la let.",
-        "Akbar: 1556-1605 AD. Second Panipat 1556. Mansabdari, Zabt system.",
-        "Policy: Sulh-i-kul, Din-i-Ilahi 1582, Jizya tihbo 1564. Navratnas.",
-        "Jahangir: 1605-1627 AD. Nur Jahan. Captain Hawkins, Sir Thomas Roe.",
-        "Shah Jahan: 1628-1658 AD. Golden Age. Taj Mahal 1632-1653. Peacock Throne.",
-        "Aurangzeb: 1658-1707 AD. Jizya la leh 1679. Deccan policy. Tlahniam tan.",
-        "Tlahniam: Lal chak lo, Maratha, Sikh, Jats, Rajput hel. Nadir Shah 1739."
-      ],
-      english: [
-        "Babur: 1526-1530 AD. First Panipat 1526. Tuzuk-i-Baburi memoir. Founded Mughal dynasty.",
-        "Humayun: 1530-1556 AD. Defeated by Sher Shah 1540. Recaptured Delhi 1555.",
-        "Akbar: 1556-1605 AD. Second Panipat 1556. Mansabdari, Zabt revenue system.",
-        "Policy: Sulh-i-kul tolerance, Din-i-Ilahi 1582, Abolished Jizya 1564. Navratnas.",
-        "Jahangir: 1605-1627 AD. Nur Jahan influence. Captain Hawkins, Sir Thomas Roe visited.",
-        "Shah Jahan: 1628-1658 AD. Golden Age of Mughals. Taj Mahal 1632-1653. Peacock Throne.",
-        "Aurangzeb: 1658-1707 AD. Reimposed Jizya 1679. Deccan policy. Empire overextended.",
-        "Decline: Weak successors, Maratha, Sikh, Jats, Rajput revolts. Nadir Shah invasion 1739."
-      ]
-    }
-  },
-  {
-    id: 'maratha',
-    title: { mizo: '14. Marathas & Others 🔒 Pro', english: '14. Marathas & Others 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Shivaji: 1627-1680 AD. 1674 Coronation Raigad. Ashta Pradhan. Guerrilla warfare.",
-        "Maratha Admin: Chauth 1/4, Sardeshmukhi 1/10. Peshwa - Balaji Vishwanath.",
-        "Third Panipat: 1761 AD. Ahmad Shah Abdali vs Marathas. Maratha tlawm.",
-        "Sikhs: Guru Nanak 1469-1539 AD. Guru Gobind Singh - Khalsa 1699.",
-        "Bhakti Movement: Kabir, Nanak, Chaitanya, Mirabai, Tulsidas, Surdas.",
-        "Sufi Movement: Khwaja Moinuddin Chishti, Nizamuddin Auliya. Silsilas."
-      ],
-      english: [
-        "Shivaji: 1627-1680 AD. Coronation 1674 Raigad. Ashta Pradhan council. Guerrilla warfare.",
-        "Maratha Admin: Chauth 1/4 tax, Sardeshmukhi 1/10. Peshwa - Balaji Vishwanath first.",
-        "Third Panipat: 1761 AD. Ahmad Shah Abdali defeated Marathas. Major setback.",
-        "Sikhs: Guru Nanak 1469-1539 AD. Guru Gobind Singh created Khalsa 1699.",
-        "Bhakti Movement: Kabir, Nanak, Chaitanya, Mirabai, Tulsidas, Surdas.",
-        "Sufi Movement: Khwaja Moinuddin Chishti, Nizamuddin Auliya. Various Silsilas."
-      ]
-    }
-  },
-  {
-    id: 'advent-europeans',
-    title: { mizo: '15. Europeans Lo Lut 🔒 Pro', english: '15. Advent of Europeans 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Portuguese: Vasco da Gama 1498 Calicut. Albuquerque - Goa 1510.",
-        "Dutch: 1602 Dutch East India Company. Pulicat 1610. Masulipatam.",
-        "British: 1600 East India Company. 1612 Surat factory. 1639 Madras.",
-        "French: 1664 French East India Company. 1673 Pondicherry.",
-        "Carnatic Wars: 1746-1763 AD. Dupleix vs Clive. British chak.",
-        "Battle of Plassey: 1757 AD. Siraj-ud-daulah vs Clive. Bengal la.",
-        "Battle of Buxar: 1764 AD. Mir Qasim + Shuja + Shah Alam II vs British."
-      ],
-      english: [
-        "Portuguese: Vasco da Gama 1498 Calicut. Albuquerque captured Goa 1510.",
-        "Dutch: 1602 Dutch East India Company. Pulicat 1610. Masulipatam.",
-        "British: 1600 East India Company. 1612 Surat factory. 1639 Madras.",
-        "French: 1664 French East India Company. 1673 Pondicherry.",
-        "Carnatic Wars: 1746-1763 AD. Dupleix vs Clive. British victory.",
-        "Battle of Plassey: 1757 AD. Siraj-ud-daulah vs Clive. British won Bengal.",
-        "Battle of Buxar: 1764 AD. Mir Qasim + Shuja-ud-daula + Shah Alam II vs British."
-      ]
-    }
-  },
-  {
-    id: 'british-expansion',
-    title: { mizo: '16. British Expansion 🔒 Pro', english: '16. British Expansion 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Dual Govt Bengal: 1765-1772 AD. Robert Clive. Diwani & Nizamat.",
-        "Regulating Act 1773: Governor-General Warren Hastings. Supreme Court Calcutta.",
-        "Pitt's India Act 1784: Board of Control. Dual system.",
-        "Subsidiary Alliance: Lord Wellesley 1798. Hyderabad hmasa ber.",
-        "Doctrine of Lapse: Lord Dalhousie 1848. Satara, Jhansi, Nagpur.",
-        "Anglo-Mysore Wars: 4 wars. Tipu Sultan thi 1799 Srirangapatna.",
-        "Anglo-Maratha Wars: 3 wars. Third 1817-1818 - Peshwa tawp.",
-        "Anglo-Sikh Wars: First 1845-46, Second 1848-49. Punjab annex 1849."
-      ],
-      english: [
-        "Dual Govt Bengal: 1765-1772 AD. Robert Clive. Diwani & Nizamat.",
-        "Regulating Act 1773: Governor-General Warren Hastings. Supreme Court Calcutta.",
-        "Pitt's India Act 1784: Board of Control established. Dual system.",
-        "Subsidiary Alliance: Lord Wellesley 1798. Hyderabad first to accept.",
-        "Doctrine of Lapse: Lord Dalhousie 1848. Satara, Jhansi, Nagpur annexed.",
-        "Anglo-Mysore Wars: 4 wars. Tipu Sultan died 1799 Srirangapatna.",
-        "Anglo-Maratha Wars: 3 wars. Third 1817-1818 - End of Peshwa.",
-        "Anglo-Sikh Wars: First 1845-46, Second 1848-49. Punjab annexed 1849."
-      ]
-    }
-  },
-  {
-    id: 'revolt-1857',
-    title: { mizo: '17. 1857 Hel & Aftermath 🔒 Pro', english: '17. Revolt of 1857 & Aftermath 🔒 Pro' },
-    notes: {
-      mizo: [
-        "Chhan: Political, Economic, Social, Military, Immediate - Enfield rifle.",
-        "Tan: 1857 May 10 Meerut. Bahadur Shah II Emperor.",
-        "Hruaitu: Nana Saheb, Tantia Tope, Rani Lakshmibai, Kunwar Singh, Begum Hazrat Mahal.",
-        "A tawp: 1858 July 8. Canning in sipai hmangin tih tawp.",
-        "Tlahniam chhan: Unity awm lo, Hruaitu tha awm lo, Resources tlem.",
-        "Rah chhuah: EIC tawp 1858. Govt of India Act 1858. Viceroy - Canning.",
-        "Queen Proclamation: 1858 Nov 1. Doctrine of Lapse tawp. Religious tolerance."
-      ],
-      english: [
-        "Causes: Political, Economic, Social, Military, Immediate - Enfield rifle cartridges.",
-        "Beginning: May 10, 1857 Meerut. Bahadur Shah II declared Emperor.",
-        "Leaders: Nana Saheb, Tantia Tope, Rani Lakshmibai, Kunwar Singh, Begum Hazrat Mahal.",
-        "End: July 8, 1858. Suppressed by Canning with military force.",
-        "Failure: Lack of unity, No effective leadership, Limited resources.",
-        "Results: End of EIC 1858. Govt of India Act 1858. Viceroy - Lord Canning.",
-        "Queen Proclamation: Nov 1, 1858. End of Doctrine of Lapse. Religious tolerance."
-      ]
-    }
-  },
-  {
-    id: 'national-movement',
-    title: { mizo: '18. National Movement 🔒 Pro', english: '18. National Movement 🔒 Pro' },
-    notes: {
-      mizo: [
-        "INC: 1885 Bombay. A.O. Hume. W.C. Bonnerjee President hmasa.",
-        "Moderates: 1885-1905. Gokhale, Naoroji, Mehta. Petition, Prayer.",
-        "Extremists: 1905-1920. Tilak, Lala Lajpat Rai, Bipin Pal. Swaraj.",
-        "Partition of Bengal: 1905 Lord Curzon. Swadeshi Movement.",
-        "Muslim League: 1906 Dacca. Aga Khan, Nawab Salimullah.",
-        "Gandhi Era: 1915 South Africa atang. Champaran 1917, Kheda 1918, Ahmedabad 1918.",
-        "Non-Cooperation: 1920-1922. Chauri Chaura 1922 ah tawp.",
-        "Civil Disobedience: 1930-1934. Dandi March 1930 Mar 12 - Apr 6.",
-        "Quit India: 1942 Aug 8. Do or Die. Gandhi, Nehru, Patel lung in tang.",
-        "INA: Subhas Chandra Bose 1943. Chalo Delhi. Capt Mohan Singh.",
-        "Independence: 1947 Aug 15. Mountbatten Plan June 3, 1947. Partition."
-      ],
-      english: [
-        "INC: 1885 Bombay. A.O. Hume founder. W.C. Bonnerjee first President.",
-        "Moderates: 1885-1905. Gokhale, Naoroji, Mehta. Petition, Prayer method.",
-        "Extremists: 1905-1920. Tilak, Lala Lajpat Rai, Bipin Pal. Demand Swaraj.",
-        "Partition of Bengal: 1905 Lord Curzon. Led to Swadeshi Movement.",
-        "Muslim League: 1906 Dacca. Aga Khan, Nawab Salimullah founders.",
-        "Gandhi Era: Returned 1915 from South Africa. Champaran 1917, Kheda 1918, Ahmedabad 1918.",
-        "Non-Cooperation: 1920-1922. Withdrawn after Chauri Chaura 1922.",
-        "Civil Disobedience: 1930-1934. Dandi March Mar 12 - Apr 6, 1930.",
-        "Quit India: Aug 8, 1942. Do or Die. Gandhi, Nehru, Patel imprisoned.",
-        "INA: Subhas Chandra Bose 1943. Chalo Delhi. Capt Mohan Singh founder.",
-        "Independence: Aug 15, 1947. Mountbatten Plan June 3, 1947. Partition."
-      ]
-    }
-  }
-]; // <-- Array tawp
-
-export default function HistoryPage() {
-  const [language, setLanguage] = useState<Language>('mizo')
-  const [expandedChapters, setExpandedChapters] = useState<Set<string>>(new Set(['prehistoric']))
-  const [isPro, setIsPro] = useState(false)
-  useEffect(() => {
-    const pro = localStorage.getItem('mizoprep_pro')
-    if (pro === 'true') setIsPro(true)
-  }, [])
-
-  const toggleChapter = (chapterId: string) => {
-    const newExpanded = new Set(expandedChapters)
-    if (newExpanded.has(chapterId)) {
-      newExpanded.delete(chapterId)
-    } else {
-      newExpanded.add(chapterId)
-    }
-    setExpandedChapters(newExpanded)
-  }
-const handleUpgrade = async () => {
-  const res = await fetch('/api/razorpay', { method: 'POST' })
-  const order = await res.json()
-
-  const options = {
-    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-    amount: order.amount,
-    currency: 'INR',
-    name: 'MizoPrep',
-    description: 'History Pro - ₹100',
-    prefill: {
-  name: "MizoPrep User",
-  email: "test@mizoprep.com", 
-  contact: "7000000000"
-},
-    order_id: order.id,
-    handler: function (response: any) {
-      setIsPro(true)
-      localStorage.setItem('mizoprep_pro', 'true')
-      alert('Payment hlawhtling! Pro unlock a ni e 🎉')
+    id: 'hist-1',
+    title: {
+      mizo: 'Chapter 1: Harappan Civilization 2600-1900 BCE',
+      english: 'Chapter 1: Harappan Civilization 2600-1900 BCE'
     },
-    
-    theme: { color: '#2563eb' }
+    notes: {
+      mizo: [
+        '**1. Discovery & Extent**',
+        '**Harappa 1921:** Dayaram Sahni. **Mohenjodaro 1922:** R.D. Banerji.',
+        '**Area:** 12.5 lakh sq km. Pakistan, Gujarat, Rajasthan, Haryana, Punjab, Maharashtra, UP.',
+        '**Sites:** Lothal dockyard, Dholavira water system, Kalibangan ploughed field, Rakhigarhi largest.',
+        '',
+        '**2. Town Planning**',
+        '**Grid System:** Streets at right angles. Citadel west for officials, lower town east for commoners.',
+        '**Great Bath Mohenjodaro:** 12m x 7m x 2.4m. Ritual bathing. Granary nearby.',
+        '**Drainage:** Underground covered drains. House drains connected to street drains. Inspection holes.',
+        '**Houses:** Burnt bricks 4:2:1 ratio. Single/double storey. Courtyard, wells.',
+        '',
+        '**3. Economy**',
+        '**Agriculture:** Wheat, barley, cotton first cultivated. Indus cotton = Sindon by Greeks.',
+        '**Trade:** Mesopotamia. Seals found in Sumer. Weights 16 ratio. No metallic money.',
+        '**Crafts:** Bead making Chanhudaro, shell work Lothal, copper Bronze Age.',
+        '**Transport:** Bullock carts, boats. No horse evidence.',
+        '',
+        '**4. Religion & Society**',
+        '**Mother Goddess:** Terracotta figurines. Fertility cult.',
+        '**Pashupati Seal:** Proto-Shiva. 3-faced, seated in yogic posture. Animals around.',
+        '**Tree & Animal worship:** Peepal, humped bull, unicorn. No temple structure found.',
+        '**Burial:** Extended burial, urn burial. Grave goods present.',
+        '',
+        '**5. Script & Decline**',
+        '**Script:** Pictographic 400 symbols. Boustrophedon style. Undeciphered till 2026.',
+        '**Decline 1900 BCE:** Aryan invasion theory Mortimer Wheeler, floods, climate change, tectonic shifts, river drying Saraswati.',
+        '**MPSC Points:** Lothal = Manchester of Harappan. Dholavira = water conservation. Kalibangan = fire altars + ploughed field.'
+      ],
+      english: [
+        '**1. Discovery & Extent**',
+        '**Harappa 1921:** Dayaram Sahni. **Mohenjodaro 1922:** R.D. Banerji.',
+        '**Area:** 12.5 lakh sq km. Pakistan, Gujarat, Rajasthan, Haryana, Punjab, Maharashtra, UP.',
+        '**Sites:** Lothal dockyard, Dholavira water system, Kalibangan ploughed field, Rakhigarhi largest.',
+        '',
+        '**2. Town Planning**',
+        '**Grid System:** Streets at right angles. Citadel west for officials, lower town east for commoners.',
+        '**Great Bath Mohenjodaro:** 12m x 7m x 2.4m. Ritual bathing. Granary nearby.',
+        '**Drainage:** Underground covered drains. House drains connected to street drains. Inspection holes.',
+        '**Houses:** Burnt bricks 4:2:1 ratio. Single/double storey. Courtyard, wells.',
+        '',
+        '**3. Economy**',
+        '**Agriculture:** Wheat, barley, cotton first cultivated. Indus cotton = Sindon by Greeks.',
+        '**Trade:** Mesopotamia. Seals found in Sumer. Weights 16 ratio. No metallic money.',
+        '**Crafts:** Bead making Chanhudaro, shell work Lothal, copper Bronze Age.',
+        '**Transport:** Bullock carts, boats. No horse evidence.',
+        '',
+        '**4. Religion & Society**',
+        '**Mother Goddess:** Terracotta figurines. Fertility cult.',
+        '**Pashupati Seal:** Proto-Shiva. 3-faced, seated in yogic posture. Animals around.',
+        '**Tree & Animal worship:** Peepal, humped bull, unicorn. No temple structure found.',
+        '**Burial:** Extended burial, urn burial. Grave goods present.',
+        '',
+        '**5. Script & Decline**',
+        '**Script:** Pictographic 400 symbols. Boustrophedon style. Undeciphered till 2026.',
+        '**Decline 1900 BCE:** Aryan invasion theory Mortimer Wheeler, floods, climate change, tectonic shifts, river drying Saraswati.',
+        '**MPSC Points:** Lothal = Manchester of Harappan. Dholavira = water conservation. Kalibangan = fire altars + ploughed field.'
+      ]
+    }
+  },
+  {
+    id: 'hist-2',
+    title: {
+      mizo: 'Chapter 2: Vedic Period 1500-600 BCE',
+      english: 'Chapter 2: Vedic Period 1500-600 BCE'
+    },
+    notes: {
+      mizo: [
+        '**1. Rig Vedic/Early Vedic 1500-1000 BCE**',
+        '**Region:** Sapta Sindhu - 7 rivers Punjab. Indus, Jhelum, Chenab, Ravi, Beas, Sutlej, Saraswati.',
+        '**Literature:** Rigveda 10 Mandalas, 1028 hymns. Oldest 2-7 family books.',
+        '**Political:** Tribe = Jana. King = Rajan. Elected by Samiti. Sabha elders, Vidatha assemblies.',
+        '**Wars:** Battle of 10 Kings - Sudas vs 10 tribes on Ravi. Bharatas won.',
+        '**Society:** No caste system. Varna = color. Only 3 varnas - Brahman, Kshatriya, Vaishya.',
+        '**Women:** High status. Gargi, Maitreyi scholars. No child marriage, sati, purdah.',
+        '**Economy:** Pastoral. Cattle = main wealth. Gavishti = search for cows = war. Agriculture secondary.',
+        '**Gods:** Nature worship. Indra rain/war 250 hymns, Agni fire 200, Varuna cosmic order Rita, Soma plant.',
+        '',
+        '**2. Later Vedic 1000-600 BCE**',
+        '**Expansion:** Gangetic valley. Iron age. Krishna Yajurveda mentions iron Shyama ayas.',
+        '**Literature:** Samaveda music, Yajurveda rituals, Atharvaveda magic + 108 Upanishads philosophy.',
+        '**Political:** Janapadas territorial kingdoms. King hereditary. Ashvamedha horse sacrifice, Rajasuya consecration, Vajapeya chariot race.',
+        '**Taxes:** Bali voluntary → compulsory. Bhaga 1/6th produce. Shulka toll tax.',
+        '**Society:** 4 Varnas rigid. Shudra added Purusha Sukta 10th Mandala. Brahmin supremacy.',
+        '**Gotra:** Exogamy. No marriage same gotra. Child marriage started. Women status declined.',
+        '**Economy:** Agriculture main. Iron plough. Wheat, rice, barley. Crafts specialized.',
+        '',
+        '**3. Vedic Literature MPSC**',
+        '**Vedas:** Shruti heard. Smriti remembered. Vedangas 6 - Shiksha, Kalpa, Vyakarana, Nirukta, Chandas, Jyotisha.',
+        '**Upanishads:** Vedanta end of Vedas. Philosophy. Atman = Brahman. Karma, Moksha.',
+        '**Epics:** Ramayana Valmiki, Mahabharata Vyasa. Bhagavad Gita part of Mahabharata.',
+        '**MPSC Point:** Gayatri Mantra 3rd Mandala Vishwamitra. Purusha Sukta caste origin.'
+      ],
+      english: [
+        '**1. Rig Vedic/Early Vedic 1500-1000 BCE**',
+        '**Region:** Sapta Sindhu - 7 rivers Punjab. Indus, Jhelum, Chenab, Ravi, Beas, Sutlej, Saraswati.',
+        '**Literature:** Rigveda 10 Mandalas, 1028 hymns. Oldest 2-7 family books.',
+        '**Political:** Tribe = Jana. King = Rajan. Elected by Samiti. Sabha elders, Vidatha assemblies.',
+        '**Wars:** Battle of 10 Kings - Sudas vs 10 tribes on Ravi. Bharatas won.',
+        '**Society:** No caste system. Varna = color. Only 3 varnas - Brahman, Kshatriya, Vaishya.',
+        '**Women:** High status. Gargi, Maitreyi scholars. No child marriage, sati, purdah.',
+        '**Economy:** Pastoral. Cattle = main wealth. Gavishti = search for cows = war. Agriculture secondary.',
+        '**Gods:** Nature worship. Indra rain/war 250 hymns, Agni fire 200, Varuna cosmic order Rita, Soma plant.',
+        '',
+        '**2. Later Vedic 1000-600 BCE**',
+        '**Expansion:** Gangetic valley. Iron age. Krishna Yajurveda mentions iron Shyama ayas.',
+        '**Literature:** Samaveda music, Yajurveda rituals, Atharvaveda magic + 108 Upanishads philosophy.',
+        '**Political:** Janapadas territorial kingdoms. King hereditary. Ashvamedha horse sacrifice, Rajasuya consecration, Vajapeya chariot race.',
+        '**Taxes:** Bali voluntary → compulsory. Bhaga 1/6th produce. Shulka toll tax.',
+        '**Society:** 4 Varnas rigid. Shudra added Purusha Sukta 10th Mandala. Brahmin supremacy.',
+        '**Gotra:** Exogamy. No marriage same gotra. Child marriage started. Women status declined.',
+        '**Economy:** Agriculture main. Iron plough. Wheat, rice, barley. Crafts specialized.',
+        '',
+        '**3. Vedic Literature MPSC**',
+        '**Vedas:** Shruti heard. Smriti remembered. Vedangas 6 - Shiksha, Kalpa, Vyakarana, Nirukta, Chandas, Jyotisha.',
+        '**Upanishads:** Vedanta end of Vedas. Philosophy. Atman = Brahman. Karma, Moksha.',
+        '**Epics:** Ramayana Valmiki, Mahabharata Vyasa. Bhagavad Gita part of Mahabharata.',
+        '**MPSC Point:** Gayatri Mantra 3rd Mandala Vishwamitra. Purusha Sukta caste origin.'
+      ]
+    }
+  },
+    {
+    id: 'hist-3',
+    title: {
+      mizo: 'Chapter 3: Mahajanapadas & Religious Movements 600-325 BCE',
+      english: 'Chapter 3: Mahajanapadas & Religious Movements 600-325 BCE'
+    },
+    notes: {
+      mizo: [
+        '**1. 16 Mahajanapadas**',
+        '**List:** Anga Champa, Magadha Rajgir, Kashi Varanasi, Kosala Ayodhya, Vajji Vaishali, Malla Kusinara, Chedi, Vatsa Kaushambi, Kuru Hastinapur, Panchala, Matsya, Surasena Mathura, Assaka, Avanti Ujjain, Gandhara Taxila, Kamboja.',
+        '**Republics:** Vajji, Malla. Rest monarchies.',
+        '**Magadha Rise:** Iron mines Rajgir, elephants, Ganga trade. Bimbisara 544 BCE Haryanka dynasty.',
+        '**Ajatashatru:** Killed father. Conquered Kosala, Vajji. 1st Buddhist Council Rajgir 483 BCE.',
+        '**Nanda Dynasty:** Mahapadma Nanda 9 Nandas. First non-Kshatriya ruler. Dhana Nanda defeated by Chandragupta.',
+        '',
+        '**2. Jainism**',
+        '**24 Tirthankaras:** 1st Rishabha, 23rd Parshvanath 4 vows, 24th Mahavira 540-468 BCE.',
+        '**Mahavira:** Born Kundagrama Vaishali. Left home 30, Kevalya 42, died 72 Pawapuri.',
+        '**Doctrine:** Triratna - Right Faith, Knowledge, Conduct. 5 vows - Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha.',
+        '**Philosophy:** Anekantavada many-sided reality. Syadvada theory of maybe. No God creator.',
+        '**Sects:** Svetambara white cloth Sthulabhadra. Digambara sky-clad Bhadrabahu. Split 300 BCE.',
+        '**Councils:** 1st Pataliputra 300 BCE 12 Angas. 2nd Vallabhi 512 CE final compilation.',
+        '',
+        '**3. Buddhism**',
+        '**Siddhartha Gautama 563-483 BCE:** Lumbini birth, married Yashodhara, son Rahula.',
+        '**4 Sights:** Old man, sick man, dead body, ascetic. Left home 29 Mahabhinishkramana.',
+        '**Enlightenment:** 35 years Bodh Gaya under Peepal. First sermon Sarnath Dharmachakra Pravartana.',
+        '**4 Noble Truths:** Dukkha exists, Samudaya cause desire, Nirodha end possible, Marga 8-fold path.',
+        '**8-Fold Path:** Right view, resolve, speech, action, livelihood, effort, mindfulness, concentration.',
+        '**Tripitaka:** Vinaya Pitaka rules, Sutta Pitaka discourses, Abhidhamma Pitaka philosophy.',
+        '**Councils:** 1st Rajgir 483 BCE Mahakassapa, 2nd Vaishali 383 BCE split, 3rd Pataliputra 250 BCE Ashoka, 4th Kashmir 72 CE Kanishka Mahayana-Hinayana split.',
+        '**MPSC Point:** Buddha, Dhamma, Sangha = Triratna. Nirvana = extinction of desire.'
+      ],
+      english: [
+        '**1. 16 Mahajanapadas**',
+        '**List:** Anga Champa, Magadha Rajgir, Kashi Varanasi, Kosala Ayodhya, Vajji Vaishali, Malla Kusinara, Chedi, Vatsa Kaushambi, Kuru Hastinapur, Panchala, Matsya, Surasena Mathura, Assaka, Avanti Ujjain, Gandhara Taxila, Kamboja.',
+        '**Republics:** Vajji, Malla. Rest monarchies.',
+        '**Magadha Rise:** Iron mines Rajgir, elephants, Ganga trade. Bimbisara 544 BCE Haryanka dynasty.',
+        '**Ajatashatru:** Killed father. Conquered Kosala, Vajji. 1st Buddhist Council Rajgir 483 BCE.',
+        '**Nanda Dynasty:** Mahapadma Nanda 9 Nandas. First non-Kshatriya ruler. Dhana Nanda defeated by Chandragupta.',
+        '',
+        '**2. Jainism**',
+        '**24 Tirthankaras:** 1st Rishabha, 23rd Parshvanath 4 vows, 24th Mahavira 540-468 BCE.',
+        '**Mahavira:** Born Kundagrama Vaishali. Left home 30, Kevalya 42, died 72 Pawapuri.',
+        '**Doctrine:** Triratna - Right Faith, Knowledge, Conduct. 5 vows - Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha.',
+        '**Philosophy:** Anekantavada many-sided reality. Syadvada theory of maybe. No God creator.',
+        '**Sects:** Svetambara white cloth Sthulabhadra. Digambara sky-clad Bhadrabahu. Split 300 BCE.',
+        '**Councils:** 1st Pataliputra 300 BCE 12 Angas. 2nd Vallabhi 512 CE final compilation.',
+        '',
+        '**3. Buddhism**',
+        '**Siddhartha Gautama 563-483 BCE:** Lumbini birth, married Yashodhara, son Rahula.',
+        '**4 Sights:** Old man, sick man, dead body, ascetic. Left home 29 Mahabhinishkramana.',
+        '**Enlightenment:** 35 years Bodh Gaya under Peepal. First sermon Sarnath Dharmachakra Pravartana.',
+        '**4 Noble Truths:** Dukkha exists, Samudaya cause desire, Nirodha end possible, Marga 8-fold path.',
+        '**8-Fold Path:** Right view, resolve, speech, action, livelihood, effort, mindfulness, concentration.',
+        '**Tripitaka:** Vinaya Pitaka rules, Sutta Pitaka discourses, Abhidhamma Pitaka philosophy.',
+        '**Councils:** 1st Rajgir 483 BCE Mahakassapa, 2nd Vaishali 383 BCE split, 3rd Pataliputra 250 BCE Ashoka, 4th Kashmir 72 CE Kanishka Mahayana-Hinayana split.',
+        '**MPSC Point:** Buddha, Dhamma, Sangha = Triratna. Nirvana = extinction of desire.'
+      ]
+    }
+  },
+  {
+    id: 'hist-4',
+    title: {
+      mizo: 'Chapter 4: Mauryan Empire 321-185 BCE',
+      english: 'Chapter 4: Mauryan Empire 321-185 BCE'
+    },
+    notes: {
+      mizo: [
+        '**1. Chandragupta Maurya 321-297 BCE**',
+        '**Overthrow Nandas:** With Chanakya/Kautilya. Mudrarakshasa Vishakhadatta.',
+        '**Seleucus War 305 BCE:** Defeated Greek. Treaty - 500 elephants, Seleucus daughter, Megasthenes ambassador.',
+        '**Extent:** Afghanistan to Karnataka. First pan-Indian empire.',
+        '**Arthashastra:** Chanakya. Saptanga theory 7 elements state. Dandaniti, spies.',
+        '**Indica:** Megasthenes. Pataliputra administration, 6 committees.',
+        '**Jainism:** Last days Shravanabelagola Karnataka. Sallekhana fast death.',
+        '',
+        '**2. Bindusara 297-273 BCE**',
+        '**Amitraghata:** Slayer of enemies. Greek Deimachus ambassador.',
+        '**Expansion:** Extended south to Karnataka. Kalinga independent.',
+        '**Ajivika:** Supported Ajivika sect Makkhali Gosala.',
+        '',
+        '**3. Ashoka 268-232 BCE**',
+        '**Kalinga War 261 BCE:** 1 lakh killed. Dhauli Edict. Converted to Buddhism Upagupta.',
+        '**Dhamma:** Not Buddhism. Moral code. Non-violence, tolerance, welfare, truth.',
+        '**Dhamma Mahamatras:** Officers to spread Dhamma. Animal hospitals, roads, wells.',
+        '**Edicts:** 14 Major Rock, 7 Pillar, Minor Rock. Prakrit, Brahmi script. Kandahar Greek-Aramaic.',
+        '**Sites:** Girnar Gujarat, Dhauli Odisha, Jaugada, Sannati, Maski, Bhabru.',
+        '**Sanchi Stupa:** Ashoka built. Lions Capital Sarnath = National Emblem.',
+        '**3rd Buddhist Council 250 BCE:** Pataliputra. Moggaliputta Tissa. Missionaries sent - Mahendra Sri Lanka.',
+        '',
+        '**4. Administration**',
+        '**Central:** King assisted by Mantriparishad. 6 departments Amatyas.',
+        '**Provinces 4:** Uttarapatha Taxila, Avantiratha Ujjain, Dakshinapatha Suvarnagiri, Prachyapatha Tosali.',
+        '**Districts:** Vishaya Vishayapati. Village Gramika.',
+        '**Army:** 6 lakh infantry, 30k cavalry, 9k elephants. 6 boards of 5 members each.',
+        '**Revenue:** Bhaga 1/6th to 1/4th. Sita state farms. Bali tax.',
+        '',
+        '**5. Decline**',
+        '**Weak Successors:** Dasaratha, Samprati, Brihadratha last.',
+        '**Pushyamitra Sunga:** Brahmin commander. Killed Brihadratha 185 BCE. Sunga dynasty.',
+        '**Causes:** Brahminical reaction, financial crisis, over-centralization, foreign invasions.',
+        '**MPSC Point:** Ashoka Chakra 24 spokes. Satyameva Jayate from Mundaka Upanishad.'
+      ],
+      english: [
+        '**1. Chandragupta Maurya 321-297 BCE**',
+        '**Overthrow Nandas:** With Chanakya/Kautilya. Mudrarakshasa Vishakhadatta.',
+        '**Seleucus War 305 BCE:** Defeated Greek. Treaty - 500 elephants, Seleucus daughter, Megasthenes ambassador.',
+        '**Extent:** Afghanistan to Karnataka. First pan-Indian empire.',
+        '**Arthashastra:** Chanakya. Saptanga theory 7 elements state. Dandaniti, spies.',
+        '**Indica:** Megasthenes. Pataliputra administration, 6 committees.',
+        '**Jainism:** Last days Shravanabelagola Karnataka. Sallekhana fast death.',
+        '',
+        '**2. Bindusara 297-273 BCE**',
+        '**Amitraghata:** Slayer of enemies. Greek Deimachus ambassador.',
+        '**Expansion:** Extended south to Karnataka. Kalinga independent.',
+        '**Ajivika:** Supported Ajivika sect Makkhali Gosala.',
+        '',
+        '**3. Ashoka 268-232 BCE**',
+        '**Kalinga War 261 BCE:** 1 lakh killed. Dhauli Edict. Converted to Buddhism Upagupta.',
+        '**Dhamma:** Not Buddhism. Moral code. Non-violence, tolerance, welfare, truth.',
+        '**Dhamma Mahamatras:** Officers to spread Dhamma. Animal hospitals, roads, wells.',
+        '**Edicts:** 14 Major Rock, 7 Pillar, Minor Rock. Prakrit, Brahmi script. Kandahar Greek-Aramaic.',
+        '**Sites:** Girnar Gujarat, Dhauli Odisha, Jaugada, Sannati, Maski, Bhabru.',
+        '**Sanchi Stupa:** Ashoka built. Lions Capital Sarnath = National Emblem.',
+        '**3rd Buddhist Council 250 BCE:** Pataliputra. Moggaliputta Tissa. Missionaries sent - Mahendra Sri Lanka.',
+        '',
+        '**4. Administration**',
+        '**Central:** King assisted by Mantriparishad. 6 departments Amatyas.',
+        '**Provinces 4:** Uttarapatha Taxila, Avantiratha Ujjain, Dakshinapatha Suvarnagiri, Prachyapatha Tosali.',
+        '**Districts:** Vishaya Vishayapati. Village Gramika.',
+        '**Army:** 6 lakh infantry, 30k cavalry, 9k elephants. 6 boards of 5 members each.',
+        '**Revenue:** Bhaga 1/6th to 1/4th. Sita state farms. Bali tax.',
+        '',
+        '**5. Decline**',
+        '**Weak Successors:** Dasaratha, Samprati, Brihadratha last.',
+        '**Pushyamitra Sunga:** Brahmin commander. Killed Brihadratha 185 BCE. Sunga dynasty.',
+        '**Causes:** Brahminical reaction, financial crisis, over-centralization, foreign invasions.',
+        '**MPSC Point:** Ashoka Chakra 24 spokes. Satyameva Jayate from Mundaka Upanishad.'
+      ]
+    }
+  },
+   {
+    id: 'hist-5',
+    title: {
+      mizo: 'Chapter 5: Post-Mauryan & Gupta Age 200 BCE-550 CE',
+      english: 'Chapter 5: Post-Mauryan & Gupta Age 200 BCE-550 CE'
+    },
+    notes: {
+      mizo: [
+        '**1. Post-Mauryan 200 BCE-300 CE**',
+        '**Sungas 185-73 BCE:** Pushyamitra Brahmin. Bharhut stupa. Patanjali Mahabhashya. Anti-Buddhist.',
+        '**Kanvas 73-28 BCE:** Vasudeva. Brahmanical revival. Last Kanva Susarman.',
+        '**Satavahanas 60 BCE-225 CE:** Simuka founder. Gautamiputra Satakarni 106-130 CE greatest.',
+        '   - **Admin:** Land grants to Brahmins. Satakarni title. Amaravati, Nagarjunakonda stupas.',
+        '   - **Trade:** Rome. Pliny mentions. Ports Bharuch, Sopara.',
+        '**Indo-Greeks:** Menander 165-145 BCE Milindapanho. Coins bilingual.',
+        '**Sakas:** Rudradaman I 130 CE Junagadh inscription Sanskrit first.',
+        '**Kushanas 78-230 CE:** Kujula Kadphises. Kanishka 78 CE Saka era started.',
+        '   - **4th Buddhist Council 72 CE:** Kashmir Vasumitra. Mahayana-Hinayana split. Sanskrit.',
+        '   - **Art:** Gandhara Greco-Roman Buddha, Mathura indigenous. Kanishka stupa Peshawar.',
+        '**Sangam Age:** Cheras Kerala, Cholas Kaveri, Pandyas Madurai. Tolkappiyam grammar.',
+        '',
+        '**2. Gupta Empire 320-550 CE - Golden Age**',
+        '**Chandragupta I 319-335:** Maharajadhiraja. Gupta era 319 CE. Married Lichchhavi Kumaradevi.',
+        '**Samudragupta 335-380:** Indian Napoleon. Prayag Prashasti Harisena Allahabad Pillar.',
+        '   - **Conquests:** Aryavarta 9 kings, Dakshinapatha 12 kings, Atavika forest kings.',
+        '   - **Coins:** Ashvamedha type. Veena player. Policy of conquest + liberality.',
+        '**Chandragupta II Vikramaditya 380-415:** Defeated Sakas Ujjain. Navaratnas court.',
+        '   - **Navaratnas:** Kalidasa Shakuntala, Aryabhata, Varahamihira, Amarasimha, Dhanvantari.',
+        '   - **Fa-Hien 399-414:** Chinese pilgrim. Peaceful prosperous India. No capital punishment.',
+        '**Kumaragupta I 415-455:** Nalanda University founded. Silver coins.',
+        '**Skandagupta 455-467:** Huna invasion repelled. Last great Gupta.',
+        '',
+        '**3. Gupta Administration & Culture**',
+        '**Admin:** Decentralized. King assisted by council. Bhukti province Uparika, Vishaya district Vishayapati.',
+        '**Feudalism:** Land grants to Brahmins Agrahara. Samantas feudatories rise.',
+        '**Economy:** Gold coins Dinars most. Trade Tamralipti port. Guilds Shrenis powerful.',
+        '**Society:** Caste rigid. Untouchability started. Women status declined. Sati Anumaran first Eran 510 CE.',
+        '**Literature:** Kalidasa Meghaduta, Raghuvamsha. Vishnu Sharma Panchatantra. Sudraka Mrichchhakatika.',
+        '**Science:** Aryabhata 499 CE Aryabhatiya - zero, pi 3.1416, earth rotation, eclipse. Varahamihira Brihat Samhita.',
+        '**Art:** Ajanta caves 1,16,17,19 Gupta. Iron Pillar Delhi 4th century rust-free. Sarnath Buddha image.',
+        '**Decline:** Huna Toramana, Mihirakula. Feudal lords independent. Yashodharman Malwa defeated Hunas 528.',
+        '**MPSC Point:** Golden Age = cultural peak but political decentralization started.'
+      ],
+      english: [
+        '**1. Post-Mauryan 200 BCE-300 CE**',
+        '**Sungas 185-73 BCE:** Pushyamitra Brahmin. Bharhut stupa. Patanjali Mahabhashya. Anti-Buddhist.',
+        '**Kanvas 73-28 BCE:** Vasudeva. Brahmanical revival. Last Kanva Susarman.',
+        '**Satavahanas 60 BCE-225 CE:** Simuka founder. Gautamiputra Satakarni 106-130 CE greatest.',
+        '   - **Admin:** Land grants to Brahmins. Satakarni title. Amaravati, Nagarjunakonda stupas.',
+        '   - **Trade:** Rome. Pliny mentions. Ports Bharuch, Sopara.',
+        '**Indo-Greeks:** Menander 165-145 BCE Milindapanho. Coins bilingual.',
+        '**Sakas:** Rudradaman I 130 CE Junagadh inscription Sanskrit first.',
+        '**Kushanas 78-230 CE:** Kujula Kadphises. Kanishka 78 CE Saka era started.',
+        '   - **4th Buddhist Council 72 CE:** Kashmir Vasumitra. Mahayana-Hinayana split. Sanskrit.',
+        '   - **Art:** Gandhara Greco-Roman Buddha, Mathura indigenous. Kanishka stupa Peshawar.',
+        '**Sangam Age:** Cheras Kerala, Cholas Kaveri, Pandyas Madurai. Tolkappiyam grammar.',
+        '',
+        '**2. Gupta Empire 320-550 CE - Golden Age**',
+        '**Chandragupta I 319-335:** Maharajadhiraja. Gupta era 319 CE. Married Lichchhavi Kumaradevi.',
+        '**Samudragupta 335-380:** Indian Napoleon. Prayag Prashasti Harisena Allahabad Pillar.',
+        '   - **Conquests:** Aryavarta 9 kings, Dakshinapatha 12 kings, Atavika forest kings.',
+        '   - **Coins:** Ashvamedha type. Veena player. Policy of conquest + liberality.',
+        '**Chandragupta II Vikramaditya 380-415:** Defeated Sakas Ujjain. Navaratnas court.',
+        '   - **Navaratnas:** Kalidasa Shakuntala, Aryabhata, Varahamihira, Amarasimha, Dhanvantari.',
+        '   - **Fa-Hien 399-414:** Chinese pilgrim. Peaceful prosperous India. No capital punishment.',
+        '**Kumaragupta I 415-455:** Nalanda University founded. Silver coins.',
+        '**Skandagupta 455-467:** Huna invasion repelled. Last great Gupta.',
+        '',
+        '**3. Gupta Administration & Culture**',
+        '**Admin:** Decentralized. King assisted by council. Bhukti province Uparika, Vishaya district Vishayapati.',
+        '**Feudalism:** Land grants to Brahmins Agrahara. Samantas feudatories rise.',
+        '**Economy:** Gold coins Dinars most. Trade Tamralipti port. Guilds Shrenis powerful.',
+        '**Society:** Caste rigid. Untouchability started. Women status declined. Sati Anumaran first Eran 510 CE.',
+        '**Literature:** Kalidasa Meghaduta, Raghuvamsha. Vishnu Sharma Panchatantra. Sudraka Mrichchhakatika.',
+        '**Science:** Aryabhata 499 CE Aryabhatiya - zero, pi 3.1416, earth rotation, eclipse. Varahamihira Brihat Samhita.',
+        '**Art:** Ajanta caves 1,16,17,19 Gupta. Iron Pillar Delhi 4th century rust-free. Sarnath Buddha image.',
+        '**Decline:** Huna Toramana, Mihirakula. Feudal lords independent. Yashodharman Malwa defeated Hunas 528.',
+        '**MPSC Point:** Golden Age = cultural peak but political decentralization started.'
+      ]
+    }
+  },
+  {
+    id: 'hist-6',
+    title: {
+      mizo: 'Chapter 6: Delhi Sultanate 1206-1526',
+      english: 'Chapter 6: Delhi Sultanate 1206-1526'
+    },
+    notes: {
+      mizo: [
+        '**1. Slave/Mamluk Dynasty 1206-1290**',
+        '**Qutubuddin Aibak 1206-10:** Lakh Baksh. Lahore capital. Qutub Minar started. Died playing Chaugan.',
+        '**Iltutmish 1211-36:** Real founder. Delhi capital. Iqta system land grant. Silver Tanka, Jital copper.',
+        '**Razia Sultan 1236-40:** First woman Muslim ruler. Discarded purdah. Killed by Altunia.',
+        '**Balban 1266-87:** Theory of Kingship - divine right. Blood & iron policy. Persian court etiquette. Spy system Barids.',
+        '',
+        '**2. Khilji Dynasty 1290-1320**',
+        '**Jalaluddin 1290-96:** Killed by nephew Alauddin.',
+        '**Alauddin Khilji 1296-1316:** Market Reforms - fixed prices, Shahna-i-Mandi. Daag horse branding, Chehra descriptive roll.',
+        '**Conquests:** Gujarat, Ranthambore, Chittor Rani Padmini Jauhar 1303, Deccan Malik Kafur.',
+        '**Mongol Invasions:** 5 times repelled. Fort Siri Delhi.',
+        '',
+        '**3. Tughlaq Dynasty 1320-1414**',
+        '**Ghiyasuddin 1320-25:** Tughlaqabad Fort. Son Jauna Khan = Muhammad.',
+        '**Muhammad Tughlaq 1325-51:** Wise Fool. 5 experiments failed:',
+        '   1. **Transfer Capital 1327:** Delhi to Daulatabad Devagiri. Failed returned.',
+        '   2. **Token Currency 1330:** Copper = Silver. Forgery failed.',
+        '   3. **Tax Doab:** 50% increase. Famine failed.',
+        '   4. **Khurasan Expedition:** Army disbanded midway.',
+        '   5. **Qarachil Expedition:** Kumaon Himalayas. Disaster.',
+        '**Ibn Battuta:** Moroccan traveller 1333-42. Rihla book.',
+        '**Firoz Tughlaq 1351-88:** Public works - canals, towns Hissar, Firozabad. Jizya on Brahmins. Dar-ul-Shafa hospitals.',
+        '**Timur Invasion 1398:** Tughlaq weakened. Delhi sacked.',
+        '',
+        '**4. Sayyid & Lodi 1414-1526**',
+        '**Sayyid 1414-51:** Khizr Khan Timur governor. Weak. Last Mubarak Shah.',
+        '**Lodi 1451-1526:** Bahlol Lodi Afghan. Sikandar Lodi Agra capital 1504. Ibrahim Lodi last.',
+        '**1st Panipat 21 Apr 1526:** Babur vs Ibrahim Lodi. Babur won. Tulguma warfare, artillery.',
+        '',
+        '**5. Administration & Culture**',
+        '**Iqta:** Land grant to nobles. Muqtis Iqtadars. Hereditary later.',
+        '**Departments:** Diwan-i-Wizarat finance, Diwan-i-Arz military, Diwan-i-Risalat foreign, Diwan-i-Insha correspondence.',
+        '**Architecture:** Qutub Minar 73m, Alai Darwaza, Tughlaqabad, Firoz Shah Kotla.',
+        '**MPSC Point:** Amir Khusrau - Tuhfat-ul-Hind, Khazain-ul-Futuh. Father Qawwali. Persian Wheel.'
+      ],
+      english: [
+        '**1. Slave/Mamluk Dynasty 1206-1290**',
+        '**Qutubuddin Aibak 1206-10:** Lakh Baksh. Lahore capital. Qutub Minar started. Died playing Chaugan.',
+        '**Iltutmish 1211-36:** Real founder. Delhi capital. Iqta system land grant. Silver Tanka, Jital copper.',
+        '**Razia Sultan 1236-40:** First woman Muslim ruler. Discarded purdah. Killed by Altunia.',
+        '**Balban 1266-87:** Theory of Kingship - divine right. Blood & iron policy. Persian court etiquette. Spy system Barids.',
+        '',
+        '**2. Khilji Dynasty 1290-1320**',
+        '**Jalaluddin 1290-96:** Killed by nephew Alauddin.',
+        '**Alauddin Khilji 1296-1316:** Market Reforms - fixed prices, Shahna-i-Mandi. Daag horse branding, Chehra descriptive roll.',
+        '**Conquests:** Gujarat, Ranthambore, Chittor Rani Padmini Jauhar 1303, Deccan Malik Kafur.',
+        '**Mongol Invasions:** 5 times repelled. Fort Siri Delhi.',
+        '',
+        '**3. Tughlaq Dynasty 1320-1414**',
+        '**Ghiyasuddin 1320-25:** Tughlaqabad Fort. Son Jauna Khan = Muhammad.',
+        '**Muhammad Tughlaq 1325-51:** Wise Fool. 5 experiments failed:',
+        '   1. **Transfer Capital 1327:** Delhi to Daulatabad Devagiri. Failed returned.',
+        '   2. **Token Currency 1330:** Copper = Silver. Forgery failed.',
+        '   3. **Tax Doab:** 50% increase. Famine failed.',
+        '   4. **Khurasan Expedition:** Army disbanded midway.',
+        '   5. **Qarachil Expedition:** Kumaon Himalayas. Disaster.',
+        '**Ibn Battuta:** Moroccan traveller 1333-42. Rihla book.',
+        '**Firoz Tughlaq 1351-88:** Public works - canals, towns Hissar, Firozabad. Jizya on Brahmins. Dar-ul-Shafa hospitals.',
+        '**Timur Invasion 1398:** Tughlaq weakened. Delhi sacked.',
+        '',
+        '**4. Sayyid & Lodi 1414-1526**',
+        '**Sayyid 1414-51:** Khizr Khan Timur governor. Weak. Last Mubarak Shah.',
+        '**Lodi 1451-1526:** Bahlol Lodi Afghan. Sikandar Lodi Agra capital 1504. Ibrahim Lodi last.',
+        '**1st Panipat 21 Apr 1526:** Babur vs Ibrahim Lodi. Babur won. Tulguma warfare, artillery.',
+        '',
+        '**5. Administration & Culture**',
+        '**Iqta:** Land grant to nobles. Muqtis Iqtadars. Hereditary later.',
+        '**Departments:** Diwan-i-Wizarat finance, Diwan-i-Arz military, Diwan-i-Risalat foreign, Diwan-i-Insha correspondence.',
+        '**Architecture:** Qutub Minar 73m, Alai Darwaza, Tughlaqabad, Firoz Shah Kotla.',
+        '**MPSC Point:** Amir Khusrau - Tuhfat-ul-Hind, Khazain-ul-Futuh. Father Qawwali. Persian Wheel.'
+      ]
+    }
+  },
+   {
+    id: 'hist-7',
+    title: {
+      mizo: 'Chapter 7: Mughal Empire 1526-1707',
+      english: 'Chapter 7: Mughal Empire 1526-1707'
+    },
+    notes: {
+      mizo: [
+        '**1. Babur 1526-30**',
+        '**1st Panipat 1526:** Ibrahim Lodi defeated. Artillery + Tulguma tactics. Kabul to Delhi.',
+        '**Khanwa 1527:** Rana Sanga Mewar defeated. Rajput supremacy ended.',
+        '**Ghagra 1529:** Afghans Bengal. Tuzuk-i-Baburi autobiography Chaghatai Turkic.',
+        '',
+        '**2. Humayun 1530-40, 1555-56**',
+        '**Sher Shah Suri:** Chausa 1539, Kannauj 1540 Humayun defeated. Exile Persia 15 years.',
+        '**Return 1555:** Defeated Sikandar Sur. Died 1556 falling library stairs.',
+        '',
+        '**3. Sher Shah Suri 1540-45**',
+        '**Admin Reforms:** Rupiya silver coin, Paisa copper. Grand Trunk Road Peshawar-Calcutta.',
+        '**Sarais:** Every 2 kos rest houses. Land measurement Zabti. Patta & Qabuliyat.',
+        '**Died 1545:** Kalinjar fort gunpowder explosion.',
+        '',
+        '**4. Akbar 1556-1605**',
+        '**2nd Panipat 1556:** Hemu vs Bairam Khan. Hemu defeated. Regent Bairam Khan 1556-60.',
+        '**Conquests:** Malwa 1561, Gondwana Rani Durgavati, Gujarat 1572, Bengal 1576, Kabul, Kashmir 1586, Deccan.',
+        '**Rajput Policy:** Matrimonial alliances. Raja Bharmal Amber. Man Singh, Bhagwan Das generals.',
+        '**Admin:** Mansabdari Zat rank + Sawar cavalry. Jagirdari transferable. Zabti 1/3rd Todar Mal.',
+        '**Religious:** Sulh-i-Kul universal peace. Ibadat Khana 1575 Fatehpur Sikri. Din-i-Ilahi 1582 Tauhid-i-Ilahi.',
+        '**Abolished:** Jizya 1564, Pilgrim tax 1563, Forced conversion banned.',
+        '**Navratnas:** Birbal, Tansen, Abul Fazl Akbarnama Ain-i-Akbari, Faizi, Raja Todar Mal, Raja Man Singh, Abdul Rahim Khan-i-Khana, Fakir Aziao-Din, Mullah Do Piaza.',
+        '',
+        '**5. Jahangir 1605-27**',
+        '**Nur Jahan:** Mehr-un-Nisa. Junta - Nur Jahan, Itimad-ud-Daula, Asaf Khan. Coin name.',
+        '**Captain Hawkins 1608:** English ambassador. Thomas Roe 1615.',
+        '**Painting:** Ustad Mansur, Abul Hasan. Chain of Justice Agra Fort.',
+        '**Rebellions:** Khusrau, Mahabat Khan.',
+        '',
+        '**6. Shah Jahan 1628-58**',
+        '**Golden Age:** Taj Mahal 1632-53 Mumtaz. Red Fort Delhi, Jama Masjid, Peacock Throne.',
+        '**Deccan:** Ahmadnagar annexed 1636. Bijapur, Golconda tributary.',
+        '**War of Succession:** Dara vs Aurangzeb. Dara defeated Samugarh 1658. Shah Jahan imprisoned Agra Fort.',
+        '',
+        '**7. Aurangzeb 1658-1707**',
+        '**Alamgir:** Orthodox Sunni. Jizya reimposed 1679. Temple destruction Kashi, Mathura.',
+        '**Deccan Policy:** 25 years war. Bijapur 1686, Golconda 1687 annexed. Destroyed empire.',
+        '**Revolts:** Jats Gokula, Satnamis, Sikhs Guru Tegh Bahadur executed 1675, Marathas Shivaji.',
+        '**Maratha:** Shivaji 1627-80. Coronation 1674 Raigad. Guerrilla warfare. Treaty Purandar 1665 Jai Singh.',
+        '**Sambhaji:** Tortured killed 1689. Rajaram, Tarabai continued.',
+        '**Death 1707:** Ahmednagar. Alamgir = world-seizer. Longest reign 49 years. Empire largest but exhausted.',
+        '**MPSC Point:** Mansabdari, Jagirdari, Zabti, Ibadat Khana, Din-i-Ilahi, Sulh-i-Kul.'
+      ],
+      english: [
+        '**1. Babur 1526-30**',
+        '**1st Panipat 1526:** Ibrahim Lodi defeated. Artillery + Tulguma tactics. Kabul to Delhi.',
+        '**Khanwa 1527:** Rana Sanga Mewar defeated. Rajput supremacy ended.',
+        '**Ghagra 1529:** Afghans Bengal. Tuzuk-i-Baburi autobiography Chaghatai Turkic.',
+        '',
+        '**2. Humayun 1530-40, 1555-56**',
+        '**Sher Shah Suri:** Chausa 1539, Kannauj 1540 Humayun defeated. Exile Persia 15 years.',
+        '**Return 1555:** Defeated Sikandar Sur. Died 1556 falling library stairs.',
+        '',
+        '**3. Sher Shah Suri 1540-45**',
+        '**Admin Reforms:** Rupiya silver coin, Paisa copper. Grand Trunk Road Peshawar-Calcutta.',
+        '**Sarais:** Every 2 kos rest houses. Land measurement Zabti. Patta & Qabuliyat.',
+        '**Died 1545:** Kalinjar fort gunpowder explosion.',
+        '',
+        '**4. Akbar 1556-1605**',
+        '**2nd Panipat 1556:** Hemu vs Bairam Khan. Hemu defeated. Regent Bairam Khan 1556-60.',
+        '**Conquests:** Malwa 1561, Gondwana Rani Durgavati, Gujarat 1572, Bengal 1576, Kabul, Kashmir 1586, Deccan.',
+        '**Rajput Policy:** Matrimonial alliances. Raja Bharmal Amber. Man Singh, Bhagwan Das generals.',
+        '**Admin:** Mansabdari Zat rank + Sawar cavalry. Jagirdari transferable. Zabti 1/3rd Todar Mal.',
+        '**Religious:** Sulh-i-Kul universal peace. Ibadat Khana 1575 Fatehpur Sikri. Din-i-Ilahi 1582 Tauhid-i-Ilahi.',
+        '**Abolished:** Jizya 1564, Pilgrim tax 1563, Forced conversion banned.',
+        '**Navratnas:** Birbal, Tansen, Abul Fazl Akbarnama Ain-i-Akbari, Faizi, Raja Todar Mal, Raja Man Singh, Abdul Rahim Khan-i-Khana, Fakir Aziao-Din, Mullah Do Piaza.',
+        '',
+        '**5. Jahangir 1605-27**',
+        '**Nur Jahan:** Mehr-un-Nisa. Junta - Nur Jahan, Itimad-ud-Daula, Asaf Khan. Coin name.',
+        '**Captain Hawkins 1608:** English ambassador. Thomas Roe 1615.',
+        '**Painting:** Ustad Mansur, Abul Hasan. Chain of Justice Agra Fort.',
+        '**Rebellions:** Khusrau, Mahabat Khan.',
+        '',
+        '**6. Shah Jahan 1628-58**',
+        '**Golden Age:** Taj Mahal 1632-53 Mumtaz. Red Fort Delhi, Jama Masjid, Peacock Throne.',
+        '**Deccan:** Ahmadnagar annexed 1636. Bijapur, Golconda tributary.',
+        '**War of Succession:** Dara vs Aurangzeb. Dara defeated Samugarh 1658. Shah Jahan imprisoned Agra Fort.',
+        '',
+        '**7. Aurangzeb 1658-1707**',
+        '**Alamgir:** Orthodox Sunni. Jizya reimposed 1679. Temple destruction Kashi, Mathura.',
+        '**Deccan Policy:** 25 years war. Bijapur 1686, Golconda 1687 annexed. Destroyed empire.',
+        '**Revolts:** Jats Gokula, Satnamis, Sikhs Guru Tegh Bahadur executed 1675, Marathas Shivaji.',
+        '**Maratha:** Shivaji 1627-80. Coronation 1674 Raigad. Guerrilla warfare. Treaty Purandar 1665 Jai Singh.',
+        '**Sambhaji:** Tortured killed 1689. Rajaram, Tarabai continued.',
+        '**Death 1707:** Ahmednagar. Alamgir = world-seizer. Longest reign 49 years. Empire largest but exhausted.',
+        '**MPSC Point:** Mansabdari, Jagirdari, Zabti, Ibadat Khana, Din-i-Ilahi, Sulh-i-Kul.'
+      ]
+    }
+  },
+  {
+    id: 'hist-8',
+    title: {
+      mizo: 'Chapter 8: British Rule & Freedom Struggle 1757-1947',
+      english: 'Chapter 8: British Rule & Freedom Struggle 1757-1947'
+    },
+    notes: {
+      mizo: [
+        '**1. British Conquest 1757-1856**',
+        '**Plassey 1757:** Clive vs Siraj-ud-Daula. Mir Jafar betrayed. Bengal control.',
+        '**Buxar 1764:** Munro vs Mir Qasim+Shuja+Shah Alam II. Diwani Bengal 1765 Clive.',
+        '**Anglo-Mysore:** Hyder Ali, Tipu Sultan 4 wars. Tipu died Seringapatam 1799.',
+        '**Anglo-Maratha:** 3 wars 1775-1818. Peshwa Baji Rao II Bassein 1802.',
+        '**Anglo-Sikh:** Ranjit Singh died 1839. Dalhousie annexed Punjab 1849.',
+        '**Doctrine of Lapse:** Dalhousie. Satara 1848, Jhansi 1853, Nagpur 1854.',
+        '',
+        '**2. Revolt 1857**',
+        '**Causes:** Political annexations, Economic drain, Social reforms, Military greased cartridges.',
+        '**Start 10 May 1857:** Meerut. Bahadur Shah II Emperor.',
+        '**Centres:** Delhi Bakht Khan, Kanpur Nana Saheb+Tantia Tope, Lucknow Begum Hazrat Mahal, Jhansi Lakshmibai, Bihar Kunwar Singh.',
+        '**Suppression:** Delhi Sep 1857 Nicholson. Kanpur Campbell. Jhansi Hugh Rose 1858.',
+        '**Results:** EIC rule ended. Govt of India Act 1858. Viceroy Canning. Queen Proclamation 1 Nov 1858.',
+        '',
+        '**3. Socio-Religious Reforms**',
+        '**Raja Ram Mohan Roy 1772-1833:** Brahmo Samaj 1828. Sati abolished 1829 William Bentinck.',
+        '**Vidyasagar:** Widow Remarriage Act 1856. Bethune School.',
+        '**Dayanand 1824-83:** Arya Samaj 1875. Back to Vedas. Shuddhi.',
+        '**Vivekananda 1863-1902:** Chicago 1893. Ramakrishna Mission 1897.',
+        '**Phule 1827-90:** Satyashodhak Samaj 1873. Gulamgiri.',
+        '**Syed Ahmed Khan:** Aligarh Movement 1875 MAO College.',
+        '',
+        '**4. INC & Moderates 1885-1905**',
+        '**INC 1885:** A.O. Hume. Bombay W.C. Bonnerjee.',
+        '**Moderates:** Naoroji Drain Theory Poverty & Un-British Rule, Gokhale, Mehta, Banerjee.',
+        '**Methods:** 3P - Prayer, Petition, Protest. 1892 Council Act.',
+        '',
+        '**5. Extremists & Swadeshi 1905-1919**',
+        '**Partition Bengal 1905:** Curzon. Swadeshi Movement. Boycott, National education.',
+        '**Extremists:** Bal Lal Pal - Tilak, Lajpat Rai, Bipin Pal. Tilak "Swaraj my birthright".',
+        '**Surat Split 1907:** INC split.',
+        '**Muslim League 1906:** Dhaka. Aga Khan. Separate electorate.',
+        '**Morley-Minto 1909:** Separate electorate Muslims. Communalism.',
+        '**Ghadar 1913:** USA Hardayal. Komagata Maru 1914.',
+        '**Home Rule 1916:** Tilak, Annie Besant. Lucknow Pact INC-League.',
+        '',
+        '**6. Gandhian Era 1919-1947**',
+        '**Arrival 1915:** Champaran 1917, Kheda 1918, Ahmedabad 1918.',
+        '**Rowlatt 1919:** Jallianwala Bagh 13 Apr Dyer 379 killed.',
+        '**Khilafat+NCM 1920-22:** Ali Brothers. Chauri Chaura 1922 withdrawn.',
+        '**Swaraj Party 1923:** C.R. Das, Motilal Nehru. Council entry.',
+        '**Simon 1927:** All white. Lajpat Rai died 1928 lathi charge.',
+        '**Poorna Swaraj 26 Jan 1930:** Lahore Nehru. CDM started.',
+        '**Dandi March 12 Mar-6 Apr 1930:** 240 miles. Salt Law broken. Gandhi-Irwin Pact 1931.',
+        '**2nd RTC 1931:** Gandhi only INC rep. Failed.',
+        '**Communal Award 1932:** MacDonald. Separate Depressed. Poona Pact Gandhi-Ambedkar reserved seats.',
+        '**Govt Act 1935:** Provincial autonomy. 1937 Elections INC 8 provinces.',
+        '**WWII 1939:** INC ministries resigned. Individual Satyagraha 1940.',
+        '**Quit India 8 Aug 1942:** Bombay. Do or Die. Gandhi arrested. Underground Aruna Asaf Ali.',
+        '**INA 1942:** Subhas Bose. Rash Behari. Chalo Delhi. Imphal 1944.',
+        '**Cripps 1942:** Failed. Cabinet Mission 1946. Mountbatten Plan 3 June 1947.',
+        '**Independence 15 Aug 1947:** Partition. Radcliffe Line. Nehru PM. Patel Deputy.',
+        '**MPSC Point:** 4 Gandhian Movements - NCM 1920, CDM 1930, Individual 1940, QIM 1942.'
+      ],
+      english: [
+        '**1. British Conquest 1757-1856**',
+        '**Plassey 1757:** Clive vs Siraj-ud-Daula. Mir Jafar betrayed. Bengal control.',
+        '**Buxar 1764:** Munro vs Mir Qasim+Shuja+Shah Alam II. Diwani Bengal 1765 Clive.',
+        '**Anglo-Mysore:** Hyder Ali, Tipu Sultan 4 wars. Tipu died Seringapatam 1799.',
+        '**Anglo-Maratha:** 3 wars 1775-1818. Peshwa Baji Rao II Bassein 1802.',
+        '**Anglo-Sikh:** Ranjit Singh died 1839. Dalhousie annexed Punjab 1849.',
+        '**Doctrine of Lapse:** Dalhousie. Satara 1848, Jhansi 1853, Nagpur 1854.',
+        '',
+        '**2. Revolt 1857**',
+        '**Causes:** Political annexations, Economic drain, Social reforms, Military greased cartridges.',
+        '**Start 10 May 1857:** Meerut. Bahadur Shah II Emperor.',
+        '**Centres:** Delhi Bakht Khan, Kanpur Nana Saheb+Tantia Tope, Lucknow Begum Hazrat Mahal, Jhansi Lakshmibai, Bihar Kunwar Singh.',
+        '**Suppression:** Delhi Sep 1857 Nicholson. Kanpur Campbell. Jhansi Hugh Rose 1858.',
+        '**Results:** EIC rule ended. Govt of India Act 1858. Viceroy Canning. Queen Proclamation 1 Nov 1858.',
+        '',
+        '**3. Socio-Religious Reforms**',
+        '**Raja Ram Mohan Roy 1772-1833:** Brahmo Samaj 1828. Sati abolished 1829 William Bentinck.',
+        '**Vidyasagar:** Widow Remarriage Act 1856. Bethune School.',
+        '**Dayanand 1824-83:** Arya Samaj 1875. Back to Vedas. Shuddhi.',
+        '**Vivekananda 1863-1902:** Chicago 1893. Ramakrishna Mission 1897.',
+        '**Phule 1827-90:** Satyashodhak Samaj 1873. Gulamgiri.',
+        '**Syed Ahmed Khan:** Aligarh Movement 1875 MAO College.',
+        '',
+        '**4. INC & Moderates 1885-1905**',
+        '**INC 1885:** A.O. Hume. Bombay W.C. Bonnerjee.',
+        '**Moderates:** Naoroji Drain Theory Poverty & Un-British Rule, Gokhale, Mehta, Banerjee.',
+        '**Methods:** 3P - Prayer, Petition, Protest. 1892 Council Act.',
+        '',
+        '**5. Extremists & Swadeshi 1905-1919**',
+        '**Partition Bengal 1905:** Curzon. Swadeshi Movement. Boycott, National education.',
+        '**Extremists:** Bal Lal Pal - Tilak, Lajpat Rai, Bipin Pal. Tilak "Swaraj my birthright".',
+        '**Surat Split 1907:** INC split.',
+        '**Muslim League 1906:** Dhaka. Aga Khan. Separate electorate.',
+        '**Morley-Minto 1909:** Separate electorate Muslims. Communalism.',
+        '**Ghadar 1913:** USA Hardayal. Komagata Maru 1914.',
+        '**Home Rule 1916:** Tilak, Annie Besant. Lucknow Pact INC-League.',
+        '',
+        '**6. Gandhian Era 1919-1947**',
+        '**Arrival 1915:** Champaran 1917, Kheda 1918, Ahmedabad 1918.',
+        '**Rowlatt 1919:** Jallianwala Bagh 13 Apr Dyer 379 killed.',
+        '**Khilafat+NCM 1920-22:** Ali Brothers. Chauri Chaura 1922 withdrawn.',
+        '**Swaraj Party 1923:** C.R. Das, Motilal Nehru. Council entry.',
+        '**Simon 1927:** All white. Lajpat Rai died 1928 lathi charge.',
+        '**Poorna Swaraj 26 Jan 1930:** Lahore Nehru. CDM started.',
+        '**Dandi March 12 Mar-6 Apr 1930:** 240 miles. Salt Law broken. Gandhi-Irwin Pact 1931.',
+        '**2nd RTC 1931:** Gandhi only INC rep. Failed.',
+        '**Communal Award 1932:** MacDonald. Separate Depressed. Poona Pact Gandhi-Ambedkar reserved seats.',
+        '**Govt Act 1935:** Provincial autonomy. 1937 Elections INC 8 provinces.',
+        '**WWII 1939:** INC ministries resigned. Individual Satyagraha 1940.',
+        '**Quit India 8 Aug 1942:** Bombay. Do or Die. Gandhi arrested. Underground Aruna Asaf Ali.',
+        '**INA 1942:** Subhas Bose. Rash Behari. Chalo Delhi. Imphal 1944.',
+        '**Cripps 1942:** Failed. Cabinet Mission 1946. Mountbatten Plan 3 June 1947.',
+        '**Independence 15 Aug 1947:** Partition. Radcliffe Line. Nehru PM. Patel Deputy.',
+        '**MPSC Point:** 4 Gandhian Movements - NCM 1920, CDM 1930, Individual 1940, QIM 1942.'
+      ]
+    }
   }
+]
 
-  // @ts-ignore
-  const rzp = new window.Razorpay(options)
-  rzp.open()
-}
-
+export default function HistoryPage() { 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-amber-50">
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <Link href="/" className="text-blue-600 hover:text-blue-800 font-semibold">
-              ← Haw
-            </Link>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setLanguage('mizo')}
-                className={`px-4 py-2 rounded-lg font-medium transition ${
-                  language === 'mizo'
-                 ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                Mizo
-              </button>
-              <button
-                onClick={() => setLanguage('english')}
-                className={`px-4 py-2 rounded-lg font-medium transition ${
-                  language === 'english'
-                 ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                English
-              </button>
-            </div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            {language === 'mizo'? 'Indian History' : 'Indian History'}
-          </h1>
-          <p className="text-gray-600 mt-1">
-            {language === 'mizo'
-           ? 'MPSC - Ancient to Modern - Chapter 18 kim'
-              : 'MPSC - Ancient to Modern - All 18 Chapters'}
-          </p>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        {!isPro && (
-          <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl p-6 mb-6 shadow-lg">
-            <h3 className="text-xl font-bold mb-2">🔓 Unlock Pro - ₹100 chauh</h3>
-            <p className="mb-4 opacity-90">
-              {language === 'mizo'
-             ? 'Chapter 6-18 zawng zawng unlock rawh'
-                : 'Unlock all Chapters 6-18'}
-            </p>
-            <ul className="text-sm space-y-1 mb-4 opacity-90">
-              <li>✓ Ancient, Medieval, Modern History kimchang</li>
-              <li>✓ Mizo tawng explanation vek</li>
-              <li>✓ MPSC exam oriented</li>
-              <li>✓ 1 year access</li>
-            </ul>
-            <button
-              onClick={handleUpgrade}
-              className="bg-white text-orange-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition shadow-md"
-            >
-              Upgrade to Pro ₹100
-            </button>
-          </div>
-        )}
-
-        <div className="space-y-4">
-          {HISTORY_CHAPTERS.map((chapter) => {
-            const isLocked = chapter.title.english.includes('🔒') &&!isPro
-            const isExpanded = expandedChapters.has(chapter.id)
-
-            return (
-              <div
-                key={chapter.id}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
-              >
-                <button
-                  onClick={() =>!isLocked && toggleChapter(chapter.id)}
-                  className={`w-full px-6 py-4 flex items-center justify-between text-left transition ${
-                    isLocked
-                   ? 'cursor-not-allowed opacity-60'
-                      : 'hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">
-                      {isLocked? '🔒' : isExpanded? '📖' : '📘'}
-                    </span>
-                    <span className="font-semibold text-gray-900">
-                      {chapter.title[language]}
-                    </span>
-                  </div>
-                  {!isLocked && (
-                    <span className="text-gray-400">
-                      {isExpanded? '−' : '+'}
-                    </span>
-                  )}
-                </button>
-
-                {isExpanded &&!isLocked && (
-                  <div className="px-6 pb-4 border-t border-gray-100">
-                    <ul className="space-y-3 mt-4">
-                      {chapter.notes[language].map((note, idx) => (
-                        <li key={idx} className="flex gap-3 text-gray-700">
-                          <span className="text-amber-600 font-bold flex-shrink-0">•</span>
-                          <span className="leading-relaxed">{note}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {isLocked && (
-                  <div className="px-6 pb-4 border-t border-gray-100 bg-gray-50">
-                    <p className="text-sm text-gray-600 text-center py-4">
-                      {language === 'mizo'
-                     ? '🔒 Pro member chauh tan. ₹100 in unlock rawh.'
-                        : '🔒 Pro members only. Unlock for ₹100.'}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-
-        <div className="mt-8 bg-amber-50 border-amber-200 rounded-xl p-6">
-          <h3 className="font-bold text-amber-900 mb-2">
-            {language === 'mizo'? '💡 Zir Dan Tur' : '💡 Study Tips'}
-          </h3>
-          <ul className="text-sm text-amber-800 space-y-2">
-            <li>• {language === 'mizo'
-           ? 'Chapter 1-5 hi Free. Ancient History bulpui a ni.'
-              : 'Chapters 1-5 are free. Foundation of Ancient History.'}</li>
-            <li>• {language === 'mizo'
-           ? 'Pro ah Medieval & Modern History kimchang a awm.'
-              : 'Pro unlocks Medieval & Modern History in detail.'}</li>
-            <li>• {language === 'mizo'
-           ? 'Timeline milin zir la. Cause-Effect hre reng rawh.'
-              : 'Study by timeline. Remember Cause-Effect relations.'}</li>
-            <li>• {language === 'mizo'
-           ? 'MPSC ah History 15-20 marks a rawn chhuak thin.'
-              : 'History covers 15-20 marks in MPSC Prelims.'}</li>
-                   </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-       
+    <SubjectPage 
+      subjectName={{
+        mizo: 'History',
+        english: 'History'
+      }}
+      chapters={historyChapters}
+      slug="history"
+      testId="history-test"
+      backLink="/"
+      testLink="/history/test"
+      testTitle="History Mock Test"
+      testDesc="MPSC History Chapter 1-8 atanga zawhna 50"
+    />
   )
-}
+}  

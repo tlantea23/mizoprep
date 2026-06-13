@@ -1,84 +1,96 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { Browser } from '@capacitor/browser'
 
 export default function PremiumPage() {
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
-  const handleBuyPro = () => {
-    // Razorpay integrate hnuah
-    localStorage.setItem('mizoprep_pro', 'true')
-    alert('Pro activate! Chapter zawng zawng a in hawng e')
-    router.push('/')
-  }
+  const handleBuyPro = async () => {
+    setLoading(true)
+    
+    try {
+      const res = await fetch('/api/razorpay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
 
-  const handleBuyMock = () => {
-    // Razorpay integrate hnuah  
-    localStorage.setItem('mizoprep_mock', 'true')
-    alert('Mock Test activate! Question 500 i chhang thei e')
-    router.push('/mock-test')
+      if (!res.ok) throw new Error('Failed to create payment link')
+
+      const data = await res.json()
+
+      // Chrome/System Browser ah Payment Page hawng
+      await Browser.open({ url: data.url })
+      setLoading(false)
+
+    } catch (error) {
+      console.error(error)
+      alert('Something went wrong. Try again.')
+      setLoading(false)
+    }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-md mx-auto">
-        <button onClick={() => router.push('/')} className="text-blue-600 font-semibold mb-4">← Haw</button>
+    <div className="min-h-screen bg-gray-50 p-3">
+      <div className="max-w-md mx-auto pt-8">
+        <button onClick={() => router.back()} className="text-blue-600 font-semibold mb-4">← Back</button>
         
-        <h1 className="text-3xl font-bold text-center mb-2">MizoPrep Premium</h1>
-        <p className="text-center text-gray-600 mb-8">I duh zawk thlang rawh</p>
+        <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-8 text-white shadow-2xl">
+          <div className="text-4xl mb-3">💎</div>
+          <h1 className="text-3xl font-bold mb-2">MizoPrep Pro</h1>
+          <p className="text-white/90 mb-4">Unlock everything for 6 months</p>
+          
+          <div className="bg-white/20 backdrop-blur rounded-xl p-4 mb-4">
+            <div className="text-center mb-4">
+              <span className="text-4xl font-bold">₹200</span>
+              <span className="text-white/80 ml-2">/ 6 months</span>
+            </div>
+            <p className="text-sm text-center text-white/90">≈ ₹33/month only</p>
+          </div>
 
-        {/* Option 1: Pro - Notes chauh */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-4 border-2 border-orange-500">
-          <div className="flex justify-between items-start mb-3">
-            <div>
-              <h2 className="text-xl font-bold text-orange-600">🔥 Pro Notes</h2>
-              <p className="text-sm text-gray-600">Chapter zawng zawng</p>
+          <div className="space-y-3 mb-6 text-sm">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">✓</span>
+              <span>All 8 Subjects - 64 Chapters unlocked</span>
             </div>
-            <div className="text-right">
-              <p className="text-2xl font-bold">₹100</p>
+            <div className="flex items-center gap-3">
+              <span className="text-xl">✓</span>
+              <span>Full Mock Test 200 Questions</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xl">✓</span>
+              <span>Current Affairs Monthly Updates</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xl">✓</span>
+              <span>Mizo + English Toggle</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xl">✓</span>
+              <span>No Ads, Priority Support</span>
             </div>
           </div>
-          <div className="space-y-1 text-sm mb-4">
-            <p>✅ Subject 7 zawng zawng Notes kim</p>
-            <p>✅ Mizo tawng explanation</p>
-            <p>✅ Lifetime access</p>
-            <p>❌ Mock Test tel lo</p>
-          </div>
+
           <button 
             onClick={handleBuyPro}
-            className="w-full bg-orange-600 text-white py-3 rounded-lg font-bold active:scale-95"
+            disabled={loading}
+            className="w-full bg-white text-orange-600 py-4 rounded-xl font-bold text-lg active:scale-95 disabled:opacity-50"
           >
-            Pro Nei Rawh ₹100
+            {loading ? 'Opening Payment...' : 'Get Pro - ₹200'}
           </button>
+          
+          <p className="text-xs text-center mt-4 text-white/70">
+            Secure payment via Razorpay & UPI
+          </p>
         </div>
 
-        {/* Option 2: Mock Test - Question 500 */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-500">
-          <div className="flex justify-between items-start mb-3">
-            <div>
-              <h2 className="text-xl font-bold text-blue-600">✍️ Mock Test</h2>
-              <p className="text-sm text-gray-600">Question 500 Bank</p>
-            </div>
-            <div className="text-right">
-              <p className="text-2xl font-bold">₹50</p>
-            </div>
-          </div>
-          <div className="space-y-1 text-sm mb-4">
-            <p>✅ Question 500 zawng zawng</p>
-            <p>✅ Random 100 test unlimited</p>
-            <p>✅ Subject-wise test</p>
-            <p>✅ Chhanna Mizo tawngin</p>
-          </div>
-          <button 
-            onClick={handleBuyMock}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold active:scale-95"
-          >
-            Mock Test Hawng ₹50
-          </button>
+        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="font-bold text-blue-900 mb-2">📱 After Payment</h3>
+          <p className="text-sm text-blue-800">
+            Your Pro access will activate instantly. Valid till {new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'})}
+          </p>
         </div>
-
-        <p className="text-xs text-center text-gray-500 mt-6">
-          Pro lei pawn Mock Test a tel lo. A hrangin ₹50 in lei a ngai.
-        </p>
       </div>
     </div>
   )

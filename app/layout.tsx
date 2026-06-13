@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script"; // Hei dah belh
+import Script from "next/script"; 
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,6 +18,14 @@ export const metadata: Metadata = {
   description: "MPSC Exam Preparation App",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+  themeColor: "#f9fafb",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,9 +34,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <head>
+        <meta name="theme-color" content="#f9fafb" />
+      </head>
+      <body>
         <Script src="https://checkout.razorpay.com/v1/checkout.js" />
         {children}
       </body>

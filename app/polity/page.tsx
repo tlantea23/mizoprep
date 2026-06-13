@@ -1,613 +1,713 @@
-// app/polity/page.tsx
 'use client'
-import SubjectPage from '@/components/SubjectPage'
+import SubjectPage from '../components/SubjectPage'
 
-const POLITY_CHAPTERS = [
+const polityChapters = [
   {
-    id: 'intro',
-    title: { mizo: '1. Inhmelhriattirna', english: '1. Introduction' },
+    id: 'pol-1',
+    title: {
+      mizo: 'Chapter 1: Constitutional Background - Acts & Viceroys',
+      english: 'Chapter 1: Constitutional Background - Acts & Viceroys'
+    },
     notes: {
       mizo: [
-        "Constitution: Danpui. Ram kalphung inrelbawlna dan bulpui ber.",
-        "Constitutional Developments: 1773 Regulating Act atangin 1947 Independence Act thleng.",
-        "National Symbols: Tiranga - Tricolor. Ashoka Chakra 24 spokes. National Emblem - Sarnath Lion.",
-        "Flag Code 2002: Hman dan tur. Khawiah nge zar theih, khawiah nge zar theih loh.",
-        "Constituent Assembly: 1946 Dec 6 din. Member 389. Dr. Rajendra Prasad President.",
-        "Drafting Committee: 1947 Aug 29. Chairman Dr. B.R. Ambedkar. Members 7.",
-        "Committees: Union Powers - Nehru. Provincial - Patel. Fundamental Rights - Patel.",
-        "Sources: UK - Parliament. USA - Fundamental Rights. Ireland - DPSP. Canada - Federation.",
-        "Nature: Federal in structure, Unitary in spirit. K.C. Wheare - Quasi-federal.",
-        "Salient Features: Longest written 470+ Articles. Blend of rigidity & flexibility."
+        '**1. Regulating Act 1773 - Warren Hastings**',
+        '**Governor-General Bengal:** Warren Hastings 1st. Council 4 members.',
+        '**Supreme Court Calcutta 1774:** 1 Chief Justice + 3 judges. Sir Elijah Impey 1st CJ.',
+        '**Court of Directors:** Company affairs report British Govt.',
+        '**Defects:** No veto power Governor-General. No control Bombay/Madras.',
+        '**MPSC Point:** 1st step constitutional development. Company political.',
+        '',
+        '**2. Pitt\'s India Act 1784 - Lord Cornwallis**',
+        '**Dual Control:** Company = Commercial. Board of Control = Political 6 members.',
+        '**Governor-General Council:** Reduced 4 to 3. Bombay/Madras subordinate.',
+        '**MPSC Point:** Company Political affairs Govt control.',
+        '',
+        '**3. Charter Acts**',
+        '**1793 Cornwallis:** Company trade monopoly 20 years extended.',
+        '**1813 Lord Minto:** Trade monopoly ended except tea & China. Christian missionaries allowed. Rs 1 lakh education.',
+        '**1833 Lord William Bentinck:** Governor-General of India. Bengal → India. Law member Macaulay. Slavery abolished 1843. Company commercial body ended. Govt body.',
+        '**1853 Lord Dalhousie:** Legislative & Executive separated. 6 Legislative Councillors. Open competition Civil Service. Local representation added.',
+        '',
+        '**4. Govt of India Act 1858 - Lord Canning 1st Viceroy**',
+        '**After 1857 Revolt:** Company rule ended. Crown direct rule.',
+        '**Viceroy:** Lord Canning Governor-General + Viceroy Crown representative.',
+        '**Secretary of State India:** British Cabinet member. India Council 15 members advisory.',
+        '**Board of Control & Court Directors:** Abolished.',
+        '',
+        '**5. Indian Councils Acts**',
+        '**1861 Lord Canning:** Portfolio system. Legislative Councils Bombay/Madras 1862. Non-official members nomination. Ordinance power Viceroy.',
+        '**1892 Lord Lansdowne:** Indirect election introduced. Budget discussion allowed. Questions asked.',
+        '**1909 Morley-Minto Lord Minto:** Separate Electorate Muslims. Communalism legal. Satyendra Sinha 1st Indian Viceroy Council.',
+        '',
+        '**6. Govt of India Act 1919 - Lord Chelmsford**',
+        '**Montagu-Chelmsford Reforms:** Secretary State Montagu. Responsible Govt gradual.',
+        '**Dyarchy Provinces:** Reserved - Governor. Transferred - Indian Ministers. Subjects divided.',
+        '**Bicameral Centre:** Council of State + Legislative Assembly. Direct election.',
+        '**Communal Electorate:** Sikhs, Indian Christians, Anglo-Indians, Europeans extended.',
+        '**Defects:** Dyarchy failed. Finance reserved. Governor veto.',
+        '',
+        '**7. Govt of India Act 1935 - Lord Willingdon**',
+        '**All-India Federation:** Provinces + Princely States. Never came. Princes no join.',
+        '**Provincial Autonomy:** Dyarchy abolished provinces. Ministers responsible Legislature.',
+        '**Dyarchy Centre:** Federal List, Provincial List, Concurrent List. Introduced but not worked.',
+        '**Bicameral Provinces:** 6 provinces - Bengal, Bombay, Madras, Bihar, Assam, UP.',
+        '**Federal Court 1937:** Delhi. 1 CJ + 2 judges. Disputes federal.',
+        '**RBI 1935:** Reserve Bank established. Burma separated 1937.',
+        '**Public Service Commission:** Federal PSC + Provincial PSC.',
+        '**Emergency:** Governor-General special powers.',
+        '**MPSC Point:** Longest Act 321 sections + 10 schedules. Blueprint Indian Constitution 60%.',
+        '',
+        '**8. Indian Independence Act 1947 - Lord Mountbatten**',
+        '**20 Feb 1947:** Attlee announcement. Power transfer June 1948.',
+        '**3 June Plan:** Mountbatten Plan. Partition India-Pakistan.',
+        '**Act 18 July 1947:** 15 Aug 1947 Independence. 2 Dominions - India, Pakistan.',
+        '**Provisions:** Crown rule end. Constituent Assembly sovereign. Governor-General each Dominion. Till Constitution 1950 Govt of India Act 1935 worked.',
+        '**Radcliffe Line:** Boundary Commission. Punjab + Bengal partition.',
+        '',
+        '**9. Important Viceroys MPSC**',
+        '**Lord Canning 1856-62:** 1857 Revolt. 1st Viceroy 1858. Universities Calcutta, Bombay, Madras 1857.',
+        '**Lord Lytton 1876-80:** Royal Titles Act 1876. Delhi Durbar 1877 Queen Empress. Vernacular Press Act 1878. Arms Act 1878. 2nd Afghan War.',
+        '**Lord Ripon 1880-84:** Liberal. Repeal Vernacular Press 1882. Local Self Govt 1882. 1st Factory Act 1881. Ilbert Bill controversy.',
+        '**Lord Curzon 1899-1905:** Partition Bengal 1905. Ancient Monuments Act 1904. Police Commission. Universities Act 1904. Delhi Durbar 1903.',
+        '**Lord Hardinge 1910-16:** Delhi Capital 1911. Partition Bengal annulled 1911. Bomb attack 1912.',
+        '**Lord Chelmsford 1916-21:** 1919 Act. Rowlatt Act 1919. Jallianwala 1919. Khilafat NCM 1920.',
+        '**Lord Irwin 1926-31:** Simon Commission 1927. Dandi March 1930. Gandhi-Irwin Pact 1931. 1st RTC 1930.',
+        '**Lord Willingdon 1931-36:** 2nd RTC 1931. Communal Award 1932. Poona Pact 1932. 3rd RTC 1932.',
+        '**Lord Linlithgow 1936-44:** Longest 8 years. 1935 Act. WWII 1939. Quit India 1942. Cripps Mission 1942.',
+        '**Lord Wavell 1944-47:** Shimla Conference 1945. Cabinet Mission 1946. Interim Govt 1946. Direct Action Day 16 Aug 1946.',
+        '**Lord Mountbatten 1947-48:** Last Viceroy. Partition. 1st Governor-General Independent India till June 1948.'
       ],
       english: [
-        "Constitution: Supreme law of the land. Framework for governance.",
-        "Constitutional Developments: From Regulating Act 1773 to Independence Act 1947.",
-        "National Symbols: Tiranga - Saffron, White, Green. Ashoka Chakra 24 spokes. National Emblem - Lion Capital of Sarnath.",
-        "Flag Code 2002: Rules for display. Where it can/cannot be hoisted.",
-        "Constituent Assembly: Formed Dec 6, 1946. 389 members. Dr. Rajendra Prasad President.",
-        "Drafting Committee: Aug 29, 1947. Chairman Dr. B.R. Ambedkar. 7 members.",
-        "Key Committees: Union Powers - Nehru. Provincial Constitution - Patel. FR - Patel.",
-        "Sources: UK - Parliamentary system. USA - FR, Judicial Review. Ireland - DPSP. Canada - Federation.",
-        "Nature: Federal structure, Unitary spirit. K.C. Wheare called it 'Quasi-federal'.",
-        "Salient Features: Longest written constitution 470+ Articles. Blend of rigidity & flexibility."
-      ]
-    }
-  },
-  {
-    id: 'preamble',
-    title: { mizo: '2. Preamble', english: '2. The Preamble' },
-    notes: {
-      mizo: [
-        "Text: WE, THE PEOPLE OF INDIA, solemnly resolved to constitute India into...",
-        "Sovereign: Independent, ram dang thu hnuaiah a awm lo.",
-        "Socialist: 42nd Amendment 1976 belh. Democratic socialism.",
-        "Secular: 42nd Amendment 1976. State sakhua a nei lo.",
-        "Democratic: Mipui sorkar. Vote nei vek. Parliamentary democracy.",
-        "Republic: Thlan chhuah Head - President. Lal rochun a awm lo.",
-        "Justice: Social, Economic, Political.",
-        "Liberty: Ngaihtuahna, Sawi chhuah, Rin, Sakhua, Biak zalenna.",
-        "Equality: Status & Opportunity. Art 14-18.",
-        "Fraternity: Unauna. Mihring zahawmna, Ram pumkhatna.",
-        "Judicial View: Berubari 1960 - Part lo. Kesavananda 1973 - Part. Amend theih."
-      ],
-      english: [
-        "Text: WE, THE PEOPLE OF INDIA, having solemnly resolved to constitute India into...",
-        "Sovereign: Independent authority. Not subject to external control.",
-        "Socialist: Added by 42nd Amendment 1976. Democratic socialism.",
-        "Secular: Added by 42nd Amendment 1976. No state religion.",
-        "Democratic: Government by the people. Universal adult franchise.",
-        "Republic: Elected Head - President. No hereditary monarch.",
-        "Justice: Social, Economic, Political.",
-        "Liberty: Thought, Expression, Belief, Faith, Worship.",
-        "Equality: Status & Opportunity. Art 14-18.",
-        "Fraternity: Brotherhood. Dignity of individual, Unity & Integrity.",
-        "Cases: Berubari 1960 - Not part. Kesavananda 1973 - Part of Constitution."
-      ]
-    }
-  },
-  {
-    id: 'union-territory',
-    title: { mizo: '3. Union leh A Ram', english: '3. The Union and Its Territory' },
-    notes: {
-      mizo: [
-        "Art 1: India, that is Bharat, shall be a Union of States.",
-        "Art 2: Parliament in state thar admit/siam thei.",
-        "Art 3: State ramri, hming, area thlak thei. President recommendation ngai.",
-        "State thar piang hnu 1950: Andhra 1953, Maharashtra/Gujarat 1960, Nagaland 1963.",
-        "Reorganisation 1956: SRC - Fazl Ali Commission. Linguistic basis.",
-        "Mizoram: 1972 Jan 21 UT. 1987 Feb 20 State. Peace Accord 1986 June 30.",
-        "Telangana: 2014 June 2. Andhra Pradesh Reorganisation Act 2014. State 29-na.",
-        "J&K: Art 370 scrapped 2019 Aug 5. UT 2 ah then - J&K, Ladakh.",
-        "UT: 8 tunah. Delhi, Puducherry ah Assembly awm.",
-        "Special Status: Art 371 - Mizoram, Nagaland, etc."
-      ],
-      english: [
-        "Art 1: India, that is Bharat, shall be a Union of States.",
-        "Art 2: Parliament may admit/establish new states.",
-        "Art 3: Parliament can alter boundaries, name, area. Needs President recommendation.",
-        "New States after 1950: Andhra 1953, Maharashtra/Gujarat 1960, Nagaland 1963.",
-        "Reorganisation 1956: SRC - Fazl Ali Commission. Based on language.",
-        "Mizoram: UT on Jan 21, 1972. State on Feb 20, 1987. Peace Accord June 30, 1986.",
-        "Telangana: Formed June 2, 2014. AP Reorganisation Act 2014. 29th State.",
-        "J&K: Art 370 abrogated Aug 5, 2019. Bifurcated into 2 UTs - J&K, Ladakh.",
-        "UTs: 8 currently. Delhi, Puducherry have Legislative Assemblies.",
-        "Special Status: Art 371 - For Mizoram, Nagaland, etc."
-      ]
-    }
-  },
-  {
-    id: 'citizenship',
-    title: { mizo: '4. Citizenship', english: '4. Citizenship' },
-    notes: {
-      mizo: [
-        "Part II: Art 5-11. Citizenship Act 1955.",
-        "Acquisition: By Birth, Descent, Registration, Naturalisation, Incorporation.",
-        "Termination: Renunciation, Termination, Deprivation.",
-        "NRI: Non-Resident Indian. Indian citizen ramdang a awm.",
-        "PIO: Person of Indian Origin. Tunah OCI nen merge.",
-        "OCI: Overseas Citizen of India. Dual citizenship a ni lo. 2005 atangin.",
-        "CAA 2019: Citizenship Amendment Act. Hindu, Sikh, Buddhist, Jain, Parsi, Christian - Afg, Pak, Bdesh 2014 Dec 31 hma lut.",
-        "Rights nei lo aliens: Art 15, 16, 19, 29, 30 - Indian chauh."
-      ],
-      english: [
-        "Part II: Art 5-11. Citizenship Act 1955 governs.",
-        "Acquisition: By Birth, Descent, Registration, Naturalisation, Incorporation.",
-        "Termination: Renunciation, Termination, Deprivation.",
-        "NRI: Non-Resident Indian. Indian citizen residing abroad.",
-        "PIO: Person of Indian Origin. Now merged with OCI.",
-        "OCI: Overseas Citizen of India. Not dual citizenship. Started 2005.",
-        "CAA 2019: For Hindu, Sikh, Buddhist, Jain, Parsi, Christian from Afg, Pak, Bdesh entered before Dec 31, 2014.",
-        "Rights not to aliens: Art 15, 16, 19, 29, 30 - Only for citizens."
-      ]
-    }
-  },
-  {
-    id: 'fundamental-rights',
-    title: { mizo: '5. Fundamental Rights', english: '5. Fundamental Rights' },
-    notes: {
-      mizo: [
-        "Part III: Art 12-35. 'Magna Carta of India'. USA Bill of Rights atangin la.",
-        "Art 12: State - Central, State Govt, Local bodies, Other authorities.",
-        "Art 13: Judicial Review. FR kalh dan siam chuan void.",
-        "Art 14: Equality before law - UK. Equal protection - USA. Rule of Law.",
-        "Art 15: Thleidanna awm lo - Sakhua, Hnam, Chi, Mipa/Hmeichhia, Pian na.",
-        "Art 16: Sorkar hnathawh ah in ang. Reservation - SC 15%, ST 7.5%, OBC 27%, EWS 10%.",
-        "Art 17: Untouchability tih tawp. Civil Rights Act 1955.",
-        "Art 18: Title tih tawp. Bharat Ratna, Padma award title a ni lo.",
-        "Art 19: Zalenna 6 - Sawi, Inkhawm, Pawl, Zin, Chen, Eizawn. Reasonable restrictions awm.",
-        "Art 21: Nun leh mimal zalenna. Supreme Court in ti zau - Privacy, Education.",
-        "Art 21A: Zirna dikna kum 6-14 - 86th Amendment 2002. RTE Act 2009.",
-        "Art 23: Mihring sumdawn, nawr luihna khap.",
-        "Art 25-28: Sakhua zalenna. Secularism lungphum.",
-        "Art 32: Danpui venhimna. Dr. Ambedkar - 'Heart & Soul'. Writ 5 chi."
-      ],
-      english: [
-        "Part III: Art 12-35. 'Magna Carta of India'. Borrowed from USA Bill of Rights.",
-        "Art 12: State includes Central, State Govts, Local authorities, Other authorities.",
-        "Art 13: Judicial Review. Laws inconsistent with FR are void.",
-        "Art 14: Equality before law - UK. Equal protection of laws - USA. Rule of Law.",
-        "Art 15: No discrimination on Religion, Race, Caste, Sex, Place of birth.",
-        "Art 16: Equality in public employment. Reservation - SC 15%, ST 7.5%, OBC 27%, EWS 10%.",
-        "Art 17: Untouchability abolished. Protection of Civil Rights Act 1955.",
-        "Art 18: Titles abolished. Bharat Ratna, Padma awards not titles.",
-        "Art 19: Six Freedoms - Speech, Assembly, Association, Movement, Residence, Profession.",
-        "Art 21: Life & Personal Liberty. Expanded by SC - Right to privacy, education.",
-        "Art 21A: Right to Education 6-14 years - 86th Amendment 2002. RTE Act 2009.",
-        "Art 23: Prohibition of human trafficking, forced labour.",
-        "Art 25-28: Freedom of Religion. Basis of Secularism.",
-        "Art 32: Constitutional Remedies. Dr. Ambedkar called it 'Heart & Soul'. 5 Writs."
-      ]
-    }
-  },
-  {
-    id: 'dpsp',
-    title: { mizo: '6. DPSP', english: '6. DPSP' },
-    notes: {
-      mizo: [
-        "Part IV: Art 36-51. Ireland Constitution atangin la. Gandhian, Socialist, Liberal.",
-        "Art 37: Court ah khin theih loh. Sorkar kalphung ah bulpui ber.",
-        "Gandhian: Art 40 - Village Panchayat. Art 43 - Cottage industry. Art 46 - SC/ST chawikan. Art 47 - Zu khap.",
-        "Socialist: Art 38 - Welfare state. Art 39 - Equal pay, Resources sem. Art 41 - Hnathawh dikna.",
-        "Liberal: Art 44 - Uniform Civil Code. Art 45 - Naupang enkawl. Art 48 - Ran vulh. Art 50 - Judiciary hrang.",
-        "FR vs DPSP: Champakam 1951 - FR lal. Golaknath 1967 - FR tihdanglam theih loh. Kesavananda 1973 - Inrem.",
-        "Minerva Mills 1980: Balance siam. FR leh DPSP inbuk tawk."
-      ],
-      english: [
-        "Part IV: Art 36-51. Borrowed from Ireland. Gandhian, Socialist, Liberal principles.",
-        "Art 37: Non-justiciable. Fundamental in governance of country.",
-        "Gandhian: Art 40 - Village Panchayats. Art 43 - Cottage industries. Art 46 - SC/ST promotion. Art 47 - Prohibition.",
-        "Socialist: Art 38 - Welfare state. Art 39 - Equal pay, Resource distribution. Art 41 - Right to work.",
-        "Liberal: Art 44 - Uniform Civil Code. Art 45 - Early childhood care. Art 48 - Agriculture. Art 50 - Separation of Judiciary.",
-        "FR vs DPSP: Champakam 1951 - FR prevail. Golaknath 1967 - FR unamendable. Kesavananda 1973 - Harmony.",
-        "Minerva Mills 1980: Balance between FR & DPSP. Both equally important."
-      ]
-    }
-  },
-  {
-    id: 'fundamental-duties',
-    title: { mizo: '7. Fundamental Duties', english: '7. Fundamental Duties' },
-    notes: {
-      mizo: [
-        "Part IVA: Art 51A. 42nd Amendment 1976 belh. USSR atangin la.",
-        "11 Duties: Constitution zah, National Flag/Anthem zah, India zalenna sualtu chawimawi.",
-        "Ram pumkhatna vawng, Hmeichhia zah, Ramngaw humhalh, Science ngaihsang.",
-        "Public property humhalh, Ram humhim, Naupang kum 6-14 zir tir - 86th Amendment 2002.",
-        "Khin theih loh. Mahse dan in enforce thei."
-      ],
-      english: [
-        "Part IVA: Art 51A. Added by 42nd Amendment 1976. Borrowed from USSR.",
-        "11 Duties: Respect Constitution, National Flag & Anthem, Cherish freedom struggle.",
-        "Uphold unity, Renounce practices derogatory to women, Protect environment, Develop scientific temper.",
-        "Safeguard public property, Defend country, Provide education to child 6-14 - 86th Amendment 2002.",
-        "Non-justiciable. But enforceable by law."
-      ]
-    }
-  },
-  {
-    id: 'union-executive',
-    title: { mizo: '8. Union Executive', english: '8. Union Executive' },
-    notes: {
-      mizo: [
-        "President Art 52: Head of State. First Citizen. Supreme Commander.",
-        "Election: Electoral College - Elected MP + Elected MLA. Proportional representation.",
-        "Powers: Executive Art 53, Legislative - Bill sign, Ordinance Art 123, Pardoning Art 72.",
-        "Veto: Absolute - Hnawl. Suspensive - Thawn let. Pocket - Reply lo. Qualified a awm lo.",
-        "Vice-President Art 63: Rajya Sabha Chairman. Election - MP zawng zawng.",
-        "PM Art 74: Real executive. Council of Ministers head. Lok Sabha majority.",
-        "Council of Ministers Art 75: Cabinet, MoS, Deputy. Collective responsibility.",
-        "Attorney General Art 76: Govt lawyer lian ber. Qualification - SC Judge.",
-        "CAG Art 148: Sorkar sum enfiah. 'Guardian of Public Purse'."
-      ],
-      english: [
-        "President Art 52: Head of State. First Citizen. Supreme Commander of Armed Forces.",
-        "Election: Electoral College - Elected MPs + Elected MLAs. Proportional representation.",
-        "Powers: Executive Art 53, Legislative - Assent to bills, Ordinance Art 123, Pardoning Art 72.",
-        "Veto: Absolute - Withhold. Suspensive - Return. Pocket - No action. No Qualified veto.",
-        "Vice-President Art 63: Ex-officio Rajya Sabha Chairman. Elected by MPs only.",
-        "PM Art 74: Real executive. Head of Council of Ministers. Leader of Lok Sabha majority.",
-        "Council of Ministers Art 75: Cabinet, MoS, Deputy Ministers. Collective responsibility.",
-        "Attorney General Art 76: Highest law officer. Qualification same as SC Judge.",
-        "CAG Art 148: Audits Govt accounts. 'Guardian of Public Purse'. Independent office."
+        '**1. Regulating Act 1773 - Warren Hastings**',
+        '**Governor-General Bengal:** Warren Hastings 1st. Council 4 members.',
+        '**Supreme Court Calcutta 1774:** 1 Chief Justice + 3 judges. Sir Elijah Impey 1st CJ.',
+        '**Court of Directors:** Company affairs report British Govt.',
+        '**Defects:** No veto power Governor-General. No control Bombay/Madras.',
+        '**MPSC Point:** 1st step constitutional development. Company political.',
+        '',
+        '**2. Pitt\'s India Act 1784 - Lord Cornwallis**',
+        '**Dual Control:** Company = Commercial. Board of Control = Political 6 members.',
+        '**Governor-General Council:** Reduced 4 to 3. Bombay/Madras subordinate.',
+        '**MPSC Point:** Company Political affairs Govt control.',
+        '',
+        '**3. Charter Acts**',
+        '**1793 Cornwallis:** Company trade monopoly 20 years extended.',
+        '**1813 Lord Minto:** Trade monopoly ended except tea & China. Christian missionaries allowed. Rs 1 lakh education.',
+        '**1833 Lord William Bentinck:** Governor-General of India. Bengal → India. Law member Macaulay. Slavery abolished 1843. Company commercial body ended. Govt body.',
+        '**1853 Lord Dalhousie:** Legislative & Executive separated. 6 Legislative Councillors. Open competition Civil Service. Local representation added.',
+        '',
+        '**4. Govt of India Act 1858 - Lord Canning 1st Viceroy**',
+        '**After 1857 Revolt:** Company rule ended. Crown direct rule.',
+        '**Viceroy:** Lord Canning Governor-General + Viceroy Crown representative.',
+        '**Secretary of State India:** British Cabinet member. India Council 15 members advisory.',
+        '**Board of Control & Court Directors:** Abolished.',
+        '',
+        '**5. Indian Councils Acts**',
+        '**1861 Lord Canning:** Portfolio system. Legislative Councils Bombay/Madras 1862. Non-official members nomination. Ordinance power Viceroy.',
+        '**1892 Lord Lansdowne:** Indirect election introduced. Budget discussion allowed. Questions asked.',
+        '**1909 Morley-Minto Lord Minto:** Separate Electorate Muslims. Communalism legal. Satyendra Sinha 1st Indian Viceroy Council.',
+        '',
+        '**6. Govt of India Act 1919 - Lord Chelmsford**',
+        '**Montagu-Chelmsford Reforms:** Secretary State Montagu. Responsible Govt gradual.',
+        '**Dyarchy Provinces:** Reserved - Governor. Transferred - Indian Ministers. Subjects divided.',
+        '**Bicameral Centre:** Council of State + Legislative Assembly. Direct election.',
+        '**Communal Electorate:** Sikhs, Indian Christians, Anglo-Indians, Europeans extended.',
+        '**Defects:** Dyarchy failed. Finance reserved. Governor veto.',
+        '',
+        '**7. Govt of India Act 1935 - Lord Willingdon**',
+        '**All-India Federation:** Provinces + Princely States. Never came. Princes no join.',
+        '**Provincial Autonomy:** Dyarchy abolished provinces. Ministers responsible Legislature.',
+        '**Dyarchy Centre:** Federal List, Provincial List, Concurrent List. Introduced but not worked.',
+        '**Bicameral Provinces:** 6 provinces - Bengal, Bombay, Madras, Bihar, Assam, UP.',
+        '**Federal Court 1937:** Delhi. 1 CJ + 2 judges. Disputes federal.',
+        '**RBI 1935:** Reserve Bank established. Burma separated 1937.',
+        '**Public Service Commission:** Federal PSC + Provincial PSC.',
+        '**Emergency:** Governor-General special powers.',
+        '**MPSC Point:** Longest Act 321 sections + 10 schedules. Blueprint Indian Constitution 60%.',
+        '',
+        '**8. Indian Independence Act 1947 - Lord Mountbatten**',
+        '**20 Feb 1947:** Attlee announcement. Power transfer June 1948.',
+        '**3 June Plan:** Mountbatten Plan. Partition India-Pakistan.',
+        '**Act 18 July 1947:** 15 Aug 1947 Independence. 2 Dominions - India, Pakistan.',
+        '**Provisions:** Crown rule end. Constituent Assembly sovereign. Governor-General each Dominion. Till Constitution 1950 Govt of India Act 1935 worked.',
+        '**Radcliffe Line:** Boundary Commission. Punjab + Bengal partition.',
+        '',
+        '**9. Important Viceroys MPSC**',
+        '**Lord Canning 1856-62:** 1857 Revolt. 1st Viceroy 1858. Universities Calcutta, Bombay, Madras 1857.',
+        '**Lord Lytton 1876-80:** Royal Titles Act 1876. Delhi Durbar 1877 Queen Empress. Vernacular Press Act 1878. Arms Act 1878. 2nd Afghan War.',
+        '**Lord Ripon 1880-84:** Liberal. Repeal Vernacular Press 1882. Local Self Govt 1882. 1st Factory Act 1881. Ilbert Bill controversy.',
+        '**Lord Curzon 1899-1905:** Partition Bengal 1905. Ancient Monuments Act 1904. Police Commission. Universities Act 1904. Delhi Durbar 1903.',
+        '**Lord Hardinge 1910-16:** Delhi Capital 1911. Partition Bengal annulled 1911. Bomb attack 1912.',
+        '**Lord Chelmsford 1916-21:** 1919 Act. Rowlatt Act 1919. Jallianwala 1919. Khilafat NCM 1920.',
+        '**Lord Irwin 1926-31:** Simon Commission 1927. Dandi March 1930. Gandhi-Irwin Pact 1931. 1st RTC 1930.',
+        '**Lord Willingdon 1931-36:** 2nd RTC 1931. Communal Award 1932. Poona Pact 1932. 3rd RTC 1932.',
+        '**Lord Linlithgow 1936-44:** Longest 8 years. 1935 Act. WWII 1939. Quit India 1942. Cripps Mission 1942.',
+        '**Lord Wavell 1944-47:** Shimla Conference 1945. Cabinet Mission 1946. Interim Govt 1946. Direct Action Day 16 Aug 1946.',
+        '**Lord Mountbatten 1947-48:** Last Viceroy. Partition. 1st Governor-General Independent India till June 1948.'
       ]
     }
   },
    {
-    id: 'parliament',
-    title: { mizo: '9. Parliament', english: '9. Parliament' },
+    id: 'pol-2',
+    title: {
+      mizo: 'Chapter 2: Constitution Making',
+      english: 'Chapter 2: Constitution Making'
+    },
     notes: {
       mizo: [
-        "Art 79: President + Lok Sabha + Rajya Sabha.",
-        "Lok Sabha: 543 elected. Max 550. Term 5 years. Adult franchise.",
-        "Rajya Sabha: 245 max - 233 elected, 12 nominated. Term 6 years. 1/3 retire every 2 years.",
-        "Speaker: Om Birla 17th LS. Casting vote. Resign to Deputy Speaker.",
-        "Chairman RS: VP of India. Jagdeep Dhankhar tunah.",
-        "Sessions: Budget, Monsoon, Winter. Max 6 months gap - Art 85.",
-        "Bill: Ordinary, Money Art 110, Financial, Constitutional Art 368.",
-        "Joint Sitting Art 108: Speaker preside. 3 times only - Dowry 1961, Banking 1978, POTA 2002.",
-        "Money Bill: Lok Sabha chauh. RS recommend chauh thei 14 days.",
-        "Parliamentary Committees: PAC, Estimates, Public Undertakings."
+        '**1. Demand & Formation**',
+        '**M.N. Roy 1934:** 1st demand Constituent Assembly. Communist leader.',
+        '**INC Lucknow 1935:** Official demand. Jawaharlal Nehru.',
+        '**August Offer 1940:** Linlithgow. Dominion status post-war. Expansion Viceroy Council. Rejected.',
+        '**Cripps Mission 1942:** Stafford Cripps. Dominion status + Constituent Assembly post-war. Congress rejected - no immediate power. Muslim League rejected - no Pakistan.',
+        '**Cabinet Mission 1946:** Pethick Lawrence, Stafford Cripps, A.V. Alexander. 16 May 1946.',
+        '   - **Rejected Pakistan:** But grouping allowed. Weak centre. Provinces strong.',
+        '   - **Constituent Assembly:** 389 members. 296 British India, 93 Princely States.',
+        '',
+        '**2. Constituent Assembly**',
+        '**Election July-Aug 1946:** Indirect. Provincial Assemblies elected. 1 per 10 lakh population.',
+        '**Seats:** Congress 208, Muslim League 73, Others 15. Princely 93 no join initially.',
+        '**First Meeting 9 Dec 1946:** Sachchidananda Sinha temporary President. Boycott Muslim League.',
+        '**11 Dec 1946:** Dr Rajendra Prasad President. H.C. Mukherjee Vice-President.',
+        '**13 Dec 1946:** Objective Resolution Nehru. Preamble basis.',
+        '**22 July 1947:** National Flag adopted. 24 Jan 1950 National Anthem + Song.',
+        '**Partition Effect:** 299 members left. 229 provinces, 70 princely.',
+        '',
+        '**3. Committees**',
+        '**Drafting Committee 29 Aug 1947:** Chairman Dr B.R. Ambedkar. Father Indian Constitution.',
+        '   - **Members:** N. Gopalaswami Ayyangar, Alladi Krishnaswami Ayyar, K.M. Munshi, Syed Mohammad Saadullah, N. Madhava Rau, T.T. Krishnamachari replaced D.P. Khaitan died.',
+        '**Union Powers:** Jawaharlal Nehru. **Union Constitution:** Nehru.',
+        '**Provincial Constitution:** Sardar Patel. **States:** Patel.',
+        '**Fundamental Rights:** J.B. Kripalani. **Minorities:** H.C. Mukherjee.',
+        '**Rules of Procedure:** Rajendra Prasad. **Steering:** Prasad.',
+        '',
+        '**4. Enactment Timeline**',
+        '**Constitutional Advisor:** B.N. Rau. Prepared draft Oct 1947. Visited USA, Canada, Ireland, UK.',
+        '**Draft 1:** Feb 1948 published. 8 months public discussion.',
+        '**Draft 2:** Oct 1948. Drafting Committee revised.',
+        '**3 Readings:** 1st Nov 1948 general, 2nd Nov 1948-17 Oct 1949 clause by clause, 3rd Nov 1949 final.',
+        '**Total Time:** 2 years 11 months 18 days. 11 sessions. 165 sitting days. 114 days Constitution draft.',
+        '**Cost:** Rs 64 lakh. **Pages:** 251 parchment. **Articles:** 395 original. Now 470.',
+        '**Calligraphy:** Prem Behari Narain Raizada. Italics. 6 months. No fee, wrote name end.',
+        '**Decoration:** Nandalal Bose Shantiniketan. 22 parts illustrated. Borders Vedic to Modern.',
+        '**Hindi Translation:** Vasant Krishan Vaidya. Calligraphed Vasant Vaidya.',
+        '',
+        '**5. Enforcement**',
+        '**26 Nov 1949:** Adoption. Some provisions immediate - Citizenship, Elections, Provisional Parliament.',
+        '**26 Jan 1950:** Full enforcement. Chosen Purna Swaraj Day 1930 Lahore.',
+        '**26 Jan:** Republic Day. Dr Rajendra Prasad 1st President. Govt of India Act 1935 repealed.',
+        '**MPSC Point:** Ambedkar Chairman Drafting. B.N. Rau Constitutional Advisor. 26 Nov Constitution Day. 26 Jan Republic Day.'
       ],
       english: [
-        "Art 79: President + Lok Sabha + Rajya Sabha.",
-        "Lok Sabha: 543 elected. Max 550. 5 year term. Universal adult franchise.",
-        "Rajya Sabha: Max 245 - 233 elected, 12 nominated. 6 year term. 1/3 retire every 2 years.",
-        "Speaker: Om Birla 17th LS. Casting vote. Resigns to Deputy Speaker.",
-        "Chairman RS: VP of India. Jagdeep Dhankhar currently.",
-        "Sessions: Budget, Monsoon, Winter. Max 6 months gap - Art 85.",
-        "Bills: Ordinary, Money Art 110, Financial, Constitutional Art 368.",
-        "Joint Sitting Art 108: Speaker presides. Only 3 times - Dowry 1961, Banking 1978, POTA 2002.",
-        "Money Bill: Only in Lok Sabha. RS can only recommend within 14 days.",
-        "Parliamentary Committees: PAC, Estimates, Public Undertakings."
+        '**1. Demand & Formation**',
+        '**M.N. Roy 1934:** 1st demand Constituent Assembly. Communist leader.',
+        '**INC Lucknow 1935:** Official demand. Jawaharlal Nehru.',
+        '**August Offer 1940:** Linlithgow. Dominion status post-war. Expansion Viceroy Council. Rejected.',
+        '**Cripps Mission 1942:** Stafford Cripps. Dominion status + Constituent Assembly post-war. Congress rejected - no immediate power. Muslim League rejected - no Pakistan.',
+        '**Cabinet Mission 1946:** Pethick Lawrence, Stafford Cripps, A.V. Alexander. 16 May 1946.',
+        '   - **Rejected Pakistan:** But grouping allowed. Weak centre. Provinces strong.',
+        '   - **Constituent Assembly:** 389 members. 296 British India, 93 Princely States.',
+        '',
+        '**2. Constituent Assembly**',
+        '**Election July-Aug 1946:** Indirect. Provincial Assemblies elected. 1 per 10 lakh population.',
+        '**Seats:** Congress 208, Muslim League 73, Others 15. Princely 93 no join initially.',
+        '**First Meeting 9 Dec 1946:** Sachchidananda Sinha temporary President. Boycott Muslim League.',
+        '**11 Dec 1946:** Dr Rajendra Prasad President. H.C. Mukherjee Vice-President.',
+        '**13 Dec 1946:** Objective Resolution Nehru. Preamble basis.',
+        '**22 July 1947:** National Flag adopted. 24 Jan 1950 National Anthem + Song.',
+        '**Partition Effect:** 299 members left. 229 provinces, 70 princely.',
+        '',
+        '**3. Committees**',
+        '**Drafting Committee 29 Aug 1947:** Chairman Dr B.R. Ambedkar. Father Indian Constitution.',
+        '   - **Members:** N. Gopalaswami Ayyangar, Alladi Krishnaswami Ayyar, K.M. Munshi, Syed Mohammad Saadullah, N. Madhava Rau, T.T. Krishnamachari replaced D.P. Khaitan died.',
+        '**Union Powers:** Jawaharlal Nehru. **Union Constitution:** Nehru.',
+        '**Provincial Constitution:** Sardar Patel. **States:** Patel.',
+        '**Fundamental Rights:** J.B. Kripalani. **Minorities:** H.C. Mukherjee.',
+        '**Rules of Procedure:** Rajendra Prasad. **Steering:** Prasad.',
+        '',
+        '**4. Enactment Timeline**',
+        '**Constitutional Advisor:** B.N. Rau. Prepared draft Oct 1947. Visited USA, Canada, Ireland, UK.',
+        '**Draft 1:** Feb 1948 published. 8 months public discussion.',
+        '**Draft 2:** Oct 1948. Drafting Committee revised.',
+        '**3 Readings:** 1st Nov 1948 general, 2nd Nov 1948-17 Oct 1949 clause by clause, 3rd Nov 1949 final.',
+        '**Total Time:** 2 years 11 months 18 days. 11 sessions. 165 sitting days. 114 days Constitution draft.',
+        '**Cost:** Rs 64 lakh. **Pages:** 251 parchment. **Articles:** 395 original. Now 470.',
+        '**Calligraphy:** Prem Behari Narain Raizada. Italics. 6 months. No fee, wrote name end.',
+        '**Decoration:** Nandalal Bose Shantiniketan. 22 parts illustrated. Borders Vedic to Modern.',
+        '**Hindi Translation:** Vasant Krishan Vaidya. Calligraphed Vasant Vaidya.',
+        '',
+        '**5. Enforcement**',
+        '**26 Nov 1949:** Adoption. Some provisions immediate - Citizenship, Elections, Provisional Parliament.',
+        '**26 Jan 1950:** Full enforcement. Chosen Purna Swaraj Day 1930 Lahore.',
+        '**26 Jan:** Republic Day. Dr Rajendra Prasad 1st President. Govt of India Act 1935 repealed.',
+        '**MPSC Point:** Ambedkar Chairman Drafting. B.N. Rau Constitutional Advisor. 26 Nov Constitution Day. 26 Jan Republic Day.'
+      ]
+    }
+  },
+     {
+    id: 'pol-3',
+    title: {
+      mizo: 'Chapter 3: Preamble',
+      english: 'Chapter 3: Preamble'
+    },
+    notes: {
+      mizo: [
+        '**1. Text & Amendment**',
+        '**Original 1949:** SOVEREIGN DEMOCRATIC REPUBLIC.',
+        '**42nd Amendment 1976:** Added SOCIALIST SECULAR INTEGRITY. Indira Gandhi. Mini Constitution.',
+        '**Present:** SOVEREIGN SOCIALIST SECULAR DEMOCRATIC REPUBLIC.',
+        '',
+        '**2. Key Words Meaning**',
+        '**WE, THE PEOPLE:** Constitution from people. Not King/Parliament. Popular sovereignty.',
+        '**Sovereign:** Internal + External independent. No authority above. UN member. Can acquire/cede territory.',
+        '**Socialist:** Democratic socialism. Not Communist. Mixed economy. Public + Private. 42nd added.',
+        '**Secular:** No state religion. Sarva Dharma Sambhava. Art 25-28. Positive secularism. 42nd added.',
+        '**Democratic:** Govt by people. Direct + Indirect. Universal adult franchise Art 326. Parliamentary. Responsible Govt.',
+        '**Republic:** Head elected. President indirect. No hereditary. 5 years term.',
+        '',
+        '**3. Objectives**',
+        '**JUSTICE:** Social - no discrimination caste/religion. Economic - no wealth concentration Art 39. Political - equal vote Art 326.',
+        '**LIBERTY:** Thought, Expression, Belief, Faith, Worship. Art 19-22. Not absolute. Reasonable restrictions.',
+        '**EQUALITY:** Status + Opportunity. Art 14-18. Rule of law. No privilege. Protective discrimination allowed.',
+        '**FRATERNITY:** Brotherhood. Dignity individual + Unity integrity Nation. Integrity added 42nd.',
+        '',
+        '**4. Nature & Status**',
+        '**Berubari Union 1960:** Not part Constitution. SC.',
+        '**Kesavananda Bharati 1973:** Part of Constitution. Basic Structure. Can amend but not basic features.',
+        '**LIC of India 1995:** Integral part. Amendable subject to basic structure.',
+        '**Objective Resolution:** Nehru 13 Dec 1946. Preamble based. India Independent Sovereign Republic. Justice, Equality, Liberty. Adequate safeguards minorities.',
+        '**MPSC Point:** 42nd added 3 words. Kesavananda basic structure. Nehru Objective Resolution.'
+      ],
+      english: [
+        '**1. Text & Amendment**',
+        '**Original 1949:** SOVEREIGN DEMOCRATIC REPUBLIC.',
+        '**42nd Amendment 1976:** Added SOCIALIST SECULAR INTEGRITY. Indira Gandhi. Mini Constitution.',
+        '**Present:** SOVEREIGN SOCIALIST SECULAR DEMOCRATIC REPUBLIC.',
+        '',
+        '**2. Key Words Meaning**',
+        '**WE, THE PEOPLE:** Constitution from people. Not King/Parliament. Popular sovereignty.',
+        '**Sovereign:** Internal + External independent. No authority above. UN member. Can acquire/cede territory.',
+        '**Socialist:** Democratic socialism. Not Communist. Mixed economy. Public + Private. 42nd added.',
+        '**Secular:** No state religion. Sarva Dharma Sambhava. Art 25-28. Positive secularism. 42nd added.',
+        '**Democratic:** Govt by people. Direct + Indirect. Universal adult franchise Art 326. Parliamentary. Responsible Govt.',
+        '**Republic:** Head elected. President indirect. No hereditary. 5 years term.',
+        '',
+        '**3. Objectives**',
+        '**JUSTICE:** Social - no discrimination caste/religion. Economic - no wealth concentration Art 39. Political - equal vote Art 326.',
+        '**LIBERTY:** Thought, Expression, Belief, Faith, Worship. Art 19-22. Not absolute. Reasonable restrictions.',
+        '**EQUALITY:** Status + Opportunity. Art 14-18. Rule of law. No privilege. Protective discrimination allowed.',
+        '**FRATERNITY:** Brotherhood. Dignity individual + Unity integrity Nation. Integrity added 42nd.',
+        '',
+        '**4. Nature & Status**',
+        '**Berubari Union 1960:** Not part Constitution. SC.',
+        '**Kesavananda Bharati 1973:** Part of Constitution. Basic Structure. Can amend but not basic features.',
+        '**LIC of India 1995:** Integral part. Amendable subject to basic structure.',
+        '**Objective Resolution:** Nehru 13 Dec 1946. Preamble based. India Independent Sovereign Republic. Justice, Equality, Liberty. Adequate safeguards minorities.',
+        '**MPSC Point:** 42nd added 3 words. Kesavananda basic structure. Nehru Objective Resolution.'
       ]
     }
   },
   {
-    id: 'state-executive',
-    title: { mizo: '10. State Executive', english: '10. State Executive' },
+    id: 'pol-4',
+    title: {
+      mizo: 'Chapter 4: Fundamental Rights Art 12-35',
+      english: 'Chapter 4: Fundamental Rights Art 12-35'
+    },
     notes: {
       mizo: [
-        "Governor Art 153: State constitutional head. President appoint 5 years.",
-        "Powers: Executive, Legislative - Ordinance Art 213, Pardoning Art 161.",
-        "CM Art 164: Real executive. Assembly majority leader. Governor appoint.",
-        "Council of Ministers Art 164: CM + Ministers. Collective responsibility to Assembly.",
-        "Advocate General Art 165: State lawyer lian ber. Governor appoint."
+        '**1. Art 12-13 Definition**',
+        '**Art 12 State:** Govt + Parliament + State Leg + Local authority + Other authority. Ajay Hasia 1981 test - deep pervasive control.',
+        '**Art 13 Laws Inconsistent:** Judicial Review. Pre-Constitution void. Post-Constitution void ab initio. Doctrine Eclipse, Severability, Waiver no.',
+        '',
+        '**2. Right to Equality Art 14-18**',
+        '**Art 14:** Equality before law British - no privilege. Equal protection laws American - equals treated equal. Reasonable classification - intelligible differentia + rational nexus.',
+        '**Art 15:** Prohibition discrimination religion, race, caste, sex, place birth. Art 15(3) women/children, 15(4) SEBC 1st 1951, 15(5) education 93rd 2005, 15(6) EWS 103rd 2019.',
+        '**Art 16:** Equality public employment. Domicile no ground. Art 16(4) reservation SC/ST/OBC. 16(4A) promotion SC/ST 77th 1995. 16(4B) carry forward 81st 2000. 16(6) EWS 10% 103rd 2019.',
+        '**Art 17:** Untouchability abolished. Civil Rights Act 1955. Punishable.',
+        '**Art 18:** Titles abolished. Bharat Ratna, Padma not title Balaji 1996. Foreign titles need President consent.',
+        '',
+        '**3. Right to Freedom Art 19-22**',
+        '**Art 19(1):** 6 freedoms - Speech Art 19(1)(a), Assembly (b) peaceful unarmed, Association (c), Movement (d) India, Residence (e), Profession (g). Art 19(1)(f) Property deleted 44th 1978 now Art 300A.',
+        '**Restrictions Art 19(2-6):** Sovereignty integrity, Security state, Friendly relations foreign, Public order, Decency morality, Contempt court, Defamation, Incitement offence.',
+        '**Art 20:** Ex-post facto - no higher punishment. Double jeopardy - no punish twice same offence. Self-incrimination - no compel witness against self.',
+        '**Art 21:** Life & Personal Liberty. Gopalan 1950 procedure established law. Maneka 1978 due reasonable fair just. Expansive - Privacy Puttaswamy 2017, Livelihood, Shelter, Health, Education, Clean env, Speedy trial.',
+        '**Art 21A:** RTE 6-14 years free compulsory. 86th 2002. RTE Act 2009. 25% private schools EWS.',
+        '**Art 22:** Arrest protection. Informed grounds, Lawyer, Magistrate 24hrs, Not extended. Preventive Detention - 3 months max, Advisory Board, Communicate grounds.',
+        '',
+        '**4. Art 23-24 Exploitation**',
+        '**Art 23:** Traffic human, Begar forced labour prohibited. Exception public purpose. Immoral Traffic Act 1956, Bonded Labour Act 1976.',
+        '**Art 24:** Child labour <14 factories, mines, hazardous. Child Labour Amendment 2016 - all occupations except family.',
+        '',
+        '**5. Art 25-28 Religion**',
+        '**Art 25:** Freedom conscience, profess, practice, propagate. Public order, morality, health, other FR. Sikhs kirpan allowed.',
+        '**Art 26:** Denomination manage religious affairs, establish institutions, own property, administer.',
+        '**Art 27:** No tax religious promotion. Fee allowed.',
+        '**Art 28:** No religious instruction state institutions. Aided institutions no compel.',
+        '',
+        '**6. Art 29-30 Cultural**',
+        '**Art 29:** Minority language script culture conserve. No discrimination admission state institutions.',
+        '**Art 30:** Minorities establish administer educational institutions. TMA Pai 2002 - unaided no regulation admission except merit.',
+        '',
+        '**7. Art 32 Remedies**',
+        '**Heart & Soul Ambedkar:** SC enforce FR. Writs 5 - Habeas Corpus produce body, Mandamus we command, Prohibition higher to lower stop, Certiorari quash, Quo Warranto what authority.',
+        '**Art 226 HC:** Writs FR + legal rights. Wider than SC.',
+        '**PIL:** Public Interest Litigation. Hussainara Khatoon 1979, S.P. Gupta 1981. Locus standi relaxed.',
+        '**MPSC Point:** Art 21 most important. Art 32 heart soul. Art 19(1)(f) deleted 44th. EWS 103rd.'
       ],
       english: [
-        "Governor Art 153: Constitutional head of State. Appointed by President for 5 years.",
-        "Powers: Executive, Legislative - Ordinance Art 213, Pardoning Art 161.",
-        "CM Art 164: Real executive. Leader of Assembly majority. Appointed by Governor.",
-        "Council of Ministers Art 164: CM + Ministers. Collectively responsible to Assembly.",
-        "Advocate General Art 165: Highest law officer of State. Appointed by Governor."
+        '**1. Art 12-13 Definition**',
+        '**Art 12 State:** Govt + Parliament + State Leg + Local authority + Other authority. Ajay Hasia 1981 test - deep pervasive control.',
+        '**Art 13 Laws Inconsistent:** Judicial Review. Pre-Constitution void. Post-Constitution void ab initio. Doctrine Eclipse, Severability, Waiver no.',
+        '',
+        '**2. Right to Equality Art 14-18**',
+        '**Art 14:** Equality before law British - no privilege. Equal protection laws American - equals treated equal. Reasonable classification - intelligible differentia + rational nexus.',
+        '**Art 15:** Prohibition discrimination religion, race, caste, sex, place birth. Art 15(3) women/children, 15(4) SEBC 1st 1951, 15(5) education 93rd 2005, 15(6) EWS 103rd 2019.',
+        '**Art 16:** Equality public employment. Domicile no ground. Art 16(4) reservation SC/ST/OBC. 16(4A) promotion SC/ST 77th 1995. 16(4B) carry forward 81st 2000. 16(6) EWS 10% 103rd 2019.',
+        '**Art 17:** Untouchability abolished. Civil Rights Act 1955. Punishable.',
+        '**Art 18:** Titles abolished. Bharat Ratna, Padma not title Balaji 1996. Foreign titles need President consent.',
+        '',
+        '**3. Right to Freedom Art 19-22**',
+        '**Art 19(1):** 6 freedoms - Speech Art 19(1)(a), Assembly (b) peaceful unarmed, Association (c), Movement (d) India, Residence (e), Profession (g). Art 19(1)(f) Property deleted 44th 1978 now Art 300A.',
+        '**Restrictions Art 19(2-6):** Sovereignty integrity, Security state, Friendly relations foreign, Public order, Decency morality, Contempt court, Defamation, Incitement offence.',
+        '**Art 20:** Ex-post facto - no higher punishment. Double jeopardy - no punish twice same offence. Self-incrimination - no compel witness against self.',
+        '**Art 21:** Life & Personal Liberty. Gopalan 1950 procedure established law. Maneka 1978 due reasonable fair just. Expansive - Privacy Puttaswamy 2017, Livelihood, Shelter, Health, Education, Clean env, Speedy trial.',
+        '**Art 21A:** RTE 6-14 years free compulsory. 86th 2002. RTE Act 2009. 25% private schools EWS.',
+        '**Art 22:** Arrest protection. Informed grounds, Lawyer, Magistrate 24hrs, Not extended. Preventive Detention - 3 months max, Advisory Board, Communicate grounds.',
+        '',
+        '**4. Art 23-24 Exploitation**',
+        '**Art 23:** Traffic human, Begar forced labour prohibited. Exception public purpose. Immoral Traffic Act 1956, Bonded Labour Act 1976.',
+        '**Art 24:** Child labour <14 factories, mines, hazardous. Child Labour Amendment 2016 - all occupations except family.',
+        '',
+        '**5. Art 25-28 Religion**',
+        '**Art 25:** Freedom conscience, profess, practice, propagate. Public order, morality, health, other FR. Sikhs kirpan allowed.',
+        '**Art 26:** Denomination manage religious affairs, establish institutions, own property, administer.',
+        '**Art 27:** No tax religious promotion. Fee allowed.',
+        '**Art 28:** No religious instruction state institutions. Aided institutions no compel.',
+        '',
+        '**6. Art 29-30 Cultural**',
+        '**Art 29:** Minority language script culture conserve. No discrimination admission state institutions.',
+        '**Art 30:** Minorities establish administer educational institutions. TMA Pai 2002 - unaided no regulation admission except merit.',
+        '',
+        '**7. Art 32 Remedies**',
+        '**Heart & Soul Ambedkar:** SC enforce FR. Writs 5 - Habeas Corpus produce body, Mandamus we command, Prohibition higher to lower stop, Certiorari quash, Quo Warranto what authority.',
+        '**Art 226 HC:** Writs FR + legal rights. Wider than SC.',
+        '**PIL:** Public Interest Litigation. Hussainara Khatoon 1979, S.P. Gupta 1981. Locus standi relaxed.',
+        '**MPSC Point:** Art 21 most important. Art 32 heart soul. Art 19(1)(f) deleted 44th. EWS 103rd.'
       ]
     }
   },
   {
-    id: 'local-government',
-    title: { mizo: '11. Local Government', english: '11. Local Government' },
+    id: 'pol-5',
+    title: {
+      mizo: 'Chapter 5: Union & Its Territory Art 1-4',
+      english: 'Chapter 5: Union & Its Territory Art 1-4'
+    },
     notes: {
       mizo: [
-        "73rd Amendment 1992: Panchayati Raj. Part IX, 11th Schedule, 29 subjects.",
-        "3 Tier: Gram Panchayat, Panchayat Samiti, Zila Parishad.",
-        "74th Amendment 1992: Municipalities. Part IXA, 12th Schedule, 18 subjects.",
-        "3 Types: Nagar Panchayat, Municipal Council, Municipal Corporation.",
-        "Reservation: SC/ST population proportion. Women 1/3 - Art 243D, 243T.",
-        "State Finance Commission Art 243I: 5 years tin siam.",
-        "State Election Commission Art 243K: Panchayat/Municipality election."
+        '**1. Art 1 Name & Territory**',
+        '**Art 1(1):** India, that is Bharat, shall be Union of States.',
+        '**Art 1(2):** States + Union Territories. **Art 1(3):** Territory = States + UTs + Acquired.',
+        '**Union of States:** Indestructible Union of destructible States. Ambedkar. USA destructible Union indestructible States.',
+        '**Present:** 28 States + 8 UTs = 36. J&K reorganised 31 Oct 2019. J&K UT + Ladakh UT.',
+        '',
+        '**2. Art 2 Admission New States**',
+        '**Parliament power:** Admit new states. Sikkim 36th 26 Apr 1975 35th Amendment.',
+        '**Art 3 Formation:** Parliament law form new state, alter area, boundaries, name.',
+        '**Procedure:** President recommendation. State Legislature opinion refer - not binding. Simple majority Parliament.',
+        '**New States:** Andhra 1953 1st linguistic, Gujarat/Maharashtra 1960, Nagaland 1963, Haryana 1966, Himachal 1971, Manipur/Tripura/Meghalaya 1972, Sikkim 1975, Mizoram/Arunachal 1987, Goa 1987, Chhattisgarh/Uttarakhand/Jharkhand 2000, Telangana 2014.',
+        '',
+        '**3. Art 4 Laws Amendment**',
+        '**Art 4:** Laws Art 2-3 not amendment Art 368. Simple majority. No special majority needed.',
+        '**Cession Territory:** Berubari Union 1960 SC. Cession need Constitutional Amendment. 9th Amendment 1960.',
+        '**MPSC Point:** India Union not Federation. States no right secede. 28 States 8 UTs 2026.'
       ],
       english: [
-        "73rd Amendment 1992: Panchayati Raj. Part IX, 11th Schedule, 29 subjects.",
-        "3 Tier: Gram Panchayat, Panchayat Samiti, Zila Parishad.",
-        "74th Amendment 1992: Municipalities. Part IXA, 12th Schedule, 18 subjects.",
-        "3 Types: Nagar Panchayat, Municipal Council, Municipal Corporation.",
-        "Reservation: SC/ST as per population. Women 1/3 - Art 243D, 243T.",
-        "State Finance Commission Art 243I: Constituted every 5 years.",
-        "State Election Commission Art 243K: For Panchayat/Municipality elections."
+        '**1. Art 1 Name & Territory**',
+        '**Art 1(1):** India, that is Bharat, shall be Union of States.',
+        '**Art 1(2):** States + Union Territories. **Art 1(3):** Territory = States + UTs + Acquired.',
+        '**Union of States:** Indestructible Union of destructible States. Ambedkar. USA destructible Union indestructible States.',
+        '**Present:** 28 States + 8 UTs = 36. J&K reorganised 31 Oct 2019. J&K UT + Ladakh UT.',
+        '',
+        '**2. Art 2 Admission New States**',
+        '**Parliament power:** Admit new states. Sikkim 36th 26 Apr 1975 35th Amendment.',
+        '**Art 3 Formation:** Parliament law form new state, alter area, boundaries, name.',
+        '**Procedure:** President recommendation. State Legislature opinion refer - not binding. Simple majority Parliament.',
+        '**New States:** Andhra 1953 1st linguistic, Gujarat/Maharashtra 1960, Nagaland 1963, Haryana 1966, Himachal 1971, Manipur/Tripura/Meghalaya 1972, Sikkim 1975, Mizoram/Arunachal 1987, Goa 1987, Chhattisgarh/Uttarakhand/Jharkhand 2000, Telangana 2014.',
+        '',
+        '**3. Art 4 Laws Amendment**',
+        '**Art 4:** Laws Art 2-3 not amendment Art 368. Simple majority. No special majority needed.',
+        '**Cession Territory:** Berubari Union 1960 SC. Cession need Constitutional Amendment. 9th Amendment 1960.',
+        '**MPSC Point:** India Union not Federation. States no right secede. 28 States 8 UTs 2026.'
       ]
     }
   },
   {
-    id: 'centre-state',
-    title: { mizo: '12. Centre-State Relations', english: '12. Centre-State Relations' },
+    id: 'pol-6',
+    title: {
+      mizo: 'Chapter 6: The Union Executive & Parliament Art 52-122',
+      english: 'Chapter 6: The Union Executive & Parliament Art 52-122'
+    },
     notes: {
       mizo: [
-        "Legislative: Art 245-255. Union List 100, State List 61, Concurrent List 52.",
-        "Art 249: RS resolution 2/3 majority in State List law siam thei.",
-        "Art 250: National Emergency lai State List ah Parliament law siam thei.",
-        "Administrative: Art 256-263. All India Services Art 312.",
-        "Financial: Art 268-293. Finance Commission Art 280 - 5 years tin.",
-        "Inter-State Council Art 263: 1990 din. PM Chairman.",
-        "Zonal Councils: 1956 States Reorganisation Act. 5 Zonal."
+        '**1. President Art 52-62**',
+        '**Qualification:** Citizen, 35 years, Lok Sabha member qualification, No office profit.',
+        '**Election:** Proportional representation single transferable vote. Secret. Value MLA = State Pop/1,000/Total MLAs. Value MP = Total MLA value/Total MPs.',
+        '**Term:** 5 years. Resign Vice-President. Impeachment violation Constitution 2/3 both Houses.',
+        '**Powers:** Executive Art 53, Legislative summon Art 85, Ordinance Art 123, Veto 3 types, Pardon Art 72, Emergency.',
+        '**Veto:** Absolute - withhold, Suspensive - return once, Pocket - no time limit. Money Bill no suspensive.',
+        '',
+        '**2. Vice-President Art 63-71**',
+        '**Ex-officio Chairman Rajya Sabha.** Election MPs both Houses. Term 5 years. Age 35.',
+        '**Removal:** Rajya Sabha effective majority + Lok Sabha simple. No ground needed.',
+        '**Acting President:** Vacancy/death/resignation/absence.',
+        '',
+        '**3. PM & Council Art 74-78**',
+        '**Art 74:** CoM aid advise President. Binding 42nd 1976. Reconsider once 44th 1978.',
+        '**Art 75:** PM appointed President. Others PM advice. Collective responsibility Lok Sabha. 15% limit 91st 2003.',
+        '**PM Powers:** Leader Govt, Cabinet head, NITI Aayog, Inter-State Council, Appointments, Policy.',
+        '',
+        '**4. Parliament Art 79-122**',
+        '**Lok Sabha:** 550 max. 530 States, 20 UTs. Present 543. Term 5 years. Age 25. Speaker Om Birla 2024.',
+        '**Rajya Sabha:** 250 max. 238 States/UTs, 12 nominated Art, Lit, Science, Social Service. Present 245. Term 6 years. 1/3 retire 2 years. Chairman Jagdeep Dhankhar VP.',
+        '**Sessions:** Budget, Monsoon, Winter. Max 6 months gap. Quorum 1/10.',
+        '**Bill:** Ordinary both Houses, Money Lok Sabha only, Constitutional Art 368 special majority.',
+        '**Joint Sitting Art 108:** Speaker presides. Deadlock ordinary bill. 3 times held.',
+        '**Money Bill Art 110:** Speaker certifies. RS 14 days only recommend. President no veto.',
+        '**Budget Art 112:** Annual Financial Statement. Charged Expenditure non-votable. Cut motions - Policy, Economy, Token.',
+        '**Committees:** PAC, Estimates, Public Undertakings. PAC Chairman Opposition convention.',
+        '**MPSC Point:** PM real head. President nominal. RS permanent. Money Bill LS only.'
       ],
       english: [
-        "Legislative: Art 245-255. Union List 100, State List 61, Concurrent List 52.",
-        "Art 249: RS resolution by 2/3 majority allows Parliament to legislate on State List.",
-        "Art 250: During National Emergency, Parliament can legislate on State List.",
-        "Administrative: Art 256-263. All India Services Art 312 - IAS, IPS, IFoS.",
-        "Financial: Art 268-293. Finance Commission Art 280 - Every 5 years.",
-        "Inter-State Council Art 263: Established 1990. PM is Chairman.",
-        "Zonal Councils: States Reorganisation Act 1956. 5 Zonal Councils."
+        '**1. President Art 52-62**',
+        '**Qualification:** Citizen, 35 years, Lok Sabha member qualification, No office profit.',
+        '**Election:** Proportional representation single transferable vote. Secret. Value MLA = State Pop/1,000/Total MLAs. Value MP = Total MLA value/Total MPs.',
+        '**Term:** 5 years. Resign Vice-President. Impeachment violation Constitution 2/3 both Houses.',
+        '**Powers:** Executive Art 53, Legislative summon Art 85, Ordinance Art 123, Veto 3 types, Pardon Art 72, Emergency.',
+        '**Veto:** Absolute - withhold, Suspensive - return once, Pocket - no time limit. Money Bill no suspensive.',
+        '',
+        '**2. Vice-President Art 63-71**',
+        '**Ex-officio Chairman Rajya Sabha.** Election MPs both Houses. Term 5 years. Age 35.',
+        '**Removal:** Rajya Sabha effective majority + Lok Sabha simple. No ground needed.',
+        '**Acting President:** Vacancy/death/resignation/absence.',
+        '',
+        '**3. PM & Council Art 74-78**',
+        '**Art 74:** CoM aid advise President. Binding 42nd 1976. Reconsider once 44th 1978.',
+        '**Art 75:** PM appointed President. Others PM advice. Collective responsibility Lok Sabha. 15% limit 91st 2003.',
+        '**PM Powers:** Leader Govt, Cabinet head, NITI Aayog, Inter-State Council, Appointments, Policy.',
+        '',
+        '**4. Parliament Art 79-122**',
+        '**Lok Sabha:** 550 max. 530 States, 20 UTs. Present 543. Term 5 years. Age 25. Speaker Om Birla 2024.',
+        '**Rajya Sabha:** 250 max. 238 States/UTs, 12 nominated Art, Lit, Science, Social Service. Present 245. Term 6 years. 1/3 retire 2 years. Chairman Jagdeep Dhankhar VP.',
+        '**Sessions:** Budget, Monsoon, Winter. Max 6 months gap. Quorum 1/10.',
+        '**Bill:** Ordinary both Houses, Money Lok Sabha only, Constitutional Art 368 special majority.',
+        '**Joint Sitting Art 108:** Speaker presides. Deadlock ordinary bill. 3 times held.',
+        '**Money Bill Art 110:** Speaker certifies. RS 14 days only recommend. President no veto.',
+        '**Budget Art 112:** Annual Financial Statement. Charged Expenditure non-votable. Cut motions - Policy, Economy, Token.',
+        '**Committees:** PAC, Estimates, Public Undertakings. PAC Chairman Opposition convention.',
+        '**MPSC Point:** PM real head. President nominal. RS permanent. Money Bill LS only.'
       ]
     }
   },
   {
-    id: 'judiciary',
-    title: { mizo: '13. Judiciary', english: '13. Judiciary' },
+    id: 'pol-7',
+    title: {
+      mizo: 'Chapter 7: State Executive, Judiciary & Local Govt',
+      english: 'Chapter 7: State Executive, Judiciary & Local Govt'
+    },
     notes: {
       mizo: [
-        "SC Art 124: CJI + 33 Judges. Collegium system appointment.",
-        "Jurisdiction: Original Art 131, Appellate Art 132-136, Advisory Art 143.",
-        "Judicial Review: Basic Structure Doctrine - Kesavananda 1973.",
-        "HC Art 214: State tin ah 1. Chief Justice + Judges.",
-        "Subordinate Courts: District & Sessions Judge, Civil Judge, Magistrate.",
-        "PIL: Public Interest Litigation. Justice P.N. Bhagwati - 'Poor man's law'.",
-        "Lok Adalat: Legal Services Authorities Act 1987. Speedy justice."
+        '**1. Governor Art 153-162**',
+        '**Appointment:** President. 5 years. Age 35. Agent Centre. 7th 1956 same person 2+ states.',
+        '**Powers:** Executive state. Appoint CM, Ministers, Advocate General, State EC. Summon/Dissolve Assembly. Ordinance Art 213. Pardon Art 161 except death. Report Art 356.',
+        '**Discretion:** Reserve bill President Art 200. CM appointment hung assembly. 356 report.',
+        '**Sarkaria 1983:** Governor apolitical. CM consultation. Tenure security.',
+        '',
+        '**2. CM & Council Art 163-164**',
+        '**CM:** Real executive state. Majority leader Assembly. Appoint ministers Governor.',
+        '**Council:** Collective responsibility Assembly. 15% limit 91st 2003. Individual Governor.',
+        '',
+        '**3. State Legislature Art 168-212**',
+        '**Assembly:** 60-500. Term 5 years. Age 25. Speaker. Money Bill only.',
+        '**Council:** 6 states only. 1/3 Assembly max 40 min. Term 6 years. 1/3 retire 2 years. Age 30.',
+        '**Legislative Procedure:** Same Parliament. Governor assent/withhold/reserve/return once.',
+        '',
+        '**4. Judiciary Art 124-147 SC, 214-237 HC**',
+        '**SC:** CJI + 33 judges 2019. Appointed President Collegium. Age 65. Removal President + Parliament special majority.',
+        '**Jurisdiction:** Original Centre-State Art 131, Writ Art 32, Appellate, Advisory Art 143, Review Art 137.',
+        '**HC:** Every state Art 214. CJ + others. Age 62. Writ Art 226 wider SC. Superintendence subordinate.',
+        '**Judicial Review:** Art 13, 32, 226. Basic Structure Kesavananda 1973. Collegium 2nd Judges 1993, 3rd 1998.',
+        '**Subordinate:** District Judge, Sessions Judge. Appointment Governor consultation HC.',
+        '',
+        '**5. Local Govt 73rd & 74th 1992**',
+        '**73rd Panchayati Raj Art 243-243O:** 11th Schedule 29 subjects. 3-tier Gram Panchayat, Panchayat Samiti, Zila Parishad. Direct election 5 years. Reservation SC/ST proportion, Women 1/3. State EC conduct. State FC 5 years. Gram Sabha.',
+        '**Mizoram Exception:** 6th Schedule ADCs. Village Councils not Panchayat. Traditional.',
+        '**74th Municipalities Art 243P-243ZG:** 12th Schedule 18 subjects. 3 types - Nagar Panchayat transitional, Municipal Council smaller, Municipal Corporation larger. Ward Committees. Reservation same. District Planning Committee. Metropolitan Planning Committee.',
+        '**Aizawl Municipal Corporation 2010:** 19 wards. Mayor. State EC election.',
+        '**MPSC Point:** Governor agent. SC 34 judges. 73rd 11th Schedule 29 subjects. 74th 12th Schedule 18. Mizoram VC not Panchayat.'
       ],
       english: [
-        "SC Art 124: CJI + 33 Judges. Collegium system for appointment.",
-        "Jurisdiction: Original Art 131, Appellate Art 132-136, Advisory Art 143.",
-        "Judicial Review: Basic Structure Doctrine - Kesavananda Bharati 1973.",
-        "HC Art 214: One for each State. Chief Justice + other Judges.",
-        "Subordinate Courts: District & Sessions Judge, Civil Judge, Magistrate.",
-        "PIL: Public Interest Litigation. Justice P.N. Bhagwati called it 'Poor man's law'.",
-        "Lok Adalat: Legal Services Authorities Act 1987. Alternative dispute resolution."
+        '**1. Governor Art 153-162**',
+        '**Appointment:** President. 5 years. Age 35. Agent Centre. 7th 1956 same person 2+ states.',
+        '**Powers:** Executive state. Appoint CM, Ministers, Advocate General, State EC. Summon/Dissolve Assembly. Ordinance Art 213. Pardon Art 161 except death. Report Art 356.',
+        '**Discretion:** Reserve bill President Art 200. CM appointment hung assembly. 356 report.',
+        '**Sarkaria 1983:** Governor apolitical. CM consultation. Tenure security.',
+        '',
+        '**2. CM & Council Art 163-164**',
+        '**CM:** Real executive state. Majority leader Assembly. Appoint ministers Governor.',
+        '**Council:** Collective responsibility Assembly. 15% limit 91st 2003. Individual Governor.',
+        '',
+        '**3. State Legislature Art 168-212**',
+        '**Assembly:** 60-500. Term 5 years. Age 25. Speaker. Money Bill only.',
+        '**Council:** 6 states only. 1/3 Assembly max 40 min. Term 6 years. 1/3 retire 2 years. Age 30.',
+        '**Legislative Procedure:** Same Parliament. Governor assent/withhold/reserve/return once.',
+        '',
+        '**4. Judiciary Art 124-147 SC, 214-237 HC**',
+        '**SC:** CJI + 33 judges 2019. Appointed President Collegium. Age 65. Removal President + Parliament special majority.',
+        '**Jurisdiction:** Original Centre-State Art 131, Writ Art 32, Appellate, Advisory Art 143, Review Art 137.',
+        '**HC:** Every state Art 214. CJ + others. Age 62. Writ Art 226 wider SC. Superintendence subordinate.',
+        '**Judicial Review:** Art 13, 32, 226. Basic Structure Kesavananda 1973. Collegium 2nd Judges 1993, 3rd 1998.',
+        '**Subordinate:** District Judge, Sessions Judge. Appointment Governor consultation HC.',
+        '',
+        '**5. Local Govt 73rd & 74th 1992**',
+        '**73rd Panchayati Raj Art 243-243O:** 11th Schedule 29 subjects. 3-tier Gram Panchayat, Panchayat Samiti, Zila Parishad. Direct election 5 years. Reservation SC/ST proportion, Women 1/3. State EC conduct. State FC 5 years. Gram Sabha.',
+        '**Mizoram Exception:** 6th Schedule ADCs. Village Councils not Panchayat. Traditional.',
+        '**74th Municipalities Art 243P-243ZG:** 12th Schedule 18 subjects. 3 types - Nagar Panchayat transitional, Municipal Council smaller, Municipal Corporation larger. Ward Committees. Reservation same. District Planning Committee. Metropolitan Planning Committee.',
+        '**Aizawl Municipal Corporation 2010:** 19 wards. Mayor. State EC election.',
+        '**MPSC Point:** Governor agent. SC 34 judges. 73rd 11th Schedule 29 subjects. 74th 12th Schedule 18. Mizoram VC not Panchayat.'
       ]
     }
   },
   {
-    id: 'emergency',
-    title: { mizo: '14. Emergency', english: '14. Emergency Provisions' },
+    id: 'pol-8',
+    title: {
+      mizo: 'Chapter 8: Emergency, Elections & Commissions',
+      english: 'Chapter 8: Emergency, Elections & Commissions'
+    },
     notes: {
       mizo: [
-        "National Emergency Art 352: War, External Aggression, Armed Rebellion. 3 times - 1962, 1971, 1975.",
-        "Effect: Centre unitary, FR suspend Art 358, 359, Parliament State List ah law siam thei.",
-        "President Rule Art 356: State constitutional machinery fail. Max 3 years. 44th Amendment.",
-        "Financial Emergency Art 360: La puan ngai lo. Centre financial control.",
-        "44th Amendment 1978: 'Internal disturbance' thlak 'Armed Rebellion'. Judicial review."
+        '**1. Emergency Part XVIII Art 352-360**',
+        '**Art 352 National:** War/External Aggression/Armed Rebellion. President proclamation. Cabinet written advice 44th 1978. Parliament 1 month approve special majority. 6 months max. Lok Sabha approve. Effects - Federal Unitary, LS extend 1yr, Art 358 Art 19 suspend, Art 359 FR suspend President order except 20-21. Used 1962 China, 1971 Pak, 1975-77 Internal.',
+        '**Art 356 State/President Rule:** Constitutional machinery failure. Governor report or otherwise. Parliament 2 months approve. 6 months max. Total 3 years with conditions. Assembly suspend/dissolve. Parliament legislate state. S.R. Bommai 1994 - judicial review, floor test, no dissolve before Parliament approve. Used 130+ times. Punjab, J&K max.',
+        '**Art 360 Financial:** Financial stability threatened. Never used. President direction. Salary reduce SC/HC judges. Money Bill reserve.',
+        '',
+        '**2. Election Commission Art 324**',
+        '**Art 324:** Superintendence, direction, control elections Parliament, State Leg, President, VP. CEC + 2 ECs. Appointed President 6yrs/65. Removal same SC judge.',
+        '**Powers:** Electoral rolls, Schedule, Model Code Conduct, Party symbols, Recognise parties, De-register, EVM/VVPAT, Disqualify Art 102/191.',
+        '**CEC:** Rajiv Kumar 2022-2025. T.N. Seshan reforms 1990-96. EPIC, MCC strict.',
+        '**State EC Art 243K/243ZA:** Panchayat/Municipality elections. Appointed Governor. Independent.',
+        '',
+        '**3. Constitutional Bodies**',
+        '**UPSC Art 315-323:** Chairman + members 6yrs/65. Manoj Soni 2022. IAS, IPS, Central Services exam. Advise Govt disciplinary matters.',
+        '**Finance Commission Art 280:** 5 years. 15th N.K. Singh 2021-26. 41% tax states. Grants-in-aid Art 275. Chairman + 4 members.',
+        '**CAG Art 148:** Guardian public purse. Girish Murmu 2020. Audit Union, State, PSU. Report President/Governor → Parliament/Assembly PAC. 6yrs/65.',
+        '**AG Art 76:** Attorney General India. R. Venkataramani 2022. Highest law officer. Right audience all courts. No vote. Advise Govt.',
+        '**NCSC Art 338:** SC Commission. 89th 2003 bifurcate NCST. Vijay Sampla. Investigate safeguards SC. Report President.',
+        '**NCST Art 338A:** ST Commission. 89th 2003. Harsh Chouhan. Mizoram 94% ST. Powers civil court.',
+        '**NCBC Art 338B:** Backward Classes. 102nd 2018 constitutional. Hansraj Ahir. Investigate OBC. 127th 2021 State list OBC.',
+        '**Special Officer Linguistic Minorities Art 350B:** 7th 1956. Santosh Kumar. Report President.',
+        '',
+        '**4. Statutory Bodies**',
+        '**NITI Aayog 2015:** Replaced Planning Commission. PM Chairman. CEO B.V.R. Subrahmanyam. Think tank. Cooperative federalism. No fund allocation.',
+        '**NHRC 1993:** Protection Human Rights Act. Chairman retired CJI. Justice Arun Mishra 2021. Inquire violation, jail visit, recommend compensation.',
+        '**CIC 2005:** RTI Act. Chief Information Commissioner Heeralal Samariya. Appeal RTI. Penalty PIO.',
+        '**CVC 1964:** Santhanam Committee. Central Vigilance Commission. Statutory 2003. P.K. Srivastava 2022. Probity public life. CBI superintendence.',
+        '**Lokpal 2013:** Lokpal & Lokayuktas Act. Justice A.M. Khanwilkar 2024. Chairperson + 8 members. Corruption PM, Ministers, MPs, Group A-D officers. Lokayukta states.',
+        '**NDMA 2005:** Disaster Management Act. PM Chairman. Disaster response.',
+        '',
+        '**5. Amendments Art 368 Important List**',
+        '**1st 1951:** 9th Schedule land reforms. Art 15(4) SEBC. Art 31A, 31B. Zamindari abolition.',
+        '**7th 1956:** States Reorganisation. 14 States 6 UTs. HC common 2+ states. Art 350A, 350B.',
+        '**24th 1971:** Parliament amend FR. Art 13, 368. Golaknath overturned.',
+        '**25th 1971:** Art 31C DPSP 39(b)(c) over FR 14,19,31. Property compensation not challenge.',
+        '**42nd 1976:** Mini Constitution. Preamble Socialist Secular Integrity. FD added. Art 31C expanded. Duration LS 6yrs. 368 unlimited. 39 amendments.',
+        '**44th 1978:** Restore 42nd damage. Art 19(1)(f) Property deleted → 300A legal right. 352 Armed Rebellion. 6yrs→5yrs LS. Judicial Review restore.',
+        '**52nd 1985:** Anti-Defection 10th Schedule. Rajiv Gandhi. Disqualify defect.',
+        '**61st 1989:** Voting age 21→18 Art 326.',
+        '**73rd 1992:** Panchayati Raj Part IX. 11th Schedule 29 subjects.',
+        '**74th 1992:** Municipalities Part IXA. 12th Schedule 18 subjects.',
+        '**86th 2002:** RTE Art 21A. FD 51A(k) parent duty. DPSP 45 change.',
+        '**91st 2003:** Council Ministers 15% limit. Defector no minister. 75(1A), 164(1A).',
+        '**97th 2011:** Cooperatives Part IXB. Art 19(1)(c), 43B.',
+        '**99th 2014:** NJAC. Struck down SC 2015. Collegium continue.',
+        '**101st 2016:** GST. Art 246A, 269A, 279A. 6th July 2017 implement.',
+        '**102nd 2018:** NCBC constitutional Art 338B.',
+        '**103rd 2019:** EWS 10% Art 15(6), 16(6). 124th Bill.',
+        '**104th 2020:** SC/ST LS/Assembly reservation extend 10yrs till 2030. Anglo-Indian nomination end.',
+        '**105th 2021:** State power OBC list restore. 127th Bill.',
+        '**106th 2023:** Women Reservation 33% LS/Assembly. Nari Shakti Vandan. After delimitation 2029 likely.',
+        '**MPSC Point:** 42nd mini, 44th restore, 73rd/74th local, 101st GST, 103rd EWS, 106th Women.'
       ],
       english: [
-        "National Emergency Art 352: War, External Aggression, Armed Rebellion. Proclaimed 3 times - 1962, 1971, 1975.",
-        "Effect: Centre becomes unitary, FR suspended Art 358, 359, Parliament can legislate on State List.",
-        "President Rule Art 356: Failure of constitutional machinery in State. Max 3 years. 44th Amendment restrictions.",
-        "Financial Emergency Art 360: Never proclaimed yet. Centre assumes financial control.",
-        "44th Amendment 1978: Replaced 'Internal disturbance' with 'Armed Rebellion'. Judicial review introduced."
-      ]
-    }
-  },
-  {
-    id: 'elections',
-    title: { mizo: '15. Elections', english: '15. Elections' },
-    notes: {
-      mizo: [
-        "ECI Art 324: CEC + 2 ECs. Superintendence, direction, control.",
-        "Functions: Electoral rolls, Elections conduct, Political parties register, Model Code.",
-        "Universal Adult Franchise Art 326: Kum 18 chin vote - 61st Amendment 1989.",
-        "Delimitation Commission Art 82: Constituency siam thar. 2008 hnuhnung ber.",
-        "Anti-Defection Art 102(2): 10th Schedule 52nd Amendment 1985.",
-        "EVM: Electronic Voting Machine. VVPAT nen 2019 atangin."
-      ],
-      english: [
-        "ECI Art 324: CEC + 2 ECs. Superintendence, direction, control of elections.",
-        "Functions: Electoral rolls preparation, Conduct of elections, Register political parties, Model Code of Conduct.",
-        "Universal Adult Franchise Art 326: 18 years voting age - 61st Amendment 1989.",
-        "Delimitation Commission Art 82: Readjustment of constituencies. Last in 2008.",
-        "Anti-Defection Art 102(2): 10th Schedule, 52nd Amendment 1985.",
-        "EVM: Electronic Voting Machine. With VVPAT since 2019."
-      ]
-    }
-  },
-  {
-    id: 'commissions',
-    title: { mizo: '16. Constitutional Bodies', english: '16. Constitutional Bodies' },
-    notes: {
-      mizo: [
-        "UPSC Art 315: Chairman + Members. President appoint. Term 6 years/65 age.",
-        "Functions: Recruitment, Promotion, Disciplinary matters advice.",
-        "SPSC Art 315: State tan. Governor appoint. Mizoram ah MPSC.",
-        "Finance Commission Art 280: 5 years tin. Tax sharing recommend. 15th FC - N.K. Singh.",
-        "NCSC Art 338: SC tan. 89th Amendment 2003 in then. Chairman - Vijay Sampla.",
-        "NCST Art 338A: ST tan. 89th Amendment 2003. Chairman - Harsh Chouhan.",
-        "NCBC Art 338B: OBC tan. 102nd Amendment 2018 constitutional status. Chairman - Hansraj Ahir."
-      ],
-      english: [
-        "UPSC Art 315: Chairman + Members. Appointed by President. 6 year term/65 age.",
-        "Functions: Recruitment, Promotions, Disciplinary matters advice to Govt.",
-        "SPSC Art 315: For States. Appointed by Governor. MPSC for Mizoram.",
-        "Finance Commission Art 280: Every 5 years. Recommends tax sharing. 15th FC - N.K. Singh.",
-        "NCSC Art 338: For SC. Separated by 89th Amendment 2003. Chairman - Vijay Sampla.",
-        "NCST Art 338A: For ST. 89th Amendment 2003. Chairman - Harsh Chouhan.",
-        "NCBC Art 338B: For OBC. 102nd Amendment 2018 gave constitutional status. Chairman - Hansraj Ahir."
-      ]
-    }
-  },
-    {
-    id: 'statutory-bodies',
-    title: { mizo: '17. Statutory Bodies', english: '17. Statutory Bodies' },
-    notes: {
-      mizo: [
-        "NHRC: Protection of Human Rights Act 1993. Chairman - Retired CJI. Arun Mishra tunah.",
-        "CIC: RTI Act 2005. Chief Information Commissioner. Heeralal Samariya tunah.",
-        "CVC: CVC Act 2003. Santhanam Committee recommend. Praveen Kumar Srivastava tunah.",
-        "CBI: Delhi Special Police Establishment Act 1946. 'Premier investigating agency'. Praveen Sood Director.",
-        "Lokpal: Lokpal Act 2013. Anna Hazare movement. A.M. Khanwilkar Chairman.",
-        "NITI Aayog: 2015 Jan 1. Planning Commission thlak. CEO - B.V.R. Subrahmanyam. VC - Suman Bery."
-      ],
-      english: [
-        "NHRC: Protection of Human Rights Act 1993. Chairman - Retired CJI. Arun Mishra currently.",
-        "CIC: RTI Act 2005. Chief Information Commissioner. Heeralal Samariya currently.",
-        "CVC: CVC Act 2003. Based on Santhanam Committee. Praveen Kumar Srivastava currently.",
-        "CBI: Delhi Special Police Establishment Act 1946. 'Premier investigating agency'. Praveen Sood Director.",
-        "Lokpal: Lokpal and Lokayuktas Act 2013. Anna Hazare movement. A.M. Khanwilkar Chairman.",
-        "NITI Aayog: Jan 1, 2015. Replaced Planning Commission. CEO - B.V.R. Subrahmanyam. VC - Suman Bery."
-      ]
-    }
-  },
-  {
-    id: 'reforms',
-    title: { mizo: '18. Administrative Reforms', english: '18. Administrative Reforms' },
-    notes: {
-      mizo: [
-        "First ARC: 1966. Morarji Desai Chairman. 20 Reports.",
-        "Second ARC: 2005-2009. Veerappa Moily Chairman. 15 Reports.",
-        "Ethics: Code of Ethics for Ministers, Code of Conduct for Civil Servants.",
-        "Citizen Charter: Sevottam model. Public service delivery standards.",
-        "RTI 2005: Information dikna. 30 days chhunga pe tur. Appeal 2 stage.",
-        "E-Governance: Digital India, UMANG, DigiLocker, MyGov.",
-        "CPGRAMS: Centralized Public Grievance Redress System. DARPG hnuaiah."
-      ],
-      english: [
-        "First ARC: 1966. Morarji Desai Chairman. 20 Reports.",
-        "Second ARC: 2005-2009. Veerappa Moily Chairman. 15 Reports submitted.",
-        "Ethics: Code of Ethics for Ministers, Code of Conduct for Civil Servants.",
-        "Citizen Charter: Sevottam model for public service delivery standards.",
-        "RTI 2005: Right to Information. 30 days time limit. 2-stage Appeal.",
-        "E-Governance: Digital India, UMANG app, DigiLocker, MyGov.",
-        "CPGRAMS: Centralized Public Grievance Redress and Monitoring System under DARPG."
-      ]
-    }
-  },
-  {
-    id: 'comparison',
-    title: { mizo: '19. Ram Dang Nen Khaihknan', english: '19. Comparison' },
-    notes: {
-      mizo: [
-        "UK: Parliamentary, Constitutional Monarchy, Unitary, Unwritten, Flexible. King Charles III.",
-        "USA: Presidential, Federal, Written, Rigid, Strong Judicial Review. President 4 years.",
-        "India: Parliamentary, Federal, Written, Rigid+Flexible, Judicial Review. PM 5 years.",
-        "France: Semi-Presidential. President + PM both powerful. 5th Republic.",
-        "Switzerland: Direct Democracy. Referendum, Initiative, Recall. 7 member Federal Council.",
-        "Japan: Constitutional Monarchy. Emperor symbolic. PM real power."
-      ],
-      english: [
-        "UK: Parliamentary, Constitutional Monarchy, Unitary, Unwritten, Flexible. King Charles III.",
-        "USA: Presidential, Federal, Written, Rigid, Strong Judicial Review. President 4 year term.",
-        "India: Parliamentary, Federal, Written, Blend of Rigid & Flexible, Judicial Review. PM 5 year term.",
-        "France: Semi-Presidential. Both President & PM powerful. 5th Republic.",
-        "Switzerland: Direct Democracy. Referendum, Initiative, Recall. 7 member Federal Council.",
-        "Japan: Constitutional Monarchy. Emperor is symbolic. PM real power."
-      ]
-    }
-  },
-    {
-    id: 'governance',
-    title: { mizo: '20. Governance', english: '20. Governance' },
-    notes: {
-      mizo: [
-        "Good Governance: Transparency, Accountability, Responsiveness, Rule of Law, Equity, Effectiveness.",
-        "E-Governance: G2C, G2B, G2G, G2E. Digital India Mission 2015.",
-        "Citizen Charter: Services, Standards, Timeframe, Grievance, Compensation.",
-        "Social Audit: MGNREGA ah mandatory. Public accountability tool. Meghalaya model.",
-        "Civil Society: NGO, SHG, Pressure Groups, Media role. Jan Sunwai.",
-        "Welfare Schemes: PM-KISAN, Ayushman Bharat, Ujjwala, PMAY.",
-        "DBT: Direct Benefit Transfer. JAM Trinity - Jan Dhan, Aadhaar, Mobile. PFMS."
-      ],
-      english: [
-        "Good Governance: Transparency, Accountability, Responsiveness, Rule of Law, Equity, Effectiveness.",
-        "E-Governance: G2C, G2B, G2G, G2E. Digital India Mission 2015.",
-        "Citizen Charter: Services offered, Standards, Timeframe, Grievance, Compensation.",
-        "Social Audit: Mandatory in MGNREGA. Public accountability tool. Meghalaya model.",
-        "Civil Society: Role of NGOs, SHGs, Pressure Groups, Media. Jan Sunwai.",
-        "Welfare Schemes: PM-KISAN, Ayushman Bharat, Ujjwala, PMAY.",
-        "DBT: Direct Benefit Transfer. JAM Trinity - Jan Dhan, Aadhaar, Mobile. PFMS."
-      ]
-    }
-  },
-  {
-    id: 'development',
-    title: { mizo: '21. Development Processes', english: '21. Development Processes' },
-    notes: {
-      mizo: [
-        "Planning: 1951-2017 Five Year Plans. PC to NITI Aayog 2015.",
-        "NITI Aayog: Think tank. Cooperative Federalism. 15 Year Vision, 7 Year Strategy, 3 Year Action.",
-        "SDG: Sustainable Development Goals 2030. 17 Goals, 169 Targets. NITI Aayog monitor.",
-        "Aspirational Districts: 112 districts. Jan Andolan approach. 5 core areas.",
-        "DBT: Direct Benefit Transfer. JAM Trinity. ₹34 lakh crore transferred till 2024.",
-        "NeVA: National e-Vidhan Application. Paperless Assembly.",
-        "Gati Shakti: National Master Plan for Multi-modal Connectivity."
-      ],
-      english: [
-        "Planning: Five Year Plans 1951-2017. Planning Commission to NITI Aayog 2015.",
-        "NITI Aayog: Think tank. Cooperative Federalism. 15 Year Vision, 7 Year Strategy, 3 Year Action Plan.",
-        "SDG: Sustainable Development Goals 2030. 17 Goals, 169 Targets. NITI Aayog monitors.",
-        "Aspirational Districts: 112 districts. Jan Andolan approach. 5 core areas.",
-        "DBT: Direct Benefit Transfer. JAM Trinity. ₹34 lakh crore transferred till 2024.",
-        "NeVA: National e-Vidhan Application. Paperless Assembly.",
-        "Gati Shakti: National Master Plan for Multi-modal Connectivity."
-      ]
-    }
-  },
-  {
-    id: 'public-policy',
-    title: { mizo: '22. Public Policy', english: '22. Public Policy' },
-    notes: {
-      mizo: [
-        "Policy Cycle: Agenda Setting → Formulation → Adoption → Implementation → Evaluation → Termination.",
-        "NEP 2020: 5+3+3+4 structure. Mother tongue medium Class 5 thleng. 6% GDP education ah.",
-        "Health: Ayushman Bharat - PM-JAY ₹5 lakh coverage. 10 crore families. 1.5 lakh HWCs.",
-        "Education: RTE 2009 - Kum 6-14 free & compulsory. 25% EWS quota private school ah.",
-        "Food Security: NFSA 2013 - 67% population hnenah rice ₹3/kg, wheat ₹2/kg, coarse grain ₹1/kg.",
-        "Environment: NAPCC - National Action Plan on Climate Change. 8 National Missions.",
-        "Women: Beti Bachao Beti Padhao, Ujjwala, Maternity Benefit 26 weeks.",
-        "Farmers: PM-KISAN ₹6000/year, PM Fasal Bima Yojana, e-NAM."
-      ],
-      english: [
-        "Policy Cycle: Agenda Setting → Formulation → Adoption → Implementation → Evaluation → Termination.",
-        "NEP 2020: 5+3+3+4 structure. Mother tongue as medium till Class 5. 6% GDP to education.",
-        "Health: Ayushman Bharat - PM-JAY ₹5 lakh coverage for 10 crore families. 1.5 lakh HWCs.",
-        "Education: RTE 2009 - Free & compulsory education for 6-14 years. 25% EWS quota in private schools.",
-        "Food Security: NFSA 2013 - 67% population gets rice at ₹3/kg, wheat at ₹2/kg, coarse grain ₹1/kg.",
-        "Environment: NAPCC - National Action Plan on Climate Change with 8 National Missions.",
-        "Women: Beti Bachao Beti Padhao, Ujjwala, Maternity Benefit 26 weeks paid leave.",
-        "Farmers: PM-KISAN ₹6000/year, PM Fasal Bima Yojana, e-NAM platform."
-      ]
-    }
-  },
-  {
-    id: 'mpsc-special',
-    title: { mizo: '23. Mizoram Special', english: '23. Mizoram Special' },
-    notes: {
-      mizo: [
-        "6th Schedule: Art 244(2). ADC 10 awm - Assam 3, Meghalaya 3, Tripura 1, Mizoram 3.",
-        "Mizoram ADC: Lai Autonomous District Council, Mara ADC, Chakma ADC. Legislative, Executive, Judicial powers nei.",
-        "Inner Line Permit: Bengal Eastern Frontier Regulation 1873. Mizoram, Nagaland, Arunachal, Manipur. Tourist tan e-ILP.",
-        "Mizoram Statehood: 1987 Feb 20. State 23-na. UT atangin kai chho. 53rd Amendment Act 1986.",
-        "Mizoram CM Hmasa: Pu Laldenga 1987. Governor Hmasa: Pu Hiteswar Saikia.",
-        "MPSC: Mizoram Public Service Commission. 1991 din. Chairman + Members 4. Pu R. Lalramnghaka Chairman tunah.",
-        "Official Language: Mizo. English pawh hmang. Mizo Language Act 1972.",
-        "High Court: Gauhati HC - Aizawl Bench. 1990 July 5 din. Permanent Bench 2000.",
-        "Mizoram MLA: 40 seats. ST Reserved vek. 1 Lok Sabha, 1 Rajya Sabha.",
-        "Important Acts: Mizo District Council Act 1954, Mizoram Land Revenue Act 2013, Mizoram Liquor Prohibition Act 2019.",
-        "Districts: 11 districts. Hnahthial, Khawzawl, Saitual 2019 ah siam.",
-        "State Symbols: State Animal - Serow. State Bird - Mrs. Hume's Pheasant. State Flower - Red Vanda."
-      ],
-      english: [
-        "6th Schedule: Art 244(2). 10 ADCs - Assam 3, Meghalaya 3, Tripura 1, Mizoram 3.",
-        "Mizoram ADCs: Lai Autonomous District Council, Mara ADC, Chakma ADC. Have Legislative, Executive, Judicial powers.",
-        "Inner Line Permit: Bengal Eastern Frontier Regulation 1873. For Mizoram, Nagaland, Arunachal, Manipur. e-ILP for tourists.",
-        "Mizoram Statehood: Feb 20, 1987. 23rd State. Upgraded from UT. 53rd Amendment Act 1986.",
-        "First CM: Pu Laldenga 1987. First Governor: Pu Hiteswar Saikia.",
-        "MPSC: Mizoram Public Service Commission. Established 1991. Chairman + 4 Members. Pu R. Lalramnghaka Chairman currently.",
-        "Official Language: Mizo. English also used. Mizo Language Act 1972.",
-        "High Court: Gauhati HC - Aizawl Bench. Established July 5, 1990. Permanent Bench 2000.",
-        "Mizoram MLA: 40 seats. All ST Reserved. 1 Lok Sabha, 1 Rajya Sabha.",
-        "Important Acts: Mizo District Council Act 1954, Mizoram Land Revenue Act 2013, Mizoram Liquor Prohibition Act 2019.",
-        "Districts: 11 districts. Hnahthial, Khawzawl, Saitual created in 2019.",
-        "State Symbols: State Animal - Serow. State Bird - Mrs. Hume's Pheasant. State Flower - Red Vanda."
+        '**1. Emergency Part XVIII Art 352-360**',
+        '**Art 352 National:** War/External Aggression/Armed Rebellion. President proclamation. Cabinet written advice 44th 1978. Parliament 1 month approve special majority. 6 months max. Lok Sabha approve. Effects - Federal Unitary, LS extend 1yr, Art 358 Art 19 suspend, Art 359 FR suspend President order except 20-21. Used 1962 China, 1971 Pak, 1975-77 Internal.',
+        '**Art 356 State/President Rule:** Constitutional machinery failure. Governor report or otherwise. Parliament 2 months approve. 6 months max. Total 3 years with conditions. Assembly suspend/dissolve. Parliament legislate state. S.R. Bommai 1994 - judicial review, floor test, no dissolve before Parliament approve. Used 130+ times. Punjab, J&K max.',
+        '**Art 360 Financial:** Financial stability threatened. Never used. President direction. Salary reduce SC/HC judges. Money Bill reserve.',
+        '',
+        '**2. Election Commission Art 324**',
+        '**Art 324:** Superintendence, direction, control elections Parliament, State Leg, President, VP. CEC + 2 ECs. Appointed President 6yrs/65. Removal same SC judge.',
+        '**Powers:** Electoral rolls, Schedule, Model Code Conduct, Party symbols, Recognise parties, De-register, EVM/VVPAT, Disqualify Art 102/191.',
+        '**CEC:** Rajiv Kumar 2022-2025. T.N. Seshan reforms 1990-96. EPIC, MCC strict.',
+        '**State EC Art 243K/243ZA:** Panchayat/Municipality elections. Appointed Governor. Independent.',
+        '',
+        '**3. Constitutional Bodies**',
+        '**UPSC Art 315-323:** Chairman + members 6yrs/65. Manoj Soni 2022. IAS, IPS, Central Services exam. Advise Govt disciplinary matters.',
+        '**Finance Commission Art 280:** 5 years. 15th N.K. Singh 2021-26. 41% tax states. Grants-in-aid Art 275. Chairman + 4 members.',
+        '**CAG Art 148:** Guardian public purse. Girish Murmu 2020. Audit Union, State, PSU. Report President/Governor → Parliament/Assembly PAC. 6yrs/65.',
+        '**AG Art 76:** Attorney General India. R. Venkataramani 2022. Highest law officer. Right audience all courts. No vote. Advise Govt.',
+        '**NCSC Art 338:** SC Commission. 89th 2003 bifurcate NCST. Vijay Sampla. Investigate safeguards SC. Report President.',
+        '**NCST Art 338A:** ST Commission. 89th 2003. Harsh Chouhan. Mizoram 94% ST. Powers civil court.',
+        '**NCBC Art 338B:** Backward Classes. 102nd 2018 constitutional. Hansraj Ahir. Investigate OBC. 127th 2021 State list OBC.',
+        '**Special Officer Linguistic Minorities Art 350B:** 7th 1956. Santosh Kumar. Report President.',
+        '',
+        '**4. Statutory Bodies**',
+        '**NITI Aayog 2015:** Replaced Planning Commission. PM Chairman. CEO B.V.R. Subrahmanyam. Think tank. Cooperative federalism. No fund allocation.',
+        '**NHRC 1993:** Protection Human Rights Act. Chairman retired CJI. Justice Arun Mishra 2021. Inquire violation, jail visit, recommend compensation.',
+        '**CIC 2005:** RTI Act. Chief Information Commissioner Heeralal Samariya. Appeal RTI. Penalty PIO.',
+        '**CVC 1964:** Santhanam Committee. Central Vigilance Commission. Statutory 2003. P.K. Srivastava 2022. Probity public life. CBI superintendence.',
+        '**Lokpal 2013:** Lokpal & Lokayuktas Act. Justice A.M. Khanwilkar 2024. Chairperson + 8 members. Corruption PM, Ministers, MPs, Group A-D officers. Lokayukta states.',
+        '**NDMA 2005:** Disaster Management Act. PM Chairman. Disaster response.',
+        '',
+        '**5. Amendments Art 368 Important List**',
+        '**1st 1951:** 9th Schedule land reforms. Art 15(4) SEBC. Art 31A, 31B. Zamindari abolition.',
+        '**7th 1956:** States Reorganisation. 14 States 6 UTs. HC common 2+ states. Art 350A, 350B.',
+        '**24th 1971:** Parliament amend FR. Art 13, 368. Golaknath overturned.',
+        '**25th 1971:** Art 31C DPSP 39(b)(c) over FR 14,19,31. Property compensation not challenge.',
+        '**42nd 1976:** Mini Constitution. Preamble Socialist Secular Integrity. FD added. Art 31C expanded. Duration LS 6yrs. 368 unlimited. 39 amendments.',
+        '**44th 1978:** Restore 42nd damage. Art 19(1)(f) Property deleted → 300A legal right. 352 Armed Rebellion. 6yrs→5yrs LS. Judicial Review restore.',
+        '**52nd 1985:** Anti-Defection 10th Schedule. Rajiv Gandhi. Disqualify defect.',
+        '**61st 1989:** Voting age 21→18 Art 326.',
+        '**73rd 1992:** Panchayati Raj Part IX. 11th Schedule 29 subjects.',
+        '**74th 1992:** Municipalities Part IXA. 12th Schedule 18 subjects.',
+        '**86th 2002:** RTE Art 21A. FD 51A(k) parent duty. DPSP 45 change.',
+        '**91st 2003:** Council Ministers 15% limit. Defector no minister. 75(1A), 164(1A).',
+        '**97th 2011:** Cooperatives Part IXB. Art 19(1)(c), 43B.',
+        '**99th 2014:** NJAC. Struck down SC 2015. Collegium continue.',
+        '**101st 2016:** GST. Art 246A, 269A, 279A. 6th July 2017 implement.',
+        '**102nd 2018:** NCBC constitutional Art 338B.',
+        '**103rd 2019:** EWS 10% Art 15(6), 16(6). 124th Bill.',
+        '**104th 2020:** SC/ST LS/Assembly reservation extend 10yrs till 2030. Anglo-Indian nomination end.',
+        '**105th 2021:** State power OBC list restore. 127th Bill.',
+        '**106th 2023:** Women Reservation 33% LS/Assembly. Nari Shakti Vandan. After delimitation 2029 likely.',
+        '**MPSC Point:** 42nd mini, 44th restore, 73rd/74th local, 101st GST, 103rd EWS, 106th Women.'
       ]
     }
   }
 ]
 
-export default function PolityPage() {
+export default function PolityPage() { 
   return (
-    <SubjectPage
+    <SubjectPage 
+      subjectName={{
+        mizo: 'Polity',
+        english: 'Polity'
+      }}
+      chapters={polityChapters}
       slug="polity"
-      testId="polity-mock-1"
-      subjectName={{ mizo: 'Indian Polity & Danpui', english: 'Indian Polity & Constitution' }}
-      chapters={POLITY_CHAPTERS}
+      testId="polity-test"
       backLink="/"
-      testLink="/test/polity-mock-1"
-      testTitle={{ mizo: 'Polity Mock Test 1', english: 'Polity Mock Test 1' }}
-      testDesc={{ mizo: 'MPSC Polity Chapter 1-23', english: 'MPSC Polity Chapter 1-23' }}
+      testLink="/polity/test"
+      testTitle="Polity Mock Test"
+      testDesc="MPSC Polity Chapter 1-8 atanga zawhna 50"
     />
   )
-} 
+}

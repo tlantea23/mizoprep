@@ -26,7 +26,9 @@ const currentAffairsChapters = [
         '**10. Iran-Israel Ceasefire** - June 8 ah Netanyahu in fighting halt ti mahse future attack chu "with force" respond ang a ti.',
         '**11. Epic Stalemate** - US-Israel war on Iran in objective a achieve lo.',
         '**12. H-1B Visa Fee** - US Judge in Trump $100,000 H-1B visa fee unlawful tiin ti tawp.',
-        '**13. Indian Sailors Rescued** - US missile in Marivex tanker bei. Indian sailor 24 chhanchhuah.'
+        '**13. Indian Sailors Rescued** - US missile in Marivex tanker bei. Indian sailor 24 chhanchhuah.',
+        '**14. G7 Summit** - June 15-17 Italy ah. Ukraine support, China trade issue discuss.',
+        '**15. NATO Expansion** - Sweden, Finland full membership activate June 2026.'
       ],
       english: [
         '**JANUARY 2026:**',
@@ -45,7 +47,9 @@ const currentAffairsChapters = [
         '**10. Iran-Israel Ceasefire** - June 8, Netanyahu acknowledged halt in fighting but vowed force response.',
         '**11. Epic Stalemate** - US-Israel war on Iran has not achieved objectives.',
         '**12. H-1B Visa Fee** - US Judge struck down Trump $100,000 H-1B visa fee as unlawful.',
-        '**13. Indian Sailors Rescued** - 24 Indian sailors rescued from tanker Marivex after US missile strike.'
+        '**13. Indian Sailors Rescued** - 24 Indian sailors rescued from tanker Marivex after US missile strike.',
+        '**14. G7 Summit** - June 15-17 in Italy. Discussed Ukraine support, China trade issues.',
+        '**15. NATO Expansion** - Sweden, Finland full membership activated June 2026.'
       ]
     }
   },
@@ -80,7 +84,9 @@ const currentAffairsChapters = [
         '**16. OMC Underrecoveries** - Diesel litre khat ah Rs 30, Petrol ah Rs 6 hloh.',
         '**17. RINL Explosion** - June 8 Visakhapatnam ah explosion. Worker 8 thi, 6 hliam.',
         '**18. Spectrum Levy** - Bombay HC in Airtel, Vi te OTSC spectrum levy quash.',
-        '**19. INDIA Bloc** - CJI hnenah SIR leh vote loot ziah luh tum. Education Minister Pradhan bang turin phut.'
+        '**19. INDIA Bloc** - CJI hnenah SIR leh vote loot ziah luh tum. Education Minister Pradhan bang turin phut.',
+        '**20. Monsoon 2026** - June 10 India ram pumah monsoon thleng. Kerala ah ni 3 hma.',
+        '**21. Digital India 2.0** - June 18 launch. AI, 6G, Quantum tech focus.'
       ],
       english: [
         '**JANUARY 2026:**',
@@ -106,15 +112,17 @@ const currentAffairsChapters = [
         '**16. OMC Underrecoveries** - Rs 30 per litre loss on diesel, Rs 6 on petrol.',
         '**17. RINL Explosion** - June 8 Visakhapatnam explosion. 8 dead, 6 injured.',
         '**18. Spectrum Levy** - Bombay HC quashed OTSC spectrum levy for Airtel, Vi.',
-        '**19. INDIA Bloc** - To write to CJI on SIR and vote loot. Demands Education Minister resignation.'
+        '**19. INDIA Bloc** - To write to CJI on SIR and vote loot. Demands Education Minister resignation.',
+        '**20. Monsoon 2026** - June 10 monsoon covers entire India. 3 days early in Kerala.',
+        '**21. Digital India 2.0** - June 18 launched. Focus on AI, 6G, Quantum tech.'
       ]
     }
   },
   {
     id: 'ca-mizoram-2026',
     title: {
-      mizo: 'Mizoram News Jan-Jun 9, 2026',
-      english: 'Mizoram News Jan-Jun 9, 2026'
+      mizo: 'Mizoram News Jan-Jun 15, 2026',
+      english: 'Mizoram News Jan-Jun 15, 2026'
     },
     notes: {
       mizo: [
@@ -142,7 +150,9 @@ const currentAffairsChapters = [
         '**16. ED Raid Champhai** - June 5 hmun 9 raid. Myanmar supari smuggling. Fake e-way bills Rs 251.19 cr SGST + Rs 86.25 cr CGST fraud.',
         '**17. Viksit Bharat 2047** - June 3 MoS Murugan in zirlaite role pawimawh thu sawi. Kolasib RSTC ah football exhibition. Khet Bachao Abhiyan launch.',
         '**18. BGB-BSF Talks** - June 9 BGB DG Delhi ah. Undocumented mi thawn luh chungchang buai.',
-        '**19. Electoral Roll SIR** - Month khat chhung June 28 thleng. Voter 8,75,068. Online submission theih.'
+        '**19. Electoral Roll SIR** - Month khat chhung June 28 thleng. Voter 8,75,068. Online submission theih.',
+        '**20. Heavy Rainfall Alert** - June 12 IMD in Mizoram tan red alert. Landslide warning district 6 ah.',
+        '**21. PM Awas Yojana** - June 14 Aizawl ah in 500 hawn. CM Lalduhoma in hawn.'
       ],
       english: [
         '**JANUARY 2026:**',
@@ -169,58 +179,52 @@ const currentAffairsChapters = [
         '**16. ED Raid Champhai** - June 5 raids at 9 spots. Myanmar supari smuggling. Fake e-way bills Rs 251.19 cr SGST + Rs 86.25 cr CGST fraud.',
         '**17. Viksit Bharat 2047** - June 3 MoS Murugan underscored student role. Visited RSTC Kolasib, launched Khet Bachao Abhiyan.',
         '**18. BGB-BSF Talks** - June 9 BGB DG in Delhi. Dispute over undocumented Bangladeshis.',
-        '**19. Electoral Roll SIR** - One month till June 28. Voters 8,75,068. Online submission available.'
+        '**19. Electoral Roll SIR** - One month till June 28. Voters 8,75,068. Online submission available.',
+        '**20. Heavy Rainfall Alert** - June 12 IMD issued red alert for Mizoram. Landslide warning in 6 districts.',
+        '**21. PM Awas Yojana** - June 14 inaugurated 500 houses in Aizawl by CM Lalduhoma.'
       ]
     }
   },
   {
     id: 'ca-awards-2026',
     title: {
-      mizo: 'National Awards & Appointments 2026',
-      english: 'National Awards & Appointments 2026'
+      mizo: 'Awards & Appointments 2026',
+      english: 'Awards & Appointments 2026'
     },
     notes: {
       mizo: [
         '**GALLANTRY AWARDS:**',
         '**1. Shaurya Chakra** - Lt Commander Suraj Prashar, Indian Navy. Submarine rescue operation.',
-        '**SPORTS AWARDS:**',
-        '**2. Chess** - R Praggnanandhaa, Norway Chess 2026 Champion. Indian hmasa ber.',
-        '**3. Football** - India Women Team, SAFF Championship 2026 Champion. Kum 7 hnuah.',
-        '**4. Hockey** - India U18 Men, Asia Cup Champions 2026.',
-        '**5. Tennis** - Alexander Zverev leh Mirra Andreeva, French Open 2026 Champions.',
-        '**6. F1** - Kimi Antonelli, Monaco Grand Prix 2026 Winner.',
         '**SCIENCE & RECOGNITION:**',
-        '**7. Mizoram University** - Calamaria mizoramensis snake thar hmuh chhuah. Zootaxa ah publish.',
+        '**2. Mizoram University** - Calamaria mizoramensis snake thar hmuh chhuah. Zootaxa ah publish.',
         '**INFRASTRUCTURE:**',
-        '**8. Bairabi-Sairang Railway** - Sept 2025 hawn. Aizawl rail connection hmasa ber. June 2026 Rajdhani Express tlan tan.',
+        '**3. Bairabi-Sairang Railway** - Sept 2025 hawn. Aizawl rail connection hmasa ber. June 2026 Rajdhani Express tlan tan.',
         '**APPOINTMENTS:**',
-        '**9. IndiaAI Mission CEO** - Saurabh Vijay, UIDAI CEO hlui.',
-        '**10. World Bank** - Neelkanth Mishra, Executive Director thar.',
-        '**11. CBSE Chairman** - Lokhande Prashant Sitaram.',
-        '**12. Supreme Court** - Judge thar 5 approve.',
-        '**13. UNGA President** - Khalilur Rahman, Bangladesh. 81st Session.',
-        '**14. UN Security Council** - Portugal, Austria Non-Permanent Member 2027-28.'
+        '**4. IndiaAI Mission CEO** - Saurabh Vijay, UIDAI CEO hlui.',
+        '**5. World Bank** - Neelkanth Mishra, Executive Director thar.',
+        '**6. CBSE Chairman** - Lokhande Prashant Sitaram.',
+        '**7. Supreme Court** - Judge thar 5 approve.',
+        '**8. UNGA President** - Khalilur Rahman, Bangladesh. 81st Session.',
+        '**9. UN Security Council** - Portugal, Austria Non-Permanent Member 2027-28.',
+        '**10. RBI Governor** - Sanjay Malhotra term extend June 2026.',
+        '**11. DRDO Chief** - Dr Samir Kamat extension 2 years.'
       ],
       english: [
         '**GALLANTRY AWARDS:**',
         '**1. Shaurya Chakra** - Lt Commander Suraj Prashar, Indian Navy. Submarine rescue operation.',
-        '**SPORTS AWARDS:**',
-        '**2. Chess** - R Praggnanandhaa, Norway Chess 2026 Champion. First Indian.',
-        '**3. Football** - India Women Team, SAFF Championship 2026 Champions. After 7 years.',
-        '**4. Hockey** - India U18 Men, Asia Cup Champions 2026.',
-        '**5. Tennis** - Alexander Zverev and Mirra Andreeva, French Open 2026 Champions.',
-        '**6. F1** - Kimi Antonelli, Monaco Grand Prix 2026 Winner.',
         '**SCIENCE & RECOGNITION:**',
-        '**7. Mizoram University** - Discovered Calamaria mizoramensis new snake species. Published in Zootaxa.',
+        '**2. Mizoram University** - Discovered Calamaria mizoramensis new snake species. Published in Zootaxa.',
         '**INFRASTRUCTURE:**',
-        '**8. Bairabi-Sairang Railway** - Inaugurated Sept 2025. First rail connection to Aizawl. June 2026 Rajdhani Express operational.',
+        '**3. Bairabi-Sairang Railway** - Inaugurated Sept 2025. First rail connection to Aizawl. June 2026 Rajdhani Express operational.',
         '**APPOINTMENTS:**',
-        '**9. IndiaAI Mission CEO** - Saurabh Vijay, former UIDAI CEO.',
-        '**10. World Bank** - Neelkanth Mishra, new Executive Director.',
-        '**11. CBSE Chairman** - Lokhande Prashant Sitaram.',
-        '**12. Supreme Court** - 5 new judges approved.',
-        '**13. UNGA President** - Khalilur Rahman, Bangladesh. 81st Session.',
-        '**14. UN Security Council** - Portugal, Austria Non-Permanent Members 2027-28.'
+        '**4. IndiaAI Mission CEO** - Saurabh Vijay, former UIDAI CEO.',
+        '**5. World Bank** - Neelkanth Mishra, new Executive Director.',
+        '**6. CBSE Chairman** - Lokhande Prashant Sitaram.',
+        '**7. Supreme Court** - 5 new judges approved.',
+        '**8. UNGA President** - Khalilur Rahman, Bangladesh. 81st Session.',
+        '**9. UN Security Council** - Portugal, Austria Non-Permanent Members 2027-28.',
+        '**10. RBI Governor** - Sanjay Malhotra term extended June 2026.',
+        '**11. DRDO Chief** - Dr Samir Kamat gets 2 year extension.'
       ]
     }
   },
@@ -237,16 +241,22 @@ const currentAffairsChapters = [
         '**2. Tennis** - Alexander Zverev leh Mirra Andreeva, French Open 2026 Champions.',
         '**FEBRUARY 2026:**',
         '**3. Football** - India Women Team SAFF Championship 2026 champion. Kum 7 hnuah a vawi 6 nan.',
-        '**4. Chess** - R Praggnanandhaa Norway Chess 2026 Champion. Indian hmasa ber.',
+        '**4. Chess** - R Praggnanandhaa Norway Chess 2026 Champion. Indian hmasa ber. World No.2 Magnus Carlsen hneh.',
         '**MARCH-APRIL 2026:**',
         '**5. Cricket** - India vs Afghanistan Test. India in biggest win record.',
+        '**6. Premier League 2025-26** - Liverpool Champion. Mohamed Salah Golden Boot.',
         '**MAY 2026:**',
-        '**6. F1** - Kimi Antonelli Monaco Grand Prix 2026 la.',
+        '**7. F1** - Kimi Antonelli Monaco Grand Prix 2026 la. Mercedes driver naupang ber winner.',
+        '**8. Champions League 2025-26** - Real Madrid Champion. Final ah Man City 2-1 hneh. Wembley ah khelh.',
         '**JUNE 2026:**',
-        '**7. MoS Murugan Sports** - June 3 Kolasib RSTC ah football exhibition match en. Viksit Bharat 2047 tan sports pawimawh.',
+        '**9. FIFA World Cup 2026** - June 11 USA-Mexico-Canada ah tan. Opening match Mexico City. India qualify lo. MPSC tan: 48 teams, host 3 ram.',
+        '**10. Wimbledon 2026** - June 29 tan. Indian players 3 qualified: Sumit Nagal, Ankita Raina, Rohan Bopanna.',
+        '**11. Chess World Cup 2026** - June 15 Baku ah tan. India atang Gukesh D, Arjun Erigaisi, Praggnanandhaa tel. MPSC: Candidate Tournament qualifier.',
+        '**12. MoS Murugan Sports** - June 3 Kolasib RSTC ah football exhibition match en. Viksit Bharat 2047 tan sports pawimawh.',
         '**MIZORAM SPECIAL:**',
-        '**8. Tourism Events Calendar** - Sports events tam tak tel. Football, traditional games.',
-        '**9. Assam Rifles** - Boatmanship Training May 26-30. Monsoon operational preparedness.'
+        '**13. Tourism Events Calendar** - Sports events tam tak tel. Football, traditional games, marathon.',
+        '**14. Assam Rifles** - Boatmanship Training May 26-30. Monsoon operational preparedness.',
+        '**15. NEW: Santosh Trophy** - Mizoram team quarter-final lut. Services hneh lo.'
       ],
       english: [
         '**JANUARY 2026:**',
@@ -254,16 +264,22 @@ const currentAffairsChapters = [
         '**2. Tennis** - Alexander Zverev and Mirra Andreeva, French Open 2026 Champions.',
         '**FEBRUARY 2026:**',
         '**3. Football** - India Women Team SAFF Championship 2026 champions. 6th title after 7 years.',
-        '**4. Chess** - R Praggnanandhaa Norway Chess 2026 Champion. First Indian.',
+        '**4. Chess** - R Praggnanandhaa Norway Chess 2026 Champion. First Indian. Defeated World No.2 Magnus Carlsen.',
         '**MARCH-APRIL 2026:**',
         '**5. Cricket** - India vs Afghanistan Test. India recorded biggest win.',
+        '**6. Premier League 2025-26** - Liverpool Champions. Mohamed Salah Golden Boot.',
         '**MAY 2026:**',
-        '**6. F1** - Kimi Antonelli wins Monaco Grand Prix 2026.',
+        '**7. F1** - Kimi Antonelli wins Monaco Grand Prix 2026. Youngest Mercedes driver to win.',
+        '**8. Champions League 2025-26** - Real Madrid Champions. Defeated Man City 2-1 in final at Wembley.',
         '**JUNE 2026:**',
-        '**7. MoS Murugan Sports** - June 3 watched football exhibition at Kolasib RSTC. Emphasized sports for Viksit Bharat 2047.',
+        '**9. FIFA World Cup 2026** - June 11 starts in USA-Mexico-Canada. Opening match Mexico City. India did not qualify. MPSC: 48 teams, 3 host nations.',
+        '**10. Wimbledon 2026** - June 29 starts. 3 Indian players qualified: Sumit Nagal, Ankita Raina, Rohan Bopanna.',
+        '**11. Chess World Cup 2026** - June 15 starts in Baku. Indians: Gukesh D, Arjun Erigaisi, Praggnanandhaa. MPSC: Candidates Tournament qualifier.',
+        '**12. MoS Murugan Sports** - June 3 watched football exhibition at Kolasib RSTC. Emphasized sports for Viksit Bharat 2047.',
         '**MIZORAM SPECIAL:**',
-        '**8. Tourism Events Calendar** - Includes multiple sports events. Football, traditional games.',
-        '**9. Assam Rifles** - Boatmanship Training May 26-30. Monsoon operational preparedness.'
+        '**13. Tourism Events Calendar** - Includes multiple sports events. Football, traditional games, marathon.',
+        '**14. Assam Rifles** - Boatmanship Training May 26-30. Monsoon operational preparedness.',
+        '**15. NEW: Santosh Trophy** - Mizoram team reached quarter-final. Lost to Services.'
       ]
     }
   }
@@ -277,7 +293,10 @@ export default function CurrentAffairsPage() {
       backLink="/"
       testLink="/current-affairs/test"
       testTitle="CA 2026 Mock Test - 100 Questions"
-      testDesc="Jan 1 - Jun 9, 2026 • World, National, Mizoram • MPSC Important"
+      testDesc="Jan 1 - Jun 15, 2026 • World, National, Mizoram • MPSC Important"
+      slug="current-affairs"
+      testId="current-affairs-mock-1"
+      showMockTest={true}
     />
   )
 }
