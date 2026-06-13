@@ -3,25 +3,36 @@ import Razorpay from 'razorpay'
 
 export async function POST(req: Request) {
   try {
-    // 1. Razorpay instance hi hetah siam rawh
     const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID!, // NEXT_PUBLIC tel lo
+      key_id: process.env.RAZORPAY_KEY_ID!,
       key_secret: process.env.RAZORPAY_KEY_SECRET!,
     })
 
-    const { amount } = await req.json()
-
-    const order = await razorpay.orders.create({
-      amount: amount, // 49900 paise = ₹499
-      currency: 'INR',
-      receipt: 'receipt_' + Date.now(),
+    const paymentLink = await razorpay.paymentLink.create({
+      amount: 20000, // ₹200 paise in
+      currency: "INR",
+      description: "MizoPrep Pro - 6 months",
+      customer: {
+        name: "MizoPrep User",
+        email: "user@mizoprep.app"
+      },
+      notify: {
+        sms: false,
+        email: false
+      },
+      callback_url: "https://mizoprep.vercel.app/premium/success",
+      callback_method: "get"
     })
 
-    return NextResponse.json(order)
-  } catch (error) {
-    console.error(error)
+    return NextResponse.json({ 
+      url: paymentLink.short_url,
+      id: paymentLink.id 
+    })
+    
+  } catch (error: any) {
+    console.error('Razorpay Error:', error)
     return NextResponse.json(
-      { error: 'Order creation failed' },
+      { error: error.message || 'Payment link creation failed' },
       { status: 500 }
     )
   }

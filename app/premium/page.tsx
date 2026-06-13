@@ -11,22 +11,32 @@ export default function PremiumPage() {
     setLoading(true)
     
     try {
-      const res = await fetch('/api/razorpay', {
+      const res = await fetch('https://mizoprep.vercel.app/api/razorpay', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: 20000 })
       })
-
-      if (!res.ok) throw new Error('Failed to create payment link')
 
       const data = await res.json()
 
-      // Chrome/System Browser ah Payment Page hawng
-      await Browser.open({ url: data.url })
+      if (!res.ok) {
+        console.log('API Error:', data)
+        throw new Error(data.error || `API Error ${res.status}`)
+      }
+
+      console.log('Payment Link:', data)
+
+      if (data.url) {
+        await Browser.open({ url: data.url })
+      } else {
+        throw new Error('Payment URL not found')
+      }
+      
       setLoading(false)
 
-    } catch (error) {
-      console.error(error)
-      alert('Something went wrong. Try again.')
+    } catch (error: any) {
+      console.error('Full error:', error)
+      alert('Error: ' + error.message)
       setLoading(false)
     }
   }
