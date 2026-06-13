@@ -1,34 +1,28 @@
-import Razorpay from 'razorpay';
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
+import Razorpay from 'razorpay'
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
-
-export async function POST() {
+export async function POST(req: Request) {
   try {
-    const paymentLink = await razorpay.paymentLink.create({
-      amount: 20000, // ₹200
-      currency: "INR",
-      description: "MizoPrep Pro - 6 Months",
-      customer: {
-        name: "MizoPrep User",
-        email: "user@mizoprep.com"
-      },
-      notify: {
-        sms: true,
-        email: true
-      },
-      callback_url: "https://mizoprep.vercel.app/premium/success",
-      callback_method: "get"
-    });
+    // 1. Razorpay instance hi hetah siam rawh
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID!, // NEXT_PUBLIC tel lo
+      key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    })
 
-    return NextResponse.json({ url: paymentLink.short_url });
-    
-  } catch (error: any) {
-    return NextResponse.json({ 
-      error: error.message 
-    }, { status: 500 });
+    const { amount } = await req.json()
+
+    const order = await razorpay.orders.create({
+      amount: amount, // 49900 paise = ₹499
+      currency: 'INR',
+      receipt: 'receipt_' + Date.now(),
+    })
+
+    return NextResponse.json(order)
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json(
+      { error: 'Order creation failed' },
+      { status: 500 }
+    )
   }
 }
