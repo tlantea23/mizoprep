@@ -7,35 +7,32 @@ import { CapacitorHttp } from '@capacitor/core'
 export default function PremiumPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
 
   const handleBuyPro = async () => {
     setLoading(true)
-    setError('')
     
     try {
       const response = await CapacitorHttp.post({
-        url: 'https://mizoprep.vercel.app/api/razorpay', // ← / paih
+        url: 'https://mizoprep.vercel.app/api/razorpay/',
         headers: { 'Content-Type': 'application/json' },
-        data: {} // Server ah amount fix tawh, send kher a ngai lo
+        data: { amount: 20000 }
       })
       
       const data = response.data
 
-      // CapacitorHttp ah status 200-299 hi success
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error(data.error || `Payment failed: ${response.status}`)
+      if (response.status !== 200) {
+        throw new Error(data.error || `Payment failed`)
       }
 
       if (data.url) {
         await Browser.open({ url: data.url })
       } else {
-        throw new Error('Payment link not received from server')
+        throw new Error('Payment link not received')
       }
       
     } catch (error: any) {
       console.error('Payment Error:', error)
-      setError(error.message || 'Payment failed. Internet check la, try leh rawh.')
+      alert('Payment failed. Please check your internet and try again.')
     } finally {
       setLoading(false)
     }
@@ -53,10 +50,10 @@ export default function PremiumPage() {
           
           <div className="bg-white/20 backdrop-blur rounded-xl p-4 mb-4">
             <div className="text-center mb-4">
-              <span className="text-4xl font-bold">₹100</span>
+              <span className="text-4xl font-bold">₹200</span>
               <span className="text-white/80 ml-2">/ 6 months</span>
             </div>
-            <p className="text-sm text-center text-white/90">≈ ₹17/month only</p>
+            <p className="text-sm text-center text-white/90">≈ ₹33/month only</p>
           </div>
 
           <div className="space-y-3 mb-6 text-sm">
@@ -82,18 +79,12 @@ export default function PremiumPage() {
             </div>
           </div>
 
-          {error && (
-            <div className="bg-red-500/20 border border-red-300 rounded-lg p-3 mb-4 text-sm">
-              {error}
-            </div>
-          )}
-
           <button 
             onClick={handleBuyPro}
             disabled={loading}
             className="w-full bg-white text-orange-600 py-4 rounded-xl font-bold text-lg active:scale-95 disabled:opacity-50 transition"
           >
-            {loading ? 'Opening Payment...' : 'Get Pro - ₹100'}
+            {loading ? 'Opening Payment...' : 'Get Pro - ₹200'}
           </button>
           
           <p className="text-xs text-center mt-4 text-white/70">

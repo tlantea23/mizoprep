@@ -1,50 +1,36 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import Razorpay from 'razorpay'
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const body = await req.json()
-    
-    const options = {
-      amount: 10000, // ₹100
-      currency: "INR",
-      receipt: "mizoprep_" + Date.now(),
-    }
+    const { amount } = await request.json()
 
-    const auth = Buffer.from(
-      process.env.RAZORPAY_KEY_ID + ':' + process.env.RAZORPAY_KEY_SECRET
-    ).toString('base64')
-
-    const response = await fetch('https://api.razorpay.com/v1/payment_links', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${auth}`
-      },
-      body: JSON.stringify({
-        amount: options.amount,
-        currency: options.currency,
-        description: "MizoPrep Pro - 6 Months",
-        callback_url: "https://mizoprep.vercel.app/pro-success",
-        callback_method: "get"
-      })
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_KEY_SECRET!,
     })
 
-    const data = await response.json()
+    const paymentLink = await razorpay.paymentLink.create({
+      amount: amount,
+      currency: 'INR',
+      description: 'MizoPrep Pro 6 Months',
+      customer: {
+        name: 'MizoPrep User',
+        // contact field hi dah miah suh
+        // email pawh dah loh a tha zawk tunah chuan
+      },
+      notify: { sms: false, email: false },
+      reminder_enable: false,
+      callback_url: 'https://mizoprep.vercel.app/payment-success',
+      callback_method: 'get'
+    })
 
-    if (!response.ok) {
-      console.log('Razorpay API Error:', data)
-      return NextResponse.json(
-        { error: data.error?.description || 'Razorpay failed' }, 
-        { status: response.status }
-      )
-    }
+    return NextResponse.json({ url: paymentLink.short_url })
 
-    return NextResponse.json({ url: data.short_url })
-    
   } catch (error: any) {
-    console.log('Server Error:', error.message)
+    console.error('Razorpay API Error:', error)
     return NextResponse.json(
-      { error: 'Server error: ' + error.message }, 
+      { error: 'Payment link creation failed', details: error.error?.description || error.message },
       { status: 500 }
     )
   }
