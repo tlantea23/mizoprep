@@ -15,12 +15,12 @@ export default function PremiumPage() {
       const response = await CapacitorHttp.post({
         url: 'https://mizoprep.vercel.app/api/razorpay/',
         headers: { 'Content-Type': 'application/json' },
-        data: { amount: 20000 }
+        data: { amount: 100 }
       })
       
       const data = response.data
 
-      if (response.status !== 200) {
+      if (response.status !== 100) {
         throw new Error(data.error || `Payment failed`)
       }
 
@@ -50,7 +50,7 @@ export default function PremiumPage() {
           
           <div className="bg-white/20 backdrop-blur rounded-xl p-4 mb-4">
             <div className="text-center mb-4">
-              <span className="text-4xl font-bold">₹200</span>
+              <span className="text-4xl font-bold">₹100</span>
               <span className="text-white/80 ml-2">/ 6 months</span>
             </div>
             <p className="text-sm text-center text-white/90">≈ ₹33/month only</p>
@@ -84,7 +84,7 @@ export default function PremiumPage() {
             disabled={loading}
             className="w-full bg-white text-orange-600 py-4 rounded-xl font-bold text-lg active:scale-95 disabled:opacity-50 transition"
           >
-            {loading ? 'Opening Payment...' : 'Get Pro - ₹200'}
+            {loading ? 'Opening Payment...' : 'Get Pro - ₹100'}
           </button>
           
           <p className="text-xs text-center mt-4 text-white/70">
