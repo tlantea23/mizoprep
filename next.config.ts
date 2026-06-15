@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export', <-- Hei hi paih/comment rawh
-  images: { unoptimized: true },
-  trailingSlash: true,
+  output: 'export',
+  images: {
+    unoptimized: true
+  },
+  // API routes hi static export ah a kal lo, mahse Vercel ah a kal tho
+  // trailingSlash: true, // routing buai chuan uncomment rawh
 }
 
-export default nextConfig
+module.exports = nextConfig

@@ -5,18 +5,36 @@ import { useRouter } from 'next/navigation'
 export default function SuccessPage() {
   const router = useRouter()
   const [countdown, setCountdown] = useState(3)
+  const [saved, setSaved] = useState(false)
+  const [expiryTime, setExpiryTime] = useState(0)
 
   useEffect(() => {
-    // 1. Premium activate nghal
-    localStorage.setItem('isPro', 'true')
-    localStorage.setItem('proActivatedDate', new Date().toISOString())
+    // 1. Expiry calculate
+    const expiry = Date.now() + 15552000000 // thla 6
+    setExpiryTime(expiry)
 
-    // 2. 3 second hnuah Home ah auto redirect
+    // 2. LocalStorage ah save phawt
+    localStorage.setItem('mizoprep_pro', 'true')
+    localStorage.setItem('mizoprep_pro_expiry', expiry.toString())
+
+    // 3. Save dik em check
+    const check = localStorage.getItem('mizoprep_pro')
+    if (check === 'true') {
+      setSaved(true)
+      console.log('✅ Pro save success:', check, expiry)
+    } else {
+      console.log('❌ Pro save failed')
+      alert('Pro save a fail. Phone storage full emaw?')
+      return
+    }
+
+    // 4. 3 second hnuah redirect - URL PARAM TELH TAWH
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer)
-          router.push('/')
+          // HEI HI A PAWIMAWH - ?pro=true&expiry=... TELH RAWH
+          router.replace(`/mock-test?pro=true&expiry=${expiry}`)
           return 0
         }
         return prev - 1
@@ -35,34 +53,39 @@ export default function SuccessPage() {
       justifyContent: 'center',
       background: 'linear-gradient(135deg, #7C3AED, #1E1B4B)',
       color: 'white',
-      fontFamily: 'Montserrat, sans-serif',
       padding: '20px',
       textAlign: 'center'
     }}>
-      <div style={{fontSize: '80px', marginBottom: '20px'}}>✓</div>
-      <h1 style={{fontSize: '32px', marginBottom: '10px'}}>Payment Successful</h1>
-      <p style={{fontSize: '18px', opacity: 0.9, marginBottom: '5px'}}>Premium i activate fel e!</p>
-      <p style={{marginBottom: '10px'}}>MizoPrep lo hmang tangkai zel rawh</p>
-      <p style={{marginBottom: '40px', opacity: 0.8, fontSize: '14px'}}>
-        Redirecting to Home in {countdown}s...
+      <div style={{fontSize: '80px', marginBottom: '20px'}}>
+        {saved? '✓' : '⏳'}
+      </div>
+      <h1 style={{fontSize: '32px', marginBottom: '10px'}}>
+        {saved? 'Payment Successful' : 'Activating...'}
+      </h1>
+      <p style={{fontSize: '18px', marginBottom: '40px'}}>
+        {saved? 'Premium activate fel e!' : 'LocalStorage save mek...'}
       </p>
-
-      <button
-        onClick={() => router.push('/')}
-        style={{
-          backgroundColor: 'white',
-          color: '#7C3AED',
-          border: 'none',
-          padding: '14px 32px',
-          borderRadius: '12px',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
-        }}
-      >
-        Go to Home Now
-      </button>
+      {saved && (
+        <>
+          <p style={{opacity: 0.8, fontSize: '14px', marginBottom: '20px'}}>
+            Redirecting in {countdown}s...
+          </p>
+          <button
+            onClick={() => router.replace(`/mock-test?pro=true&expiry=${expiryTime}`)}
+            style={{
+              backgroundColor: 'white',
+              color: '#7C3AED',
+              border: 'none',
+              padding: '14px 32px',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontWeight: 'bold'
+            }}
+          >
+            Go to Mock Test Now
+          </button>
+        </>
+      )}
     </div>
   )
 }

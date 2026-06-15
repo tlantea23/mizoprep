@@ -55,7 +55,7 @@ export default function SubjectPage({
     const proStatus = localStorage.getItem('mizoprep_pro')
     const expiry = localStorage.getItem('mizoprep_pro_expiry')
     if (proStatus === 'true' && expiry) {
-      const expiryDate = new Date(expiry)
+      const expiryDate = new Date(Number(expiry))
       if (expiryDate > new Date()) {
         setIsPro(true)
         setProExpiry(expiry)
@@ -119,7 +119,7 @@ export default function SubjectPage({
 
   const getDaysLeft = () => {
     if (!proExpiry) return 0
-    const days = Math.ceil((new Date(proExpiry).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+    const days = Math.ceil((Number(proExpiry) - Date.now()) / (1000 * 60 * 60 * 24))
     return days > 0? days : 0
   }
 
@@ -176,7 +176,7 @@ export default function SubjectPage({
                   ✓ Pro Active - {getDaysLeft()} days left
                 </p>
                 <p className="text-xs text-green-700">
-                  Expires: {new Date(proExpiry).toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'})}
+                  Expires: {new Date(Number(proExpiry)).toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'})}
                 </p>
               </div>
             )}
@@ -253,11 +253,11 @@ export default function SubjectPage({
               <div className="mt-6 p-4 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg text-white text-center">
                 <p className="font-bold mb-1">💎 {isEnglish? 'Unlock All Chapters' : 'Chapter Zawng Zawng Unlock'}</p>
                 <p className="text-xs opacity-90 mb-3">
-                  {isEnglish? 'Get Pro ₹200 - Valid for 6 months' : 'Pro ₹200 - Thla 6 chhung a daih'}
+                  {isEnglish? 'Get Pro ₹100 - Valid for 6 months' : 'Pro ₹100 - Thla 6 chhung a daih'}
                 </p>
                 <Link href="/premium">
                   <button className="bg-white text-orange-600 px-6 py-2 rounded-lg font-bold text-sm">
-                    {isEnglish? 'Get Pro ₹200' : 'Pro Nei Rawh ₹200'}
+                    {isEnglish? 'Get Pro ₹100' : 'Pro Nei Rawh ₹100'}
                   </button>
                 </Link>
               </div>

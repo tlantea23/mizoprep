@@ -1,10 +1,13 @@
 'use client'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AdMob, BannerAdOptions, BannerAdSize, BannerAdPosition } from '@capacitor-community/admob'
 import { Capacitor } from '@capacitor/core'
 
 export default function Home() {
+  const [isPro, setIsPro] = useState(false)
+  const [loading, setLoading] = useState(true)
+
   const subjects = [
     { name: 'Indian Polity', icon: '🏛️', href: '/polity' },
     { name: 'History', icon: '📜', href: '/history' },
@@ -13,11 +16,30 @@ export default function Home() {
     { name: 'Mizoram GK', icon: '🏞️', href: '/mizoram-gk' },
     { name: 'Current Affairs', icon: '📰', href: '/current-affairs' },
     { name: 'English', icon: '📖', href: '/english' }, 
-    { name: 'general-Science', icon: '🔬', href: '/general-science' },
+    { name: 'General Science', icon: '🔬', href: '/general-science' },
     { name: 'Mock Test', icon: '✍️', href: '/mock-test' },
   ]
 
+  // 1. Pro status check
   useEffect(() => {
+    const proStatus = localStorage.getItem('mizoprep_pro')
+    const expiry = Number(localStorage.getItem('mizoprep_pro_expiry'))
+    
+    if (proStatus === 'true' && Date.now() < expiry) {
+      setIsPro(true)
+    } else {
+      setIsPro(false)
+      // Expiry tawh chuan clear
+      localStorage.removeItem('mizoprep_pro')
+      localStorage.removeItem('mizoprep_pro_expiry')
+    }
+    setLoading(false)
+  }, [])
+
+  // 2. AdMob - Pro tan chuan load lo
+  useEffect(() => {
+    if (loading || isPro) return // Pro a nih chuan ad load suh
+    
     const showBannerAd = async () => {
       if (Capacitor.getPlatform() !== 'android' || !Capacitor.isPluginAvailable('AdMob')) {
         return
@@ -45,31 +67,46 @@ export default function Home() {
     }
 
     showBannerAd()
-  }, [])
+  }, [isPro, loading])
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50 p-3 pb-18">
+    <div className={`min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50 p-3 ${isPro ? 'pb-4' : 'pb-18'}`}>
       <div className="max-w-md mx-auto">
         <div className="mb-4">
-          <h1 className="text-3xl font-bold text-red-700">MizoPrep</h1>
-          <p className="text-sm text-gray-600 mt-1">MPSC Exam Prep in Mizo</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-red-700">MizoPrep</h1>
+              <p className="text-sm text-gray-600 mt-1">MPSC Exam Prep in Mizo</p>
+            </div>
+            {isPro && (
+              <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                PRO ✓
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Pro Banner - /premium ah thlak, ₹200 */}
-        <Link href="/premium">
-          <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-3 mb-4 text-white active:scale-95 transition-transform shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xl">🔥</span>
-                  <h2 className="font-bold text-lg">MizoPrep Pro</h2>
+        {/* Pro Banner - Pro a nih tawh chuan lang lo */}
+        {!isPro && (
+          <Link href="/premium">
+            <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-3 mb-4 text-white active:scale-95 transition-transform shadow-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xl">🔥</span>
+                    <h2 className="font-bold text-lg">MizoPrep Pro</h2>
+                  </div>
+                  <p className="text-xs opacity-90">Chapter 4+ + Mock Test + Current Affairs</p>
                 </div>
-                <p className="text-xs opacity-90">Chapter 4+ + Mock Test + Current Affairs</p>
+                <div className="bg-white text-orange-600 px-3 py-1 rounded-full font-bold text-sm">₹200</div>
               </div>
-              <div className="bg-white text-orange-600 px-3 py-1 rounded-full font-bold text-sm">₹200</div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        )}
 
         {/* Subject Grid */}
         <div className="grid grid-cols-2 gap-2">
