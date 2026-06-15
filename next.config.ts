@@ -1,11 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // output: 'export',  ← DELETE TAWP RAWH. Hei vangin API a thi
   images: {
-    unoptimized: true
+    unoptimized: true  // ← Hei chu dah la a pawi lo
   },
-  // API routes hi static export ah a kal lo, mahse Vercel ah a kal tho
-  // trailingSlash: true, // routing buai chuan uncomment rawh
 }
 
 module.exports = nextConfig
