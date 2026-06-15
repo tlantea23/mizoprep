@@ -20,7 +20,6 @@ export default function Home() {
     { name: 'Mock Test', icon: '✍️', href: '/mock-test' },
   ]
 
-  // 1. Pro status check
   useEffect(() => {
     const proStatus = localStorage.getItem('mizoprep_pro')
     const expiry = Number(localStorage.getItem('mizoprep_pro_expiry'))
@@ -29,16 +28,14 @@ export default function Home() {
       setIsPro(true)
     } else {
       setIsPro(false)
-      // Expiry tawh chuan clear
       localStorage.removeItem('mizoprep_pro')
       localStorage.removeItem('mizoprep_pro_expiry')
     }
     setLoading(false)
   }, [])
 
-  // 2. AdMob - Pro tan chuan load lo
   useEffect(() => {
-    if (loading || isPro) return // Pro a nih chuan ad load suh
+    if (loading || isPro) return
     
     const showBannerAd = async () => {
       if (Capacitor.getPlatform() !== 'android' || !Capacitor.isPluginAvailable('AdMob')) {
@@ -47,7 +44,7 @@ export default function Home() {
 
       try {
         await AdMob.initialize({
-          initializeForTesting: true
+          initializeForTesting: false
         })
         
         setTimeout(async () => {
@@ -90,7 +87,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Pro Banner - Pro a nih tawh chuan lang lo */}
+        {/* Pro Banner - ₹100 chiah */}
         {!isPro && (
           <Link href="/premium">
             <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-3 mb-4 text-white active:scale-95 transition-transform shadow-lg">
@@ -100,15 +97,14 @@ export default function Home() {
                     <span className="text-xl">🔥</span>
                     <h2 className="font-bold text-lg">MizoPrep Pro</h2>
                   </div>
-                  <p className="text-xs opacity-90">Chapter 4+ + Mock Test + Current Affairs</p>
+                  <p className="text-xs opacity-90">Ads zawng zawng remove + Priority Support</p>
                 </div>
-                <div className="bg-white text-orange-600 px-3 py-1 rounded-full font-bold text-sm">₹200</div>
+                <div className="bg-white text-orange-600 px-3 py-1 rounded-full font-bold text-sm">₹100</div>
               </div>
             </div>
           </Link>
         )}
 
-        {/* Subject Grid */}
         <div className="grid grid-cols-2 gap-2">
           {subjects.map((subject) => (
             <Link 
