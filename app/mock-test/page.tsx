@@ -1,81 +1,289 @@
 'use client'
+export const dynamic = 'force-static'
 import { useState, useEffect } from 'react'
-import { showInterstitial } from '@/lib/admob'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { showInterstitial, showRewardedAd } from '@/lib/admob'
+import { MOCK_QUESTIONS as questions } from './questions' // <- Hei hi thlak
 
 export default function MockTestPage() {
-  const [adLoading, setAdLoading] = useState(false)
+  const [currentQ, setCurrentQ] = useState(0)
+  const [selected, setSelected] = useState<number | null>(null)
+  const [showAnswer, setShowAnswer] = useState(false)
+  const [score, setScore] = useState(0)
+  const [completed, setCompleted] = useState(false)
+  const [testUnlocked, setTestUnlocked] = useState(false)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  const startFullTest = async () => {
-    setAdLoading(true)
-    await showInterstitial() // Test tan hmain ad en phawt
-    setAdLoading(false)
-    router.push('/mock-test/full')
+  // Question 10 apiangin interstitial ad
+  useEffect(() => {
+    if (currentQ > 0 && currentQ % 10 === 0 &&!completed && testUnlocked) {
+      showInterstitial()
+    }
+  }, [currentQ, completed, testUnlocked])
+
+  const handleUnlockTest = async () => {
+    setLoading(true)
+    try {
+      const rewarded = await showRewardedAd()
+      if (rewarded) {
+        setTestUnlocked(true)
+      } else {
+        alert('Ad en zawh i ngai. Full test tan turin ad en rawh.')
+      }
+    } catch (error) {
+      alert('Ad load a fail. Internet check la, try leh rawh.')
+    } finally {
+      setLoading(false)
+    }
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-3 pb-20">
-      <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-between mb-4">
-          <Link href="/" className="text-blue-600 font-semibold">← kir</Link>
-        </div>
-        
-        <h1 className="text-2xl font-bold mb-4">MPSC Mock Test</h1>
+  const handleSelect = (idx: number) => {
+    if (showAnswer) return
+    setSelected(idx)
+  }
 
-        {/* Full Mock Test 200 - FREE, Ad en a ngai */}
-        <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-6 text-white mb-4 shadow-lg">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-3xl">🔥</span>
-            <div>
-              <h2 className="font-bold text-xl">Full Mock Test 200</h2>
-              <p className="text-sm opacity-90">200 Questions • All Subjects • 3hrs 20mins</p>
-            </div>
+  const handleCheck = () => {
+    if (selected === null) return
+    setShowAnswer(true)
+    if (selected === questions[currentQ].answer) { // <- correct -> answer
+      setScore(score + 1)
+    }
+  }
+
+  const handleNext = () => {
+    if (currentQ < questions.length - 1) {
+      setCurrentQ(currentQ + 1)
+      setSelected(null)
+      setShowAnswer(false)
+    } else {
+      setCompleted(true)
+    }
+  }
+
+  const handleRestart = async () => {
+    await showInterstitial()
+    setCurrentQ(0)
+    setSelected(null)
+    setShowAnswer(false)
+    setScore(0)
+    setCompleted(false)
+    setTestUnlocked(false)
+  }
+
+  // Ad la en loh chuan unlock screen
+  if (!testUnlocked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center">
+          <div className="text-6xl mb-4">📝</div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Full Mock Test</h1>
+          <p className="text-gray-600 mb-6">
+            {questions.length} Questions Full MPSC Pattern test tan turin ad reilo te en rawh
+          </p>
+          <div className="bg-purple-50 rounded-lg p-4 mb-6 text-left text-sm">
+            <p className="flex items-center gap-2 mb-2">✓ {questions.length} Questions Full Test</p>
+            <p className="flex items-center gap-2 mb-2">✓ Timer + Negative Marking</p>
+            <p className="flex items-center gap-2 mb-2">✓ Detailed Result Analysis</p>
+            <p className="flex items-center gap-2">✓ MPSC Prelims Pattern</p>
           </div>
-
-          <div className="bg-white/20 text-sm p-3 rounded mb-4">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-lg">📺</span>
-              <span className="font-semibold">Ad Support</span>
-            </div>
-            <p className="text-xs opacity-90">Test tan hmain ad i en ang. Question 10 dan zelah ad a lang bawk ang.</p>
-          </div>
-
-          <div className="bg-green-500/30 text-xs px-3 py-2 rounded mb-4 text-center font-bold">
-            100% FREE • AD EN CHAUH NGAI
-          </div>
-
-          <button 
-            onClick={startFullTest}
-            disabled={adLoading}
-            className="w-full bg-white text-blue-600 py-4 rounded-lg font-bold text-lg active:scale-95 disabled:opacity-70"
+          <button
+            onClick={handleUnlockTest}
+            disabled={loading}
+            className="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-xl font-bold text-lg disabled:opacity-50 active:scale-95"
           >
-            {adLoading ? 'Ad Loading...' : '▶️ Ad En La, Test Tan Rawh'}
+            {loading? 'Ad loading...' : '📺 Watch Ad & Start Test'}
           </button>
-        </div>
-
-        {/* Pro Banner */}
-        <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-4 text-white text-center">
-          <div className="text-2xl mb-2">💎</div>
-          <h3 className="font-bold text-lg mb-1">Ads Ning Em?</h3>
-          <p className="text-xs opacity-90 mb-3">Pro ₹100 - Ads zawng zawng bo + Priority Support</p>
-          <Link href="/premium">
-            <button className="bg-white text-orange-600 px-6 py-2 rounded-lg font-bold active:scale-95">
-              Pro Nei Rawh ₹100
-            </button>
+          <p className="text-xs text-gray-500 mt-4">
+            Ad en zawh chuan full test i tan thei ang
+          </p>
+          <Link href="/" className="block mt-4 text-purple-600 text-sm">
+            ← Back to Home
           </Link>
         </div>
+      </div>
+    )
+  }
 
-        {/* Info */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="font-bold text-blue-900 mb-2">📝 Test Info</h3>
-          <ul className="text-sm text-blue-800 space-y-1">
-            <li>• MPSC GS Paper pattern</li>
-            <li>• Negative marking: -1/3</li>
-            <li>• Auto-save progress</li>
-            <li>• Detailed explanation tel</li>
-          </ul>
+  if (completed) {
+    const percentage = ((score / questions.length) * 100).toFixed(1)
+    const wrong = questions.length - score
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
+        <div className="max-w-2xl mx-auto pt-20">
+          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+            <div className="text-6xl mb-4">
+              {score >= 160? '🏆' : score >= 120? '🎉' : score >= 80? '👍' : '💪'}
+            </div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">Mock Test Completed!</h1>
+            <p className="text-xl text-gray-600 mb-6">
+              Your Score: <span className="font-bold text-purple-600">{score}/{questions.length}</span>
+            </p>
+            <p className="text-lg text-gray-700 mb-8">
+              {score >= 160? 'Outstanding! 🌟 MPSC Topper Level!' :
+               score >= 120? 'Excellent! 👍 Mains Qualified!' :
+               score >= 80? 'Good Job! 😊 Prelims Pass!' :
+               score >= 60? 'Average - Practice More! 💪' : 'Need More Study! 📚'}
+            </p>
+            <div className="bg-purple-50 rounded-lg p-4 mb-6 text-left">
+              <h3 className="font-bold text-purple-900 mb-3">Result Analysis:</h3>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="text-gray-600">Percentage</p>
+                  <p className="font-bold text-lg">{percentage}%</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Correct</p>
+                  <p className="font-bold text-lg text-green-600">{score}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Wrong</p>
+                  <p className="font-bold text-lg text-red-600">{wrong}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Attempted</p>
+                  <p className="font-bold text-lg">{questions.length}</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={handleRestart}
+                className="px-6 py-3 bg-purple-600 text-white rounded-lg font-medium active:scale-95"
+              >
+                Retry - Watch Ad Again
+              </button>
+              <Link href="/" className="px-6 py-3 bg-gray-600 text-white rounded-lg font-medium active:scale-95">
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const q = questions[currentQ]
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50">
+      <div className="bg-white shadow-sm border-b sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="text-purple-600 font-medium">← Back</Link>
+            <h1 className="text-lg font-bold text-gray-900">MPSC Mock Test</h1>
+            <div className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+              FREE
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 pt-4">
+        <div className="bg-yellow-50 border-yellow-200 rounded-lg p-3 text-xs text-gray-700">
+          <strong>Disclaimer:</strong> Practice questions only. Mizo Prep is not affiliated with MPSC, UPSC or any Govt entity.
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 py-6">
+        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-medium text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+                Question {currentQ + 1} of {questions.length}
+              </span>
+              <span className="text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                {q.subject}
+              </span>
+            </div>
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-800 leading-relaxed">
+              {q.question}
+            </h2>
+          </div>
+
+          <div className="space-y-3 mb-6">
+            {q.options.map((option, idx) => {
+              const isSelected = selected === idx
+              const isCorrect = idx === q.answer // <- correct -> answer
+              const showCorrect = showAnswer && isCorrect
+              const showWrong = showAnswer && isSelected &&!isCorrect
+
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleSelect(idx)}
+                  disabled={showAnswer}
+                  className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                    showCorrect
+            ? 'border-green-500 bg-green-50'
+                      : showWrong
+            ? 'border-red-500 bg-red-50'
+                      : isSelected
+            ? 'border-purple-500 bg-purple-50'
+                      : 'border-gray-200 hover:border-purple-300 bg-white'
+                  } ${showAnswer? 'cursor-not-allowed' : 'cursor-pointer active:scale-98'}`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      showCorrect
+              ? 'bg-green-500 text-white'
+                        : showWrong
+              ? 'bg-red-500 text-white'
+                        : isSelected
+              ? 'bg-purple-500 text-white'
+                        : 'bg-gray-200 text-gray-600'
+                    }`}>
+                      {String.fromCharCode(65 + idx)}
+                    </div>
+                    <span className="text-gray-800">{option}</span>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+
+          {showAnswer && q.explanation && (
+            <div className="mb-6 p-4 bg-purple-50 border-l-4 border-purple-500 rounded">
+              <h3 className="font-bold text-purple-900 mb-2">📖 Explanation:</h3>
+              <div className="text-gray-700 leading-relaxed">
+                {q.explanation}
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-3">
+            {!showAnswer? (
+              <button
+                onClick={handleCheck}
+                disabled={selected === null}
+                className="flex-1 py-3 bg-purple-600 text-white rounded-lg font-medium disabled:bg-gray-300 disabled:cursor-not-allowed active:scale-95"
+              >
+                Check Answer
+              </button>
+            ) : (
+              <button
+                onClick={handleNext}
+                className="flex-1 py-3 bg-green-600 text-white rounded-lg font-medium active:scale-95"
+              >
+                {currentQ < questions.length - 1? 'Next Question →' : 'Finish Test'}
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-6 bg-white rounded-lg shadow p-4">
+          <div className="flex items-center justify-between text-sm mb-2">
+            <span className="text-gray-600">Score: {score}/{questions.length}</span>
+            <span className="text-gray-600">{((score / questions.length) * 100).toFixed(0)}%</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div
+              className="bg-purple-600 h-2 rounded-full transition-all"
+              style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
+            />
+          </div>
         </div>
       </div>
     </div>

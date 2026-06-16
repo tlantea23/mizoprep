@@ -37,10 +37,10 @@ export default function PremiumPage() {
     try {
       const isCapacitor = typeof window !== 'undefined' && window.Capacitor
       
-      // FIX: Trailing slash paih. Hei vangin 308 error a awm
+      // FIX: Trailing slash dah tel a ngai. Hei vangin 308 error a awm thin
       const apiUrl = isCapacitor 
-        ? 'https://mizoprep.vercel.app/api/razorpay'
-        : '/api/razorpay'
+        ? 'https://mizoprep.vercel.app/api/razorpay/'  // <- / dah belh
+        : '/api/razorpay/'  // <- / dah belh
 
       const response = await CapacitorHttp.post({
         url: apiUrl,
@@ -67,6 +67,7 @@ export default function PremiumPage() {
         handler: function (response: any) {
           console.log('Payment Success:', response)
           alert('Payment Success! ID: ' + response.razorpay_payment_id)
+          setLoading(false)
         },
         prefill: {
           name: 'Guest User',

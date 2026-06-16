@@ -1,8 +1,9 @@
 'use client'
+export const dynamic = 'force-static'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { showInterstitial } from '@/lib/admob'
+import { showInterstitial, showRewardedAd } from '@/lib/admob' // <- rewarded import tel
 import { questions } from './questions'
 
 export default function EnglishTestPage() {
@@ -11,27 +12,32 @@ export default function EnglishTestPage() {
   const [showAnswer, setShowAnswer] = useState(false)
   const [score, setScore] = useState(0)
   const [completed, setCompleted] = useState(false)
-  const [adWatched, setAdWatched] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [testUnlocked, setTestUnlocked] = useState(false) // <- Ad en tawh em check na
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  // Page load apiangin ad en phawt, en zawh chauh test tan
+  // Question 10 apiangin interstitial ad
   useEffect(() => {
-    const loadAd = async () => {
-      setLoading(true)
-      await showInterstitial()
-      setAdWatched(true)
-      setLoading(false)
-    }
-    loadAd()
-  }, [])
-
-  // Question 10 apiangin ad
-  useEffect(() => {
-    if (currentQ > 0 && currentQ % 10 === 0 &&!completed && adWatched) {
+    if (currentQ > 0 && currentQ % 10 === 0 &&!completed && testUnlocked) {
       showInterstitial()
     }
-  }, [currentQ, completed, adWatched])
+  }, [currentQ, completed, testUnlocked])
+
+  const handleUnlockTest = async () => {
+    setLoading(true)
+    try {
+      const rewarded = await showRewardedAd()
+      if (rewarded) {
+        setTestUnlocked(true) // Ad en zo chuan test unlock
+      } else {
+        alert('Ad en zawh i ngai. Test tan turin ad en rawh.')
+      }
+    } catch (error) {
+      alert('Ad load a fail. Internet check la, try leh rawh.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSelect = (idx: number) => {
     if (showAnswer) return
@@ -63,16 +69,37 @@ export default function EnglishTestPage() {
     setShowAnswer(false)
     setScore(0)
     setCompleted(false)
+    setTestUnlocked(false) // Restart leh chuan ad en leh ngai
   }
 
-  // Ad en hma chu loading
-  if (loading ||!adWatched) {
+  // Ad la en loh chuan unlock screen
+  if (!testUnlocked) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4 animate-pulse">📺</div>
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Loading Test...</h2>
-          <p className="text-gray-600">Ad en zawh hunah test a tan ang</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center">
+          <div className="text-6xl mb-4">🎁</div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Free Mock Test</h1>
+          <p className="text-gray-600 mb-6">
+            {questions.length} Questions zawng zawng chhan turin ad reilo te en rawh
+          </p>
+          <div className="bg-blue-50 rounded-lg p-4 mb-6 text-left text-sm">
+            <p className="flex items-center gap-2 mb-2">✓ 100 Questions Full Test</p>
+            <p className="flex items-center gap-2 mb-2">✓ Explanation vek awm</p>
+            <p className="flex items-center gap-2">✓ MPSC Pattern</p>
+          </div>
+          <button
+            onClick={handleUnlockTest}
+            disabled={loading}
+            className="w-full py-4 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-xl font-bold text-lg disabled:opacity-50 active:scale-95"
+          >
+            {loading? 'Ad loading...' : '📺 Watch Ad & Start Test'}
+          </button>
+          <p className="text-xs text-gray-500 mt-4">
+            Ad en zawh chuan test i tan thei ang
+          </p>
+          <Link href="/english" className="block mt-4 text-blue-600 text-sm">
+            ← Back to English
+          </Link>
         </div>
       </div>
     )
@@ -105,7 +132,7 @@ export default function EnglishTestPage() {
                 onClick={handleRestart}
                 className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium active:scale-95"
               >
-                Retry Test
+                Retry Test - Watch Ad Again
               </button>
               <Link href="/english" className="px-6 py-3 bg-gray-600 text-white rounded-lg font-medium active:scale-95">
                 Back to English
@@ -169,22 +196,22 @@ export default function EnglishTestPage() {
                   disabled={showAnswer}
                   className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
                     showCorrect
-               ? 'border-green-500 bg-green-50'
+              ? 'border-green-500 bg-green-50'
                       : showWrong
-               ? 'border-red-500 bg-red-50'
+              ? 'border-red-500 bg-red-50'
                       : isSelected
-               ? 'border-blue-500 bg-blue-50'
+              ? 'border-blue-500 bg-blue-50'
                       : 'border-gray-200 hover:border-blue-300 bg-white'
                   } ${showAnswer? 'cursor-not-allowed' : 'cursor-pointer active:scale-98'}`}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
                       showCorrect
-                 ? 'bg-green-500 text-white'
+                ? 'bg-green-500 text-white'
                         : showWrong
-                 ? 'bg-red-500 text-white'
+                ? 'bg-red-500 text-white'
                         : isSelected
-                 ? 'bg-blue-500 text-white'
+                ? 'bg-blue-500 text-white'
                         : 'bg-gray-200 text-gray-600'
                     }`}>
                       {String.fromCharCode(65 + idx)}
