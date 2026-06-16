@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export',  ← DELETE TAWP RAWH. Hei vangin API a thi
+  output: 'export', // Hei hi a pawimawh ber
   images: {
-    unoptimized: true  // ← Hei chu dah la a pawi lo
+    unoptimized: true, // Capacitor tan
   },
+  trailingSlash: true, // Hei pawh dah
 }
 
 module.exports = nextConfig

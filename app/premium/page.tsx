@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-static'
 import { CapacitorHttp } from '@capacitor/core'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -35,6 +36,8 @@ export default function PremiumPage() {
 
     try {
       const isCapacitor = typeof window !== 'undefined' && window.Capacitor
+      
+      // FIX: Trailing slash paih. Hei vangin 308 error a awm
       const apiUrl = isCapacitor 
         ? 'https://mizoprep.vercel.app/api/razorpay'
         : '/api/razorpay'
@@ -43,8 +46,8 @@ export default function PremiumPage() {
         url: apiUrl,
         headers: { 'Content-Type': 'application/json' },
         data: { 
-          amount: 10000, // ₹100
-          userId: 'guest_' + Date.now() // Supabase a awm loh chuan hetiang hi
+          amount: 10000,
+          userId: 'guest_' + Date.now()
         },
       })
 
@@ -64,8 +67,6 @@ export default function PremiumPage() {
         handler: function (response: any) {
           console.log('Payment Success:', response)
           alert('Payment Success! ID: ' + response.razorpay_payment_id)
-          // Hetah hian i user database update logic dah tur
-          // Eg: fetch('/api/activate-pro', { method: 'POST', body: JSON.stringify(response) })
         },
         prefill: {
           name: 'Guest User',
