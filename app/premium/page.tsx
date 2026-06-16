@@ -1,4 +1,4 @@
-'use client' // 'force-static' paih rawh. Hei vangin 308 a chhuak
+'use client'
 
 import { CapacitorHttp } from '@capacitor/core'
 import { useState, useEffect } from 'react'
@@ -37,19 +37,17 @@ export default function PremiumPage() {
     try {
       const isCapacitor = typeof window !== 'undefined' && window.Capacitor
       
-      // FIX: next.config.ts ah trailingSlash: false i dah tawh chuan / tel lo in a dik
+      // A PAWIMAWH BER: Vercel Next.js 14+ ah chuan / a ngai kher. 308 fix
       const apiUrl = isCapacitor 
-        ? 'https://mizoprep.vercel.app/api/razorpay'  
-        : '/api/razorpay'  
+        ? 'https://mizoprep.vercel.app/api/razorpay/'
+        : '/api/razorpay/'
 
-      // FIX: CapacitorHttp.post ah 'data' hman tur, 'body' a ni lo
-      // FIX: redirect follow a ngai lo, CapacitorHttp in a handle sa
       const response = await CapacitorHttp.post({
         url: apiUrl,
         headers: { 
           'Content-Type': 'application/json',
         },
-        data: {  // <- 'body' ni lo in 'data' hman tur
+        data: {
           amount: 10000,
           userId: 'guest_' + Date.now()
         },
@@ -72,7 +70,6 @@ export default function PremiumPage() {
           console.log('Payment Success:', response)
           alert('Payment Success! ID: ' + response.razorpay_payment_id)
           setLoading(false)
-          // He tah hian Firebase ah Pro status update rawh
         },
         prefill: {
           name: 'Guest User',
