@@ -16,21 +16,15 @@ export default function PremiumPage() {
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
   const router = useRouter()
 
-  // Load Razorpay script
   useEffect(() => {
     const script = document.createElement('script')
     script.src = 'https://checkout.razorpay.com/v1/checkout.js'
     script.async = true
-    script.onload = () => {
-      console.log('Razorpay script loaded')
-      setRazorpayLoaded(true)
-    }
+    script.onload = () => setRazorpayLoaded(true)
     document.body.appendChild(script)
   }, [])
 
   const handleBuyPro = async () => {
-    console.log("1. Buy Pro button clicked")
-    
     if (!razorpayLoaded) {
       setError('Payment gateway loading. Wait 2 seconds and try again.')
       return
@@ -40,29 +34,22 @@ export default function PremiumPage() {
     setError('')
 
     try {
-      console.log("2. Calling Vercel API: https://mizoprep.vercel.app/api/razorpay")
-      
       const response = await CapacitorHttp.post({
         url: 'https://mizoprep.vercel.app/api/razorpay',
         headers: { 'Content-Type': 'application/json' },
         data: {
-          amount: 10000, // ₹100 in paise
+          amount: 10000,
           userId: 'test_user_123'
         }
       })
 
-      console.log("3. API Response Status:", response.status)
-      console.log("3. API Response Data:", response.data)
-      
       const order = response.data
-
       if (response.status !== 200 || !order.id) {
         throw new Error(`API Error: ${JSON.stringify(order)}`)
       }
 
-      // STEP 2: Open Razorpay Checkout - HE LAI HI KA FIX
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // FIXED: Hardcode ni tawh lo
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: order.amount,
         currency: order.currency,
         name: 'MizoPrep Pro',
@@ -70,7 +57,6 @@ export default function PremiumPage() {
         order_id: order.id,
         handler: function (response: any) {
           console.log('Payment Success:', response)
-          alert('Payment Successful!')
           router.push('/premium/success')
         },
         prefill: {
@@ -83,35 +69,19 @@ export default function PremiumPage() {
         modal: {
           ondismiss: function() {
             setLoading(false)
-            console.log('Payment popup closed by user')
           }
         }
       }
 
       const rzp = new window.Razorpay(options)
-      
       rzp.on('payment.failed', function (response: any) {
-        console.error('Razorpay Failed:', response.error)
         setError(`Payment Failed: ${response.error.description}`)
         setLoading(false)
       })
-      
-      console.log("4. Opening Razorpay Checkout")
       rzp.open()
 
     } catch (error: any) {
-      console.error('FULL ERROR OBJECT:', error)
-      console.error('ERROR RESPONSE:', error.response)
-      
-      let errorMsg = 'Payment failed'
-      if (error.response) {
-        errorMsg = `API Error ${error.response.status}: ${JSON.stringify(error.response.data)}`
-      } else if (error.message) {
-        errorMsg = `Error: ${error.message}`
-      }
-      
-      setError(errorMsg)
-      alert(errorMsg)
+      setError(error.message || 'Payment failed')
       setLoading(false)
     }
   }
