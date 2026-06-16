@@ -1,5 +1,5 @@
-'use client'
-export const dynamic = 'force-static'
+'use client' // 'force-static' paih rawh. Hei vangin 308 a chhuak
+
 import { CapacitorHttp } from '@capacitor/core'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -37,15 +37,19 @@ export default function PremiumPage() {
     try {
       const isCapacitor = typeof window !== 'undefined' && window.Capacitor
       
-      // FIX: Trailing slash dah tel a ngai. Hei vangin 308 error a awm thin
+      // FIX: next.config.ts ah trailingSlash: false i dah tawh chuan / tel lo in a dik
       const apiUrl = isCapacitor 
-        ? 'https://mizoprep.vercel.app/api/razorpay'  // <- / dah belh
-        : '/api/razorpay'  // <- / dah belh
+        ? 'https://mizoprep.vercel.app/api/razorpay'  
+        : '/api/razorpay'  
 
+      // FIX: CapacitorHttp.post ah 'data' hman tur, 'body' a ni lo
+      // FIX: redirect follow a ngai lo, CapacitorHttp in a handle sa
       const response = await CapacitorHttp.post({
         url: apiUrl,
-        headers: { 'Content-Type': 'application/json' },
-        data: { 
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        data: {  // <- 'body' ni lo in 'data' hman tur
           amount: 10000,
           userId: 'guest_' + Date.now()
         },
@@ -68,6 +72,7 @@ export default function PremiumPage() {
           console.log('Payment Success:', response)
           alert('Payment Success! ID: ' + response.razorpay_payment_id)
           setLoading(false)
+          // He tah hian Firebase ah Pro status update rawh
         },
         prefill: {
           name: 'Guest User',
