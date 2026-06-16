@@ -6,18 +6,17 @@ const config: CapacitorConfig = {
   webDir: 'out',
   server: {
     androidScheme: 'https',
+    cleartext: true,
     allowNavigation: [
-      'razorpay.com',
+      'mizoprep.vercel.app',
       '*.razorpay.com',
       'api.razorpay.com',
-      'mizoprep.vercel.app',
-      '*.vercel.app'
+      'checkout.razorpay.com'
     ]
   },
   plugins: {
-    AdMob: {
-      appId: 'ca-app-pub-3940256099942544~3347511713',
-      initializeForTesting: true
+    CapacitorHttp: {
+      enabled: true
     }
   }
 };

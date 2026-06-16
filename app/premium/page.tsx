@@ -89,10 +89,12 @@ export default function PremiumPage() {
       rzp.open()
 
     } catch (error: any) {
-      console.error('Full Error:', error)
-      setError(`Debug: ${error.message}`)
-      setLoading(false)
-    }
+  console.error('Full Error:', error)
+  // Error tak tak phone ah a lang thei nan
+  alert(`Error Name: ${error.name}\nMessage: ${error.message}`) 
+  setError(`Debug: ${error.message}`)
+  setLoading(false)
+}
   }
 
   return (
