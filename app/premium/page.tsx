@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 declare global {
   interface Window {
     Razorpay: any;
+    Capacitor: any;
   }
 }
 
@@ -33,7 +34,13 @@ export default function PremiumPage() {
     setError('')
 
     try {
-      const response = await fetch('/api/razorpay', {
+      // App nge Browser tih check - hei hi a pawimawh ber
+      const isCapacitor = typeof window !== 'undefined' && window.Capacitor
+      const apiUrl = isCapacitor 
+        ? 'https://mizoprep.vercel.app/api/razorpay'  // Android App tan
+        : '/api/razorpay' // Browser tan
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -83,7 +90,7 @@ export default function PremiumPage() {
 
     } catch (error: any) {
       console.error('Full Error:', error)
-      setError(error.message || 'Payment failed. Internet check la, try leh rawh.')
+      setError(`Debug: ${error.message}`)
       setLoading(false)
     }
   }
