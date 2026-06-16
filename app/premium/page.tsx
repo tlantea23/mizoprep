@@ -1,103 +1,148 @@
 'use client'
+
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { Browser } from '@capacitor/browser'
 import { CapacitorHttp } from '@capacitor/core'
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 export default function PremiumPage() {
-  const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false)
+  const router = useRouter()
+
+  // Load Razorpay script
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    script.onload = () => {
+      console.log('Razorpay script loaded')
+      setRazorpayLoaded(true)
+    }
+    document.body.appendChild(script)
+  }, [])
 
   const handleBuyPro = async () => {
-    setLoading(true)
+    console.log("1. Buy Pro button clicked")
     
+    if (!razorpayLoaded) {
+      setError('Payment gateway loading. Wait 2 seconds and try again.')
+      return
+    }
+
+    setLoading(true)
+    setError('')
+
     try {
+      console.log("2. Calling Vercel API: https://mizoprep.vercel.app/api/razorpay")
+      
       const response = await CapacitorHttp.post({
-        url: 'https://mizoprep.vercel.app/api/razorpay/',
+        url: 'https://mizoprep.vercel.app/api/razorpay',
         headers: { 'Content-Type': 'application/json' },
-        data: { amount: 100 }
+        data: {
+          amount: 10000, // ₹100 in paise
+          userId: 'test_user_123'
+        }
+      })
+
+      console.log("3. API Response Status:", response.status)
+      console.log("3. API Response Data:", response.data)
+      
+      const order = response.data
+
+      if (response.status !== 200 || !order.id) {
+        throw new Error(`API Error: ${JSON.stringify(order)}`)
+      }
+
+      // STEP 2: Open Razorpay Checkout - HE LAI HI KA FIX
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // FIXED: Hardcode ni tawh lo
+        amount: order.amount,
+        currency: order.currency,
+        name: 'MizoPrep Pro',
+        description: 'Pro Membership - 6 Months',
+        order_id: order.id,
+        handler: function (response: any) {
+          console.log('Payment Success:', response)
+          alert('Payment Successful!')
+          router.push('/premium/success')
+        },
+        prefill: {
+          name: 'Test User',
+          email: 'test@mizoprep.com'
+        },
+        theme: {
+          color: '#F37254'
+        },
+        modal: {
+          ondismiss: function() {
+            setLoading(false)
+            console.log('Payment popup closed by user')
+          }
+        }
+      }
+
+      const rzp = new window.Razorpay(options)
+      
+      rzp.on('payment.failed', function (response: any) {
+        console.error('Razorpay Failed:', response.error)
+        setError(`Payment Failed: ${response.error.description}`)
+        setLoading(false)
       })
       
-      const data = response.data
+      console.log("4. Opening Razorpay Checkout")
+      rzp.open()
 
-      if (response.status !== 100) {
-        throw new Error(data.error || `Payment failed`)
-      }
-
-      if (data.url) {
-        await Browser.open({ url: data.url })
-      } else {
-        throw new Error('Payment link not received')
+    } catch (error: any) {
+      console.error('FULL ERROR OBJECT:', error)
+      console.error('ERROR RESPONSE:', error.response)
+      
+      let errorMsg = 'Payment failed'
+      if (error.response) {
+        errorMsg = `API Error ${error.response.status}: ${JSON.stringify(error.response.data)}`
+      } else if (error.message) {
+        errorMsg = `Error: ${error.message}`
       }
       
-    } catch (error: any) {
-      console.error('Payment Error:', error)
-      alert('Payment failed. Please check your internet and try again.')
-    } finally {
+      setError(errorMsg)
+      alert(errorMsg)
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-3">
-      <div className="max-w-md mx-auto pt-8">
-        <button onClick={() => router.back()} className="text-blue-600 font-semibold mb-4">← Back</button>
+    <div className="p-4 bg-gradient-to-b from-orange-500 to-red-600 min-h-screen text-white">
+      <button onClick={() => router.back()} className="mb-4">← Back</button>
+      
+      <div className="bg-white/10 p-6 rounded-2xl">
+        <h1 className="text-2xl font-bold">MizoPrep Pro</h1>
+        <p>Unlock everything for 6 months</p>
+        <h2 className="text-4xl font-bold my-4">₹100 <span className="text-lg">/6 months</span></h2>
         
-        <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-8 text-white shadow-2xl">
-          <div className="text-4xl mb-3">💎</div>
-          <h1 className="text-3xl font-bold mb-2">MizoPrep Pro</h1>
-          <p className="text-white/90 mb-4">Unlock everything for 6 months</p>
-          
-          <div className="bg-white/20 backdrop-blur rounded-xl p-4 mb-4">
-            <div className="text-center mb-4">
-              <span className="text-4xl font-bold">₹100</span>
-              <span className="text-white/80 ml-2">/ 6 months</span>
-            </div>
-            <p className="text-sm text-center text-white/90">≈ ₹33/month only</p>
-          </div>
-
-          <div className="space-y-3 mb-6 text-sm">
-            <div className="flex items-center gap-3">
-              <span className="text-xl">✓</span>
-              <span>All 8 Subjects - 64 Chapters unlocked</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xl">✓</span>
-              <span>Full Mock Test 200 Questions</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xl">✓</span>
-              <span>Current Affairs Monthly Updates</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xl">✓</span>
-              <span>Mizo + English Toggle</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xl">✓</span>
-              <span>No Ads, Priority Support</span>
-            </div>
-          </div>
-
-          <button 
-            onClick={handleBuyPro}
-            disabled={loading}
-            className="w-full bg-white text-orange-600 py-4 rounded-xl font-bold text-lg active:scale-95 disabled:opacity-50 transition"
-          >
-            {loading ? 'Opening Payment...' : 'Get Pro - ₹100'}
-          </button>
-          
-          <p className="text-xs text-center mt-4 text-white/70">
-            Secure payment via Razorpay & UPI
-          </p>
+        <div className="my-6 space-y-2">
+          <p>✓ Full Mock Test 200 Questions</p>
+          <p>✓ Current Affairs Monthly Updates</p>
+          <p>✓ Mizo + English Toggle</p>
+          <p>✓ No Ads, Priority Support</p>
         </div>
-
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="font-bold text-blue-900 mb-2">📱 After Payment</h3>
-          <p className="text-sm text-blue-800">
-            Your Pro access will activate instantly. Valid till {new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'})}
-          </p>
-        </div>
+        
+        {error && <p className="text-yellow-300 bg-black/20 p-3 rounded my-4 break-words">{error}</p>}
+        
+        <button
+          onClick={handleBuyPro}
+          disabled={loading || !razorpayLoaded}
+          className="bg-white text-orange-600 font-bold p-4 rounded-lg w-full disabled:bg-gray-300"
+        >
+          {loading ? 'Opening Payment...' : razorpayLoaded ? 'Buy Pro Now' : 'Loading Gateway...'}
+        </button>
+        
+        <p className="text-xs text-center mt-4 opacity-70">Secure payment via Razorpay & UPI</p>
       </div>
     </div>
   )

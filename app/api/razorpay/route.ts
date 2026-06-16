@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 
-export const dynamic = 'force-dynamic' // ← Hei hi dah leh rawh
-
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const { amount, currency = 'INR' } = await request.json()
+    const body = await req.json()
+    const { amount, userId } = body
+
+    console.log('Creating order for user:', userId, 'Amount:', amount)
 
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID!,
@@ -13,23 +14,17 @@ export async function POST(request: NextRequest) {
     })
 
     const options = {
-      amount: amount * 100, // paise ah convert
-      currency,
-      receipt: `receipt_${Date.now()}`,
+      amount: amount, // 10000 = ₹100
+      currency: 'INR',
+      receipt: `receipt_${userId}_${Date.now()}`,
     }
 
     const order = await razorpay.orders.create(options)
+    console.log('Order created:', order.id)
 
-    return NextResponse.json({
-      id: order.id,
-      amount: order.amount,
-      currency: order.currency,
-    })
-  } catch (error) {
-    console.error('Razorpay error:', error)
-    return NextResponse.json(
-      { error: 'Failed to create order' },
-      { status: 500 }
-    )
+    return NextResponse.json(order)
+  } catch (err: any) {
+    console.error('API Route Error:', err)
+    return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
