@@ -1,11 +1,11 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-
+  // output: 'export' tih hi awm lo hrim hrim tur
   images: {
-    unoptimized: true, // Capacitor tan a ngai
+    unoptimized: true,
   },
-  trailingSlash: false, // 'export' tan true a tha zawk
+  trailingSlash: false,
 }
 
 export default nextConfig

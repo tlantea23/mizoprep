@@ -1,6 +1,5 @@
 'use client'
 
-import { CapacitorHttp } from '@capacitor/core'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -23,6 +22,10 @@ export default function PremiumPage() {
     script.async = true
     script.onload = () => setRazorpayLoaded(true)
     document.body.appendChild(script)
+    
+    return () => {
+      document.body.removeChild(script)
+    }
   }, [])
 
   const handleBuyPro = async () => {
@@ -37,26 +40,30 @@ export default function PremiumPage() {
     try {
       const isCapacitor = typeof window !== 'undefined' && window.Capacitor
       
-      // A PAWIMAWH BER: Vercel Next.js 14+ ah chuan / a ngai kher. 308 fix
       const apiUrl = isCapacitor 
-        ? 'https://mizoprep.vercel.app/api/razorpay/'
-        : '/api/razorpay/'
+        ? 'https://mizoprep.vercel.app/api/razorpay'
+        : '/api/razorpay'
 
-      const response = await CapacitorHttp.post({
-        url: apiUrl,
+      const response = await fetch(apiUrl, {
+        method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
         },
-        data: {
+        body: JSON.stringify({
           amount: 10000,
           userId: 'guest_' + Date.now()
-        },
+        }),
       })
 
-      const order = response.data
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        throw new Error(errorData.error || `API Error: ${response.status}`)
+      }
+
+      const order = await response.json()
       
-      if (response.status !== 200 || !order.id) {
-        throw new Error(order.error || `API Error: ${response.status}`)
+      if (!order.id) {
+        throw new Error('Order ID not found in response')
       }
 
       const options = {
@@ -70,6 +77,7 @@ export default function PremiumPage() {
           console.log('Payment Success:', response)
           alert('Payment Success! ID: ' + response.razorpay_payment_id)
           setLoading(false)
+          // He tah hian Firebase ah Pro status update rawh
         },
         prefill: {
           name: 'Guest User',
@@ -95,7 +103,6 @@ export default function PremiumPage() {
 
     } catch (error: any) {
       console.error('Full Error:', error)
-      alert(`Error Name: ${error.name}\nMessage: ${error.message}`) 
       setError(`Debug: ${error.message}`)
       setLoading(false)
     }
