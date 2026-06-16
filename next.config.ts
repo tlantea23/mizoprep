@@ -1,10 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // output: 'export', // Hei hi comment out rawh. API route a ti thi.
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  output: 'export', // Hei hi uncomment/ti nung rawh. Play Store tan a pawimawh ber
   images: {
-    unoptimized: true, // Capacitor tan
+    unoptimized: true, // Capacitor tan a ngai
   },
-  trailingSlash: false, // Hei hi false ah thlak rawh
+  trailingSlash: true, // 'export' tan true a tha zawk
 }
 
-module.exports = nextConfig
+export default nextConfig

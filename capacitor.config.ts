@@ -4,20 +4,8 @@ const config: CapacitorConfig = {
   appId: 'com.mizoprep.app',
   appName: 'MizoPrep',
   webDir: 'out',
-  server: {
-    androidScheme: 'https',
-    cleartext: true,
-    allowNavigation: [
-      'mizoprep.vercel.app',
-      '*.razorpay.com',
-      'api.razorpay.com',
-      'checkout.razorpay.com'
-    ]
-  },
-  plugins: {
-    CapacitorHttp: {
-      enabled: true
-    }
+  android: {
+    allowMixedContent: true
   }
 };
 
