@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { CapacitorHttp } from '@capacitor/core'
 
 declare global {
   interface Window {
@@ -34,18 +33,19 @@ export default function PremiumPage() {
     setError('')
 
     try {
-      const response = await CapacitorHttp.post({
-        url: 'https://mizoprep.vercel.app/api/razorpay',
+      const response = await fetch('/api/razorpay', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        data: {
+        body: JSON.stringify({
           amount: 10000,
           userId: 'test_user_123'
-        }
+        })
       })
 
-      const order = response.data
-      if (response.status !== 200 || !order.id) {
-        throw new Error(`API Error: ${JSON.stringify(order)}`)
+      const order = await response.json()
+      
+      if (!response.ok || !order.id) {
+        throw new Error(order.error || `API Error: ${response.status}`)
       }
 
       const options = {
@@ -57,11 +57,12 @@ export default function PremiumPage() {
         order_id: order.id,
         handler: function (response: any) {
           console.log('Payment Success:', response)
-          router.push('/premium/success')
+          router.push(`/premium/success?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}`)
         },
         prefill: {
           name: 'Test User',
-          email: 'test@mizoprep.com'
+          email: 'test@mizoprep.com',
+          contact: '9999999999'
         },
         theme: {
           color: '#F37254'
@@ -81,33 +82,35 @@ export default function PremiumPage() {
       rzp.open()
 
     } catch (error: any) {
-      setError(error.message || 'Payment failed')
+      console.error('Full Error:', error)
+      setError(error.message || 'Payment failed. Internet check la, try leh rawh.')
       setLoading(false)
     }
   }
 
   return (
     <div className="p-4 bg-gradient-to-b from-orange-500 to-red-600 min-h-screen text-white">
-      <button onClick={() => router.back()} className="mb-4">← Back</button>
+      <button onClick={() => router.back()} className="mb-4 font-semibold">← Back</button>
       
-      <div className="bg-white/10 p-6 rounded-2xl">
+      <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm">
+        <div className="text-5xl mb-2">💎</div>
         <h1 className="text-2xl font-bold">MizoPrep Pro</h1>
-        <p>Unlock everything for 6 months</p>
-        <h2 className="text-4xl font-bold my-4">₹100 <span className="text-lg">/6 months</span></h2>
+        <p className="opacity-90">Unlock everything for 6 months</p>
+        <h2 className="text-4xl font-bold my-4">₹100 <span className="text-lg font-normal">/6 months</span></h2>
         
-        <div className="my-6 space-y-2">
-          <p>✓ Full Mock Test 200 Questions</p>
-          <p>✓ Current Affairs Monthly Updates</p>
-          <p>✓ Mizo + English Toggle</p>
-          <p>✓ No Ads, Priority Support</p>
+        <div className="my-6 space-y-3 text-left">
+          <p className="flex items-center gap-2">✓ Full Mock Test 200 Questions</p>
+          <p className="flex items-center gap-2">✓ Current Affairs Monthly Updates</p>
+          <p className="flex items-center gap-2">✓ Mizo + English Toggle</p>
+          <p className="flex items-center gap-2">✓ No Ads, Priority Support</p>
         </div>
         
-        {error && <p className="text-yellow-300 bg-black/20 p-3 rounded my-4 break-words">{error}</p>}
+        {error && <p className="text-yellow-300 bg-black/20 p-3 rounded my-4 break-words text-sm">{error}</p>}
         
         <button
           onClick={handleBuyPro}
           disabled={loading || !razorpayLoaded}
-          className="bg-white text-orange-600 font-bold p-4 rounded-lg w-full disabled:bg-gray-300"
+          className="bg-white text-orange-600 font-bold p-4 rounded-lg w-full disabled:bg-gray-300 disabled:text-gray-500 transition-all"
         >
           {loading ? 'Opening Payment...' : razorpayLoaded ? 'Buy Pro Now' : 'Loading Gateway...'}
         </button>
