@@ -39,8 +39,8 @@ export default function PremiumPage() {
       
       // FIX: Trailing slash dah tel a ngai. Hei vangin 308 error a awm thin
       const apiUrl = isCapacitor 
-        ? 'https://mizoprep.vercel.app/api/razorpay/'  // <- / dah belh
-        : '/api/razorpay/'  // <- / dah belh
+        ? 'https://mizoprep.vercel.app/api/razorpay'  // <- / dah belh
+        : '/api/razorpay'  // <- / dah belh
 
       const response = await CapacitorHttp.post({
         url: apiUrl,
