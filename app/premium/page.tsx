@@ -3,7 +3,6 @@ import { CapacitorHttp } from '@capacitor/core'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-
 declare global {
   interface Window {
     Razorpay: any;
@@ -16,7 +15,6 @@ export default function PremiumPage() {
   const [error, setError] = useState('')
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
   const router = useRouter()
-  const supabase = createClientComponentClient() // Supabase client
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -32,13 +30,6 @@ export default function PremiumPage() {
       return
     }
 
-    // FIX 1: User la hmasa rawh
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      setError('Login phawt rawh')
-      return
-    }
-
     setLoading(true)
     setError('')
 
@@ -51,13 +42,14 @@ export default function PremiumPage() {
       const response = await CapacitorHttp.post({
         url: apiUrl,
         headers: { 'Content-Type': 'application/json' },
-        data: { amount: 10000, userId: user.id }, // user.id, user?.id ni lo
+        data: { 
+          amount: 10000, // ₹100
+          userId: 'guest_' + Date.now() // Supabase a awm loh chuan hetiang hi
+        },
       })
 
-      // FIX 2: .data() ni lovin .data property
       const order = response.data
       
-      // FIX 3: .ok ni lovin .status check
       if (response.status !== 200 || !order.id) {
         throw new Error(order.error || `API Error: ${response.status}`)
       }
@@ -71,11 +63,14 @@ export default function PremiumPage() {
         order_id: order.id,
         handler: function (response: any) {
           console.log('Payment Success:', response)
-          router.push(`/premium/success?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}`)
+          alert('Payment Success! ID: ' + response.razorpay_payment_id)
+          // Hetah hian i user database update logic dah tur
+          // Eg: fetch('/api/activate-pro', { method: 'POST', body: JSON.stringify(response) })
         },
         prefill: {
-          name: user.user_metadata?.full_name || 'Test User',
-          email: user.email,
+          name: 'Guest User',
+          email: 'guest@mizoprep.com',
+          contact: '9999999999'
         },
         theme: {
           color: '#F37254'
