@@ -1,6 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 
+// CORS headers hi a pawimawh ber
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+}
+
+// Preflight request handle na
+export async function OPTIONS(req: NextRequest) {
+  return NextResponse.json({}, { headers: corsHeaders })
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -22,9 +34,18 @@ export async function POST(req: NextRequest) {
     const order = await razorpay.orders.create(options)
     console.log('Order created:', order.id)
 
-    return NextResponse.json(order)
+    // Hei hi thlak danglam: corsHeaders belh
+    return NextResponse.json(order, { 
+      status: 200,
+      headers: corsHeaders 
+    })
+    
   } catch (err: any) {
     console.error('API Route Error:', err)
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    // Error ah pawh corsHeaders belh
+    return NextResponse.json({ error: err.message }, { 
+      status: 500,
+      headers: corsHeaders
+    })
   }
 }
