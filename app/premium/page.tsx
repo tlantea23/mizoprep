@@ -1,7 +1,8 @@
 'use client'
-
+import { CapacitorHttp } from '@capacitor/core'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ export default function PremiumPage() {
   const [error, setError] = useState('')
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
   const router = useRouter()
+  const supabase = createClientComponentClient() // Supabase client
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -30,28 +32,33 @@ export default function PremiumPage() {
       return
     }
 
+    // FIX 1: User la hmasa rawh
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      setError('Login phawt rawh')
+      return
+    }
+
     setLoading(true)
     setError('')
 
     try {
-      // App nge Browser tih check - hei hi a pawimawh ber
       const isCapacitor = typeof window !== 'undefined' && window.Capacitor
       const apiUrl = isCapacitor 
-        ? 'https://mizoprep.vercel.app/api/razorpay'  // Android App tan
-        : '/api/razorpay' // Browser tan
+        ? 'https://mizoprep.vercel.app/api/razorpay'
+        : '/api/razorpay'
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
+      const response = await CapacitorHttp.post({
+        url: apiUrl,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount: 10000,
-          userId: 'test_user_123'
-        })
+        data: { amount: 10000, userId: user.id }, // user.id, user?.id ni lo
       })
 
-      const order = await response.json()
+      // FIX 2: .data() ni lovin .data property
+      const order = response.data
       
-      if (!response.ok || !order.id) {
+      // FIX 3: .ok ni lovin .status check
+      if (response.status !== 200 || !order.id) {
         throw new Error(order.error || `API Error: ${response.status}`)
       }
 
@@ -67,9 +74,8 @@ export default function PremiumPage() {
           router.push(`/premium/success?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}`)
         },
         prefill: {
-          name: 'Test User',
-          email: 'test@mizoprep.com',
-          contact: '9999999999'
+          name: user.user_metadata?.full_name || 'Test User',
+          email: user.email,
         },
         theme: {
           color: '#F37254'
@@ -89,12 +95,11 @@ export default function PremiumPage() {
       rzp.open()
 
     } catch (error: any) {
-  console.error('Full Error:', error)
-  // Error tak tak phone ah a lang thei nan
-  alert(`Error Name: ${error.name}\nMessage: ${error.message}`) 
-  setError(`Debug: ${error.message}`)
-  setLoading(false)
-}
+      console.error('Full Error:', error)
+      alert(`Error Name: ${error.name}\nMessage: ${error.message}`) 
+      setError(`Debug: ${error.message}`)
+      setLoading(false)
+    }
   }
 
   return (
