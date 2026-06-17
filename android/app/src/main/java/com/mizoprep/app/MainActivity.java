@@ -1,4 +1,4 @@
-package com.mizoprep.tlantea23;
+package com.mizoprep.app;
 
 import com.getcapacitor.BridgeActivity;
 

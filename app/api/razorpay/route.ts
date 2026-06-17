@@ -1,26 +1,21 @@
-import { NextResponse } from 'next/server'
-import Razorpay from 'razorpay'
+import Razorpay from "razorpay"
+import { NextResponse } from "next/server"
 
-export async function POST(request: Request) {
-  try {
-    const { amount, userId } = await request.json()
-    
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID!,
-      key_secret: process.env.RAZORPAY_KEY_SECRET!,
-    })
+export const runtime = "nodejs"
 
-    const options = {
-      amount: amount,
-      currency: 'INR',
-      receipt: `receipt_${userId}_${Date.now()}`,
-    }
+export async function POST(req: Request) {
+  const { amount, userId } = await req.json()
 
-    const order = await razorpay.orders.create(options)
-    return NextResponse.json(order)
-    
-  } catch (error: any) {
-    console.error('Razorpay Error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
-  }
+  const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID!,
+    key_secret: process.env.RAZORPAY_KEY_SECRET!,
+  })
+
+  const order = await razorpay.orders.create({
+    amount: amount * 100,
+    currency: "INR",
+    receipt: `rcpt_${userId}`
+  })
+
+  return NextResponse.json(order)
 }

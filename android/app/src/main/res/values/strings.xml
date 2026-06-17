@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">mizoprep</string>
-    <string name="title_activity_main">mizoprep</string>
-    <string name="package_name">com.mizoprep.tlantea23</string>
-    <string name="custom_url_scheme">com.mizoprep.tlantea23</string>
+    <string name="app_name">MizoPrep</string>
+    <string name="title_activity_main">MizoPrep</string>
+    <string name="package_name">com.mizoprep.app</string>
+    <string name="custom_url_scheme">com.mizoprep.app</string>
 </resources>
