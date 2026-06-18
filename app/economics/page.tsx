@@ -391,7 +391,7 @@ export default function EconomicsPage() {
       testTitle="Economics Mock Test"
       testDesc="Economic & Social Development • Sustainable Development • Poverty • Inclusive Economy • Demographics • Social Sector"
       slug="economics"
-      testId="economics-mock-1"
+    
     />
   )
 }

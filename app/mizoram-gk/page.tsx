@@ -442,7 +442,7 @@ export default function MizoramGKPage() {
       }}
       chapters={mizoramChapters}
       slug="mizoram-gk"
-      testId="mizoram-gk-test"
+      
       backLink="/"
       testLink="/mizoram-gk/test"
       testTitle="Mizoram GK Mock Test"

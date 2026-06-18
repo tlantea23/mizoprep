@@ -519,7 +519,7 @@ export default function GeographyPage() {
       }}
       chapters={geographyChapters}
       slug="geography"
-      testId="geography-test"
+     
       backLink="/"
       testLink="/geography/test"
       testTitle="Geography Mock Test"

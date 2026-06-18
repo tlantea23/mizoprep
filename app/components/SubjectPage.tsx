@@ -15,10 +15,14 @@ interface SubjectPageProps {
   subjectName: { mizo: string; english: string }
   chapters: Chapter[]
   slug: string
+
   testLink?: string
   testTitle?: string
   testDesc?: string
   showMockTest?: boolean
+
+  // ✅ FIX: backLink optional (so no build error)
+  backLink?: string
 }
 
 export default function SubjectPage({
@@ -28,27 +32,25 @@ export default function SubjectPage({
   testLink = '/mock-test',
   testTitle = 'Mock Test',
   testDesc = 'Test your knowledge',
-  showMockTest = false
+  showMockTest = false,
+  backLink
 }: SubjectPageProps) {
 
   const router = useRouter()
 
   const [isEnglish, setIsEnglish] = useState(false)
-
   const [isPro, setIsPro] = useState(false)
   const [proExpiry, setProExpiry] = useState<string | null>(null)
 
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null)
-
   const [showProModal, setShowProModal] = useState(false)
 
   const [unlockedChapters, setUnlockedChapters] = useState<number[]>([])
-
   const [loadingAd, setLoadingAd] = useState<number | null>(null)
 
-  // ===============================
-  // 🔥 INTERSTITIAL ADS CONTROL
-  // ===============================
+  // =====================
+  // ADS
+  // =====================
   useEffect(() => {
     if (isPro) return
 
@@ -60,17 +62,17 @@ export default function SubjectPage({
     }
   }, [isPro])
 
-  // ===============================
-  // 🔐 PRO STATUS CHECK (LOCAL STORAGE fallback)
-  // ===============================
+  // =====================
+  // PRO CHECK
+  // =====================
   useEffect(() => {
     const pro = localStorage.getItem('mizoprep_pro')
     const expiry = localStorage.getItem('mizoprep_pro_expiry')
 
     if (pro === 'true' && expiry) {
-      const expDate = new Date(expiry)
+      const exp = new Date(expiry)
 
-      if (expDate > new Date()) {
+      if (exp > new Date()) {
         setIsPro(true)
         setProExpiry(expiry)
       } else {
@@ -79,7 +81,7 @@ export default function SubjectPage({
       }
     }
 
-    // Restore rewarded unlocked chapters
+    // restore unlocked chapters
     const saved = localStorage.getItem(`${slug}_unlocked`)
 
     if (saved) {
@@ -91,28 +93,32 @@ export default function SubjectPage({
       })
 
       setUnlockedChapters(valid)
-
       localStorage.setItem(`${slug}_unlocked`, JSON.stringify(valid))
     }
   }, [slug])
 
-  // ===============================
-  // 🔙 BACK HANDLER
-  // ===============================
+  // =====================
+  // BACK BUTTON FIX (🔥 IMPORTANT)
+  // =====================
   const handleBack = () => {
     if (selectedChapter) {
       setSelectedChapter(null)
+      return
+    }
+
+    if (backLink) {
+      router.push(backLink)
     } else {
       router.back()
     }
   }
 
-  // ===============================
-  // 📺 CHAPTER CLICK LOGIC
-  // ===============================
+  // =====================
+  // CHAPTER CLICK
+  // =====================
   const handleChapterClick = async (chapter: Chapter, idx: number) => {
 
-    // FREE CHAPTERS (1–3)
+    // FREE: first 3 chapters
     if (idx < 3 || isPro || unlockedChapters.includes(idx)) {
       setSelectedChapter(chapter)
       return
@@ -128,7 +134,6 @@ export default function SubjectPage({
       const updated = [...unlockedChapters, idx]
 
       setUnlockedChapters(updated)
-
       localStorage.setItem(`${slug}_unlocked`, JSON.stringify(updated))
 
       const expiry = Date.now() + 24 * 60 * 60 * 1000
@@ -140,9 +145,6 @@ export default function SubjectPage({
     }
   }
 
-  // ===============================
-  // ⏳ DAYS LEFT
-  // ===============================
   const getDaysLeft = () => {
     if (!proExpiry) return 0
 
@@ -152,9 +154,9 @@ export default function SubjectPage({
     )
   }
 
-  // ===============================
+  // =====================
   // UI
-  // ===============================
+  // =====================
   return (
     <div className="min-h-screen bg-gray-50 p-3">
 
@@ -220,7 +222,7 @@ export default function SubjectPage({
             <div className="space-y-3">
               {chapters.map((ch, idx) => {
 
-                const isLocked =
+                const locked =
                   idx >= 3 &&
                   !isPro &&
                   !unlockedChapters.includes(idx)
@@ -230,11 +232,11 @@ export default function SubjectPage({
                     key={ch.id}
                     onClick={() => handleChapterClick(ch, idx)}
                     disabled={loadingAd === idx}
-                    className={`w-full text-left p-4 rounded border-l-4 bg-white transition ${
-                      isLocked ? 'border-gray-300 opacity-90' : 'border-blue-500'
+                    className={`w-full text-left p-4 rounded border-l-4 bg-white ${
+                      locked ? 'border-gray-300 opacity-80' : 'border-blue-500'
                     }`}
                   >
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between">
 
                       <div>
                         <p className="text-xs text-blue-600">
@@ -279,7 +281,7 @@ export default function SubjectPage({
           </>
         )}
 
-        {/* CHAPTER VIEW */}
+        {/* CHAPTER CONTENT */}
         {selectedChapter && (
           <div className="bg-white p-5 rounded shadow">
 
@@ -297,8 +299,8 @@ export default function SubjectPage({
               {(isEnglish
                 ? selectedChapter.notes.english
                 : selectedChapter.notes.mizo
-              ).map((note, i) => (
-                <p key={i}>• {note}</p>
+              ).map((n, i) => (
+                <p key={i}>• {n}</p>
               ))}
             </div>
 
@@ -316,7 +318,7 @@ export default function SubjectPage({
             <h3 className="font-bold mb-2">Pro Required</h3>
 
             <p className="text-sm mb-4">
-              Watch ad or upgrade to unlock all chapters.
+              Watch ad or upgrade to unlock chapters.
             </p>
 
             <div className="flex gap-2">
@@ -330,7 +332,7 @@ export default function SubjectPage({
 
               <Link href="/premium" className="flex-1">
                 <button className="bg-blue-600 text-white w-full p-2 rounded">
-                  Get Pro
+                  Pro
                 </button>
               </Link>
 

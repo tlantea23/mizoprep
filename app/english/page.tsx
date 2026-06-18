@@ -627,7 +627,7 @@ export default function EnglishPage() {
       testTitle="English Mock Test"
       testDesc="Grammar • Vocabulary • Comprehension • Writing • MPSC Important"
       slug="english"
-      testId="english-mock-1"
+      
       showMockTest={true}
     />
   )

@@ -603,7 +603,7 @@ export default function SciencePage() {
       }}
       chapters={scienceChapters}
       slug="general-science"
-      testId="general-science-test"
+      
       backLink="/"
       testLink="/general-science/test"
       testTitle="General Science Mock Test"

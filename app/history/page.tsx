@@ -663,7 +663,7 @@ export default function HistoryPage() {
       }}
       chapters={historyChapters}
       slug="history"
-      testId="history-test"
+      
       backLink="/"
       testLink="/history/test"
       testTitle="History Mock Test"

@@ -703,7 +703,7 @@ export default function PolityPage() {
       }}
       chapters={polityChapters}
       slug="polity"
-      testId="polity-test"
+    
       backLink="/"
       testLink="/polity/test"
       testTitle="Polity Mock Test"
